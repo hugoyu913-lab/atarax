@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Stoic Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --charcoal: #1C1C1C;
+      --gold: #C9A46C;
+      --gold-dim: #9a7a50;
+      --parchment: #F7F5EF;
+      --surface: #FFFFFF;
+      --border: #E5E0D6;
+      --muted: #8a8478;
+      --text-soft: #5a5650;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--parchment); color: var(--charcoal); min-height: 100vh; line-height: 1.6; }
+
+    /* ── Hero ── */
+    #hero {
+      min-height: 100vh;
+      background: radial-gradient(ellipse at 50% 35%, #2d2417 0%, #1C1C1C 65%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 80px 24px; position: relative;
+    }
+    .hero-mark { margin-bottom: 36px; opacity: 0.9; }
+    .hero-eyebrow {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 20px;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 8vw, 5.5rem);
+      font-weight: 400; line-height: 1.1; color: var(--parchment); margin-bottom: 28px;
+    }
+    .hero-title em { font-style: italic; color: var(--gold); }
+    .hero-divider { width: 40px; height: 1px; background: var(--gold); margin: 0 auto 28px; opacity: 0.5; }
+    .hero-subtitle {
+      font-size: 0.95rem; font-weight: 300; color: rgba(247,245,239,0.55);
+      letter-spacing: 0.04em; max-width: 380px; margin-bottom: 48px;
+    }
+    .hero-quote-block {
+      max-width: 520px; margin: 0 auto 52px; padding: 0 0 0 24px;
+      border-left: 1px solid rgba(201,164,108,0.5); text-align: left;
+    }
+    .hero-quote-text {
+      font-family: 'Playfair Display', serif; font-size: 1.15rem; font-style: italic;
+      color: rgba(247,245,239,0.75); line-height: 1.7; margin-bottom: 14px;
+    }
+    .hero-quote-attr {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--gold);
+    }
+    .hero-cta {
+      font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase; padding: 16px 40px;
+      background: var(--gold); color: var(--charcoal); border: none; cursor: pointer;
+      transition: all 0.2s ease; margin-bottom: 72px;
+    }
+    .hero-cta:hover { background: #d4ae7a; transform: translateY(-1px); }
+    .scroll-indicator {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      color: rgba(247,245,239,0.3); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, rgba(201,164,108,0.5), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+
+    /* ── Navigation ── */
+    #main-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(247,245,239,0.94); backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--border);
+      transition: box-shadow 0.2s ease;
+    }
+    #main-nav.scrolled { box-shadow: 0 2px 24px rgba(28,28,28,0.08); }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between; height: 64px;
+    }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 400; color: var(--charcoal); }
+    .nav-logo em { font-style: italic; color: var(--gold-dim); }
+    .nav-links { display: flex; }
+    .nav-link {
+      font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase; padding: 0 18px; height: 64px;
+      display: flex; align-items: center; background: none; border: none;
+      color: var(--muted); cursor: pointer; position: relative; transition: color 0.15s ease;
+    }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: 0; left: 18px; right: 18px;
+      height: 2px; background: var(--gold); transform: scaleX(0); transition: transform 0.2s ease;
+    }
+    .nav-link:hover { color: var(--charcoal); }
+    .nav-link.active { color: var(--charcoal); }
+    .nav-link.active::after { transform: scaleX(1); }
+
+    /* ── Main content ── */
+    .main-content { max-width: 1100px; margin: 0 auto; padding: 60px 32px 100px; }
+    .section-page { display: none; }
+    .section-page.active { display: block; }
+
+    /* ── Shared heading styles ── */
+    .section-eyebrow {
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 400;
+      color: var(--charcoal); margin-bottom: 6px;
+    }
+    .section-subtitle {
+      font-size: 0.88rem; font-weight: 300; color: var(--muted); margin-bottom: 44px;
+    }
+
+    /* ── Today header ── */
+    .today-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 40px; gap: 32px; flex-wrap: wrap;
+    }
+    .today-date-label {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
+    }
+    .today-heading {
+      font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; color: var(--charcoal);
+    }
+    .streak-widget { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    .streak-number-row { display: flex; align-items: baseline; gap: 8px; }
+    .streak-num {
+      font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400;
+      color: var(--charcoal); line-height: 1;
+    }
+    .streak-label-text {
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .streak-dots { display: flex; gap: 6px; }
+    .streak-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+    .streak-dot.filled { background: var(--gold); }
+
+    /* ── Tab bar ── */
+    .tab-bar {
+      display: flex; border-bottom: 1px solid var(--border); margin-bottom: 40px;
+    }
+    .tab-btn {
+      font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 24px;
+      background: none; border: none; color: var(--muted); cursor: pointer;
+      position: relative; transition: color 0.15s ease;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .tab-btn::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+      height: 2px; background: var(--charcoal); transform: scaleX(0); transition: transform 0.2s ease;
+    }
+    .tab-btn:hover { color: var(--charcoal); }
+    .tab-btn.active { color: var(--charcoal); }
+    .tab-btn.active::after { transform: scaleX(1); }
+    .tab-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--gold); display: none;
+    }
+    .tab-dot.visible { display: block; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 32px 36px; margin-bottom: 16px;
+    }
+    .card-label {
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
+    }
+    .card-title {
+      font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 400;
+      color: var(--charcoal); margin-bottom: 6px;
+    }
+    .card-description {
+      font-size: 0.82rem; font-weight: 300; color: var(--muted); line-height: 1.65; margin-bottom: 20px;
+    }
+
+    /* ── Dark quote card ── */
+    .quote-card-dark {
+      background: var(--charcoal); padding: 48px; margin-bottom: 16px;
+      position: relative; overflow: hidden;
+    }
+    .quote-card-dark::before {
+      content: '\201C'; font-family: 'Playfair Display', serif; font-size: 14rem;
+      line-height: 0.8; color: rgba(201,164,108,0.06); position: absolute;
+      top: 16px; left: 24px; pointer-events: none; user-select: none;
+    }
+    .quote-card-dark .qtext {
+      font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic;
+      font-weight: 400; color: var(--parchment); line-height: 1.7; margin-bottom: 24px;
+      position: relative; z-index: 1;
+    }
+    .qmeta { display: flex; align-items: center; gap: 14px; }
+    .qline { width: 28px; height: 1px; background: var(--gold); }
+    .qauthor {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--gold);
+    }
+    .qsource { font-size: 0.68rem; color: rgba(201,164,108,0.55); font-style: italic; }
+
+    /* ── Textarea / field ── */
+    .field-label {
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--text-soft); margin-bottom: 10px; display: block;
+    }
+    textarea {
+      width: 100%; font-family: 'Playfair Display', serif; font-size: 1rem;
+      font-weight: 400; line-height: 1.8; color: var(--charcoal); background: var(--parchment);
+      border: 1px solid var(--border); padding: 18px 22px; resize: vertical; outline: none;
+      min-height: 120px; transition: border-color 0.2s ease;
+    }
+    textarea::placeholder { color: #c0bab0; font-style: italic; }
+    textarea:focus { border-color: var(--gold); }
+
+    /* ── Dichotomy grid ── */
+    .dichotomy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .dichotomy-label {
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+      margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+    }
+    .dichotomy-label.within { color: #6a8a5a; }
+    .dichotomy-label.outside { color: var(--muted); }
+    .dichotomy-label::before { content: ''; display: block; width: 14px; height: 1px; }
+    .dichotomy-label.within::before { background: #6a8a5a; }
+    .dichotomy-label.outside::before { background: var(--muted); }
+
+    /* ── Virtue cards ── */
+    .virtue-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+    .virtue-card {
+      border: 1px solid var(--border); padding: 22px 12px; text-align: center;
+      cursor: pointer; transition: all 0.15s ease; background: var(--surface);
+    }
+    .virtue-card:hover { border-color: var(--gold); }
+    .virtue-card.selected { border-color: var(--charcoal); background: var(--charcoal); }
+    .virtue-card.selected .ven { color: var(--parchment); }
+    .virtue-card.selected .vgr { color: var(--gold); }
+    .ven { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 400; color: var(--charcoal); margin-bottom: 4px; }
+    .vgr { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+
+    /* ── Save row ── */
+    .save-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 0; border-top: 1px solid var(--border); margin-top: 8px;
+    }
+    .last-saved-ts { font-size: 0.7rem; color: var(--muted); font-weight: 300; }
+    .save-btns { display: flex; gap: 10px; }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase; padding: 13px 32px;
+      background: var(--charcoal); color: var(--parchment); border: none; cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .btn-primary:hover { background: #333; }
+    .btn-secondary {
+      font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase; padding: 13px 24px;
+      background: transparent; color: var(--muted); border: 1px solid var(--border);
+      cursor: pointer; transition: all 0.15s ease;
+    }
+    .btn-secondary:hover { border-color: var(--charcoal); color: var(--charcoal); }
+
+    /* ── Callout ── */
+    .callout {
+      border-left: 3px solid var(--gold); padding: 18px 24px;
+      background: var(--surface); margin-bottom: 16px;
+    }
+    .callout-label {
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+    }
+    .callout-text {
+      font-family: 'Playfair Display', serif; font-size: 0.98rem; font-style: italic;
+      color: var(--text-soft); line-height: 1.65;
+    }
+
+    /* ── Virtue rating dots ── */
+    .virtue-ratings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .virtue-rating-row { display: flex; flex-direction: column; gap: 10px; }
+    .vrating-label {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--text-soft);
+    }
+    .vdots-row { display: flex; gap: 10px; }
+    .vdot {
+      width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border);
+      cursor: pointer; transition: all 0.15s ease;
+    }
+    .vdot:hover { border-color: var(--gold); }
+    .vdot.filled { background: var(--gold); border-color: var(--gold); }
+
+    /* ── Dark memento callout ── */
+    .memento-callout {
+      background: var(--charcoal); padding: 36px 40px; margin-bottom: 24px;
+      position: relative; overflow: hidden;
+    }
+    .memento-callout::before {
+      content: 'MEMENTO MORI'; font-family: 'Playfair Display', serif; font-size: 4.5rem;
+      font-weight: 700; color: rgba(255,255,255,0.03); position: absolute;
+      right: -5px; bottom: -8px; pointer-events: none; line-height: 1; white-space: nowrap;
+    }
+    .memento-label {
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+    }
+    .memento-text {
+      font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic;
+      color: var(--parchment); line-height: 1.65; margin-bottom: 10px;
+    }
+    .memento-attr {
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(201,164,108,0.55);
+    }
+
+    /* ── Challenges ── */
+    .challenges-grid { display: flex; flex-direction: column; gap: 14px; }
+    .challenge-card {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 32px 36px; display: flex; gap: 32px; align-items: flex-start;
+    }
+    .challenge-numeral {
+      font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 400;
+      color: var(--border); line-height: 1; flex-shrink: 0; width: 52px; text-align: right;
+    }
+    .challenge-body { flex: 1; }
+    .challenge-name {
+      font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 400;
+      color: var(--charcoal); margin-bottom: 8px;
+    }
+    .challenge-desc {
+      font-size: 0.85rem; font-weight: 300; color: var(--text-soft); line-height: 1.65; margin-bottom: 12px;
+    }
+    .challenge-context {
+      font-size: 0.78rem; font-style: italic; color: var(--muted); line-height: 1.55;
+      margin-bottom: 20px; padding-left: 14px; border-left: 2px solid var(--border);
+    }
+    .btn-challenge {
+      font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase; padding: 10px 22px;
+      border: 1px solid var(--charcoal); background: transparent; color: var(--charcoal);
+      cursor: pointer; transition: all 0.15s ease;
+    }
+    .btn-challenge:hover { background: var(--charcoal); color: var(--parchment); }
+    .btn-challenge.completed {
+      border-color: var(--gold); color: var(--gold); cursor: default;
+    }
+    .btn-challenge.completed:hover { background: transparent; color: var(--gold); }
+
+    /* ── Entries ── */
+    .search-wrap { position: relative; margin-bottom: 32px; }
+    .search-input {
+      width: 100%; font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 300;
+      color: var(--charcoal); background: var(--surface); border: 1px solid var(--border);
+      padding: 14px 20px 14px 46px; outline: none; transition: border-color 0.2s ease;
+    }
+    .search-input:focus { border-color: var(--gold); }
+    .search-input::placeholder { color: #c0bab0; }
+    .search-icon {
+      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      color: var(--muted); font-size: 0.85rem; pointer-events: none;
+    }
+
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before {
+      content: ''; position: absolute; left: 4px; top: 8px; bottom: 8px;
+      width: 1px; background: var(--border);
+    }
+    .timeline-item { position: relative; margin-bottom: 36px; }
+    .timeline-dot {
+      position: absolute; left: -36px; top: 8px; width: 8px; height: 8px;
+      border-radius: 50%; background: var(--gold);
+    }
+    .timeline-date {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+    }
+    .timeline-entries { display: flex; flex-direction: column; gap: 6px; }
+
+    .entry-panel { background: var(--surface); border: 1px solid var(--border); }
+    .entry-panel-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px; cursor: pointer; user-select: none;
+    }
+    .entry-panel-name {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--charcoal);
+    }
+    .entry-panel-toggle { font-size: 0.75rem; color: var(--muted); transition: transform 0.2s ease; }
+    .entry-panel.open .entry-panel-toggle { transform: rotate(180deg); }
+    .entry-panel-body { display: none; border-top: 1px solid var(--border); padding: 20px 20px 16px; }
+    .entry-panel.open .entry-panel-body { display: block; }
+    .entry-field { margin-bottom: 16px; }
+    .entry-field:last-child { margin-bottom: 0; }
+    .entry-field-label {
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
+    }
+    .entry-field-value {
+      font-family: 'Playfair Display', serif; font-size: 0.95rem;
+      color: var(--charcoal); line-height: 1.7; white-space: pre-wrap;
+    }
+    .entry-panel-actions { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .btn-danger {
+      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 18px;
+      border: 1px solid #e0c0be; background: transparent; color: #c07070;
+      cursor: pointer; transition: all 0.15s ease;
+    }
+    .btn-danger:hover { background: #c07070; color: white; border-color: #c07070; }
+
+    .entries-empty { text-align: center; padding: 80px 0; color: var(--muted); }
+    .entries-empty p:first-child {
+      font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic;
+      margin-bottom: 10px; color: var(--text-soft);
+    }
+    .entries-empty p:last-child { font-size: 0.78rem; letter-spacing: 0.06em; }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed; bottom: 32px; right: 32px; background: var(--charcoal);
+      color: var(--parchment); font-size: 0.75rem; font-weight: 400; letter-spacing: 0.06em;
+      padding: 14px 24px; opacity: 0; transform: translateY(8px);
+      transition: all 0.25s ease; pointer-events: none; z-index: 999;
+    }
+    #toast.show { opacity: 1; transform: translateY(0); }
+
+    /* ── Weekly / Monthly section cards ── */
+    .section-cards { display: flex; flex-direction: column; gap: 16px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .nav-logo { display: none; }
+      .nav-link { padding: 0 12px; font-size: 0.62rem; }
+      .main-content { padding: 40px 20px 80px; }
+      .today-header { flex-direction: column; }
+      .streak-widget { align-items: flex-start; }
+      .virtue-grid { grid-template-columns: repeat(2,1fr); }
+      .dichotomy-grid { grid-template-columns: 1fr; }
+      .virtue-ratings-grid { grid-template-columns: 1fr; }
+      .challenge-card { flex-direction: column; gap: 16px; }
+      .challenge-numeral { width: auto; text-align: left; font-size: 1.8rem; }
+      .card { padding: 24px 20px; }
+      .quote-card-dark { padding: 32px 24px; }
+      .tab-btn { padding: 14px 16px; font-size: 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Hero ── -->
+<section id="hero">
+  <div class="hero-mark">
+    <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
+      <circle cx="28" cy="28" r="26" stroke="#C9A46C" stroke-width="0.8"/>
+      <line x1="28" y1="2" x2="28" y2="54" stroke="#C9A46C" stroke-width="0.8"/>
+      <line x1="2" y1="28" x2="54" y2="28" stroke="#C9A46C" stroke-width="0.8"/>
+      <circle cx="28" cy="28" r="3.5" stroke="#C9A46C" stroke-width="0.8" fill="none"/>
+    </svg>
+  </div>
+  <p class="hero-eyebrow">A daily practice in philosophy</p>
+  <h1 class="hero-title">The Stoic<br><em>Journal</em></h1>
+  <div class="hero-divider"></div>
+  <p class="hero-subtitle">Morning intention. Midday reflection. Evening examination.</p>
+  <div class="hero-quote-block">
+    <p class="hero-quote-text">"You have power over your mind, not outside events. Realize this, and you will find strength."</p>
+    <p class="hero-quote-attr">Marcus Aurelius &mdash; Meditations</p>
+  </div>
+  <button class="hero-cta" onclick="beginPractice()">Begin Today's Practice &rarr;</button>
+  <div class="scroll-indicator">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ── Navigation ── -->
+<nav id="main-nav">
+  <div class="nav-inner">
+    <div class="nav-logo">The Stoic <em>Journal</em></div>
+    <div class="nav-links">
+      <button class="nav-link active" onclick="switchSection('today')">Today</button>
+      <button class="nav-link" onclick="switchSection('weekly')">Weekly</button>
+      <button class="nav-link" onclick="switchSection('monthly')">Monthly</button>
+      <button class="nav-link" onclick="switchSection('challenges')">Challenges</button>
+      <button class="nav-link" onclick="switchSection('entries')">Entries</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Main ── -->
+<main class="main-content">
+
+  <!-- TODAY -->
+  <section id="section-today" class="section-page active">
+    <div class="today-header">
+      <div class="today-date-block">
+        <div class="today-date-label" id="today-date-label"></div>
+        <h2 class="today-heading">Today's Practice</h2>
+      </div>
+      <div class="streak-widget">
+        <div class="streak-number-row">
+          <span class="streak-num" id="streak-num">0</span>
+          <span class="streak-label-text">day streak</span>
+        </div>
+        <div class="streak-dots" id="streak-dots"></div>
+      </div>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" id="tab-btn-morning" onclick="switchTab('morning')">
+        &#9728; Morning <span class="tab-dot" id="dot-morning"></span>
+      </button>
+      <button class="tab-btn" id="tab-btn-midday" onclick="switchTab('midday')">
+        &#9675; Midday <span class="tab-dot" id="dot-midday"></span>
+      </button>
+      <button class="tab-btn" id="tab-btn-evening" onclick="switchTab('evening')">
+        &#9790; Evening <span class="tab-dot" id="dot-evening"></span>
+      </button>
+    </div>
+
+    <!-- Morning Tab -->
+    <div id="tab-morning" class="tab-panel active">
+      <div class="quote-card-dark">
+        <p class="qtext" id="morning-quote-text"></p>
+        <div class="qmeta">
+          <div class="qline"></div>
+          <span class="qauthor" id="morning-quote-author"></span>
+          <span class="qsource" id="morning-quote-source"></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Card I</div>
+        <div class="card-title">Morning Intention</div>
+        <div class="card-description">What is your deepest intention for today? Who do you commit to being?</div>
+        <label class="field-label" for="m-intention">Set your intention</label>
+        <textarea id="m-intention" placeholder="Today I intend to..."></textarea>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Card II &mdash; Dichotomy of Control</div>
+        <div class="card-title">What Is Within My Power?</div>
+        <div class="card-description">Distinguish clearly between what you control and what you do not. Direct energy accordingly.</div>
+        <div class="dichotomy-grid">
+          <div>
+            <div class="dichotomy-label within">Within my control</div>
+            <textarea id="m-within" placeholder="My judgments, choices, responses..." style="min-height:100px"></textarea>
+          </div>
+          <div>
+            <div class="dichotomy-label outside">Outside my control</div>
+            <textarea id="m-outside" placeholder="Others' opinions, outcomes, events..." style="min-height:100px"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Card III &mdash; Premeditatio Malorum</div>
+        <div class="card-title">Premeditation of Adversity</div>
+        <div class="card-description">Visualize what could go wrong today. Plan your response. Remove surprise's power over you.</div>
+        <label class="field-label" for="m-premeditatio">What challenges might arise, and how will you meet them?</label>
+        <textarea id="m-premeditatio" placeholder="The challenge I anticipate most is..."></textarea>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Card IV &mdash; Guiding Virtue</div>
+        <div class="card-title">Choose Your Anchor Virtue</div>
+        <div class="card-description">Which cardinal virtue will guide your choices today? Select one as your compass.</div>
+        <div class="virtue-grid">
+          <div class="virtue-card" data-virtue="wisdom" onclick="selectVirtue('wisdom')">
+            <div class="ven">Wisdom</div><div class="vgr">Sophia</div>
+          </div>
+          <div class="virtue-card" data-virtue="courage" onclick="selectVirtue('courage')">
+            <div class="ven">Courage</div><div class="vgr">Andreia</div>
+          </div>
+          <div class="virtue-card" data-virtue="justice" onclick="selectVirtue('justice')">
+            <div class="ven">Justice</div><div class="vgr">Dikaiosyne</div>
+          </div>
+          <div class="virtue-card" data-virtue="temperance" onclick="selectVirtue('temperance')">
+            <div class="ven">Temperance</div><div class="vgr">Sophrosyne</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="save-row">
+        <span class="last-saved-ts" id="morning-saved-ts"></span>
+        <div class="save-btns">
+          <button class="btn-secondary" onclick="clearPanel('morning')">Clear</button>
+          <button class="btn-primary" onclick="savePanel('morning')">Save Morning</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Midday Tab -->
+    <div id="tab-midday" class="tab-panel">
+      <div class="callout">
+        <div class="callout-label">Stoic Reminder</div>
+        <p class="callout-text">"Nowhere can man find a quieter or more untroubled retreat than in his own soul." &mdash; Marcus Aurelius</p>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Card I</div>
+        <div class="card-title">Morning Review</div>
+        <div class="card-description">How has your morning intention held up? Where did you succeed or fall short?</div>
+        <textarea id="md-review" placeholder="This morning I..."></textarea>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Card II</div>
+        <div class="card-title">Emotional Awareness</div>
+        <div class="card-description">What emotions have arisen today? Were they proportionate? Did you react or respond?</div>
+        <textarea id="md-emotional" placeholder="I noticed that I felt..."></textarea>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Card III</div>
+        <div class="card-title">The Control Check</div>
+        <div class="card-description">Identify one thing you have spent energy on today that is outside your control. Release it.</div>
+        <textarea id="md-control" placeholder="I have been trying to control..."></textarea>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Card IV</div>
+        <div class="card-title">Afternoon Intention</div>
+        <div class="card-description">What is most important in the hours remaining? Set a clear purpose.</div>
+        <textarea id="md-intention" placeholder="This afternoon I will focus on..."></textarea>
+      </div>
+
+      <div class="save-row">
+        <span class="last-saved-ts" id="midday-saved-ts"></span>
+        <div class="save-btns">
+          <button class="btn-secondary" onclick="clearPanel('midday')">Clear</button>
+          <button class="btn-primary" onclick="savePanel('midday')">Save Midday</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Evening Tab -->
+    <div id="tab-evening" class="tab-panel">
+      <div class="callout">
+        <div class="callout-label">Seneca's Examination</div>
+        <p class="callout-text">"I examine my entire day and go back over what I've done and said, hiding nothing from myself, passing nothing by." &mdash; Seneca</p>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Card I</div>
+        <div class="card-title">What Went Well</div>
+        <div class="card-description">What did you do, say, or think that you are proud of today?</div>
+        <textarea id="e-well" placeholder="I am proud that I..."></textarea>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Card II</div>
+        <div class="card-title">What I Would Improve</div>
+        <div class="card-description">Where did you fall short of your own standards? Without judgment — only honesty.</div>
+        <textarea id="e-improve" placeholder="I could have done better when..."></textarea>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Card III</div>
+        <div class="card-title">A Virtuous Act</div>
+        <div class="card-description">Describe one moment today where you acted with virtue — however small.</div>
+        <textarea id="e-virtue-act" placeholder="I acted virtuously when..."></textarea>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Card IV</div>
+        <div class="card-title">Gratitude</div>
+        <div class="card-description">What are you grateful for today? Sit with it rather than listing.</div>
+        <textarea id="e-gratitude" placeholder="I am genuinely grateful for..."></textarea>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Card V</div>
+        <div class="card-title">The Lesson</div>
+        <div class="card-description">What did today teach you? One insight worth carrying forward.</div>
+        <textarea id="e-lesson" placeholder="Today taught me..."></textarea>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Card VI &mdash; Virtue Audit</div>
+        <div class="card-title">How Did You Embody the Virtues?</div>
+        <div class="card-description">Rate each virtue in today's conduct. Be honest — this is for your growth, not your ego.</div>
+        <div class="virtue-ratings-grid">
+          <div class="virtue-rating-row">
+            <div class="vrating-label">Wisdom</div>
+            <div class="vdots-row" id="vdots-wisdom">
+              <span class="vdot" onclick="setVirtueRating('wisdom',1)"></span>
+              <span class="vdot" onclick="setVirtueRating('wisdom',2)"></span>
+              <span class="vdot" onclick="setVirtueRating('wisdom',3)"></span>
+              <span class="vdot" onclick="setVirtueRating('wisdom',4)"></span>
+              <span class="vdot" onclick="setVirtueRating('wisdom',5)"></span>
+            </div>
+          </div>
+          <div class="virtue-rating-row">
+            <div class="vrating-label">Courage</div>
+            <div class="vdots-row" id="vdots-courage">
+              <span class="vdot" onclick="setVirtueRating('courage',1)"></span>
+              <span class="vdot" onclick="setVirtueRating('courage',2)"></span>
+              <span class="vdot" onclick="setVirtueRating('courage',3)"></span>
+              <span class="vdot" onclick="setVirtueRating('courage',4)"></span>
+              <span class="vdot" onclick="setVirtueRating('courage',5)"></span>
+            </div>
+          </div>
+          <div class="virtue-rating-row">
+            <div class="vrating-label">Justice</div>
+            <div class="vdots-row" id="vdots-justice">
+              <span class="vdot" onclick="setVirtueRating('justice',1)"></span>
+              <span class="vdot" onclick="setVirtueRating('justice',2)"></span>
+              <span class="vdot" onclick="setVirtueRating('justice',3)"></span>
+              <span class="vdot" onclick="setVirtueRating('justice',4)"></span>
+              <span class="vdot" onclick="setVirtueRating('justice',5)"></span>
+            </div>
+          </div>
+          <div class="virtue-rating-row">
+            <div class="vrating-label">Temperance</div>
+            <div class="vdots-row" id="vdots-temperance">
+              <span class="vdot" onclick="setVirtueRating('temperance',1)"></span>
+              <span class="vdot" onclick="setVirtueRating('temperance',2)"></span>
+              <span class="vdot" onclick="setVirtueRating('temperance',3)"></span>
+              <span class="vdot" onclick="setVirtueRating('temperance',4)"></span>
+              <span class="vdot" onclick="setVirtueRating('temperance',5)"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="save-row">
+        <span class="last-saved-ts" id="evening-saved-ts"></span>
+        <div class="save-btns">
+          <button class="btn-secondary" onclick="clearPanel('evening')">Clear</button>
+          <button class="btn-primary" onclick="savePanel('evening')">Save Evening</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEEKLY -->
+  <section id="section-weekly" class="section-page">
+    <div class="section-eyebrow" id="weekly-period-label"></div>
+    <h2 class="section-title">Weekly Reflection</h2>
+    <p class="section-subtitle">A broader view — patterns, growth, and the week's philosophical lesson.</p>
+    <div class="section-cards">
+      <div class="card">
+        <div class="card-label">Card I</div>
+        <div class="card-title">The Week's Challenge</div>
+        <div class="card-description">What was the most significant challenge you faced this week? How did you respond?</div>
+        <textarea id="w-challenge" placeholder="The greatest challenge this week was..."></textarea>
+      </div>
+      <div class="card">
+        <div class="card-label">Card II</div>
+        <div class="card-title">Growth Observed</div>
+        <div class="card-description">Where did you grow — in character, in understanding, in practice?</div>
+        <textarea id="w-growth" placeholder="I grew this week by..."></textarea>
+      </div>
+      <div class="card">
+        <div class="card-label">Card III</div>
+        <div class="card-title">Stoic Principle Applied</div>
+        <div class="card-description">Which Stoic teaching showed up most meaningfully in your week?</div>
+        <textarea id="w-stoic" placeholder="This week I applied the principle of..."></textarea>
+      </div>
+      <div class="card">
+        <div class="card-label">Card IV</div>
+        <div class="card-title">Focus for Next Week</div>
+        <div class="card-description">What one virtue, habit, or intention will anchor the coming week?</div>
+        <textarea id="w-focus" placeholder="Next week I will focus on..."></textarea>
+      </div>
+    </div>
+    <div class="save-row">
+      <span class="last-saved-ts" id="weekly-saved-ts"></span>
+      <div class="save-btns">
+        <button class="btn-secondary" onclick="clearSection('weekly')">Clear</button>
+        <button class="btn-primary" onclick="saveSection('weekly')">Save Weekly</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MONTHLY -->
+  <section id="section-monthly" class="section-page">
+    <div class="section-eyebrow" id="monthly-period-label"></div>
+    <h2 class="section-title">Monthly Examination</h2>
+    <p class="section-subtitle">The long view — virtue, fear, and the person you are becoming.</p>
+    <div class="memento-callout">
+      <div class="memento-label">Memento Mori</div>
+      <p class="memento-text">"Let us prepare our minds as if we had come to the very end of life. Let us postpone nothing. Let us balance life's books each day."</p>
+      <p class="memento-attr">Seneca &mdash; Letters to Lucilius</p>
+    </div>
+    <div class="section-cards">
+      <div class="card">
+        <div class="card-label">Card I</div>
+        <div class="card-title">Virtue Audit</div>
+        <div class="card-description">How did you embody each virtue this month? Be specific, be honest.</div>
+        <textarea id="mo-virtue-audit" placeholder="This month, in wisdom I... in courage I... in justice I... in temperance I..."></textarea>
+      </div>
+      <div class="card">
+        <div class="card-label">Card II</div>
+        <div class="card-title">What Distracted Me</div>
+        <div class="card-description">What consumed your attention that did not deserve it? What did you pursue that proved empty?</div>
+        <textarea id="mo-distractions" placeholder="I was distracted by..."></textarea>
+      </div>
+      <div class="card">
+        <div class="card-label">Card III &mdash; Fear Inventory</div>
+        <div class="card-title">What Am I Afraid Of?</div>
+        <div class="card-description">Name your fears plainly. The Stoic practice is to look at them clearly, not to pretend they don't exist.</div>
+        <textarea id="mo-fears" placeholder="If I am honest, I fear..."></textarea>
+      </div>
+      <div class="card">
+        <div class="card-label">Card IV</div>
+        <div class="card-title">Letter from Your Future Self</div>
+        <div class="card-description">Imagine yourself one year from now. What does that person want you to know today?</div>
+        <textarea id="mo-letter" style="min-height:180px" placeholder="One year from now, I want you to know..."></textarea>
+      </div>
+      <div class="card">
+        <div class="card-label">Card V</div>
+        <div class="card-title">Next Month's Commitment</div>
+        <div class="card-description">One specific, concrete commitment for the month ahead. Not a wish — a commitment.</div>
+        <textarea id="mo-commitment" placeholder="I commit to..."></textarea>
+      </div>
+    </div>
+    <div class="save-row">
+      <span class="last-saved-ts" id="monthly-saved-ts"></span>
+      <div class="save-btns">
+        <button class="btn-secondary" onclick="clearSection('monthly')">Clear</button>
+        <button class="btn-primary" onclick="saveSection('monthly')">Save Monthly</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHALLENGES -->
+  <section id="section-challenges" class="section-page">
+    <div class="section-eyebrow">Stoic Practice</div>
+    <h2 class="section-title">The Seven Challenges</h2>
+    <p class="section-subtitle">Each is a single day's exercise. Completion is noted. The practice is its own reward.</p>
+    <div class="challenges-grid" id="challenges-container"></div>
+  </section>
+
+  <!-- ENTRIES -->
+  <section id="section-entries" class="section-page">
+    <div class="section-eyebrow">Archive</div>
+    <h2 class="section-title">Past Entries</h2>
+    <p class="section-subtitle" id="entries-count-label">Your complete record of practice.</p>
+    <div class="search-wrap">
+      <span class="search-icon">&#9906;</span>
+      <input class="search-input" id="search-input" type="text" placeholder="Search entries..." oninput="renderEntries(this.value)" />
+    </div>
+    <div class="timeline" id="entries-timeline"></div>
+  </section>
+
+</main>
+
+<div id="toast"></div>
+
+<script>
+// ── Stoic quotes ──────────────────────────────────────────────────────────
+const QUOTES = [
+  { quote:"You have power over your mind, not outside events. Realize this, and you will find strength.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"He who fears death will never do anything worthy of a living man.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"Make the best use of what is in your power, and take the rest as it happens.", author:"Epictetus", source:"Enchiridion" },
+  { quote:"Waste no more time arguing about what a good man should be. Be one.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"It is not that I am brave, but that I choose what to be afraid of.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"The first rule is to keep an untroubled spirit. The second is to look things in the face and know them for what they are.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"We suffer more in imagination than in reality.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"Seek not the good in external things; seek it in yourself.", author:"Epictetus", source:"Discourses" },
+  { quote:"How does it help to make troubles heavier by bemoaning them?", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"Confine yourself to the present.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"He is a wise man who does not grieve for the things which he has not, but rejoices for those which he has.", author:"Epictetus", source:"Fragments" },
+  { quote:"No man is free who is not a master of himself.", author:"Epictetus", source:"Discourses" },
+  { quote:"If it is not right, do not do it; if it is not true, do not say it.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"True happiness is to enjoy the present, without anxious dependence upon the future.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"The object of life is not to be on the side of the majority, but to escape finding oneself in the ranks of the insane.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"Man is not disturbed by events, but by the opinions he has of events.", author:"Epictetus", source:"Enchiridion" },
+  { quote:"Do not indulge in expectations of what is absent; count up the blessings you actually possess.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"Very little is needed to make a happy life; it is all within yourself, in your way of thinking.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"Let philosophy scrape off your own faults rather than be a way to rail at the faults of others.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"First say to yourself what you would be; and then do what you have to do.", author:"Epictetus", source:"Discourses" },
+  { quote:"Begin at once to live, and count each separate day as a separate life.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"The best revenge is not to be like your enemy.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"Difficulties strengthen the mind, as labor does the body.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"He has the most who is content with the least.", author:"Diogenes", source:"Lives of the Eminent Philosophers" },
+  { quote:"You are afraid of dying. But, come now, how is this life of yours anything but death?", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"Each day acquire something that will fortify you against poverty, against death, indeed against other misfortunes as well.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"How long are you going to wait before you demand the best for yourself?", author:"Epictetus", source:"Discourses" },
+  { quote:"Receive without pride, relinquish without struggle.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"The whole future lies in uncertainty: live immediately.", author:"Seneca", source:"Natural Questions" },
+  { quote:"Think of yourself as dead. You have lived your life. Now take what's left and live it properly.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"It never troubles the wolf how many the sheep may be.", author:"Virgil", source:"(cited by Marcus Aurelius)" }
+];
+
+// ── Challenges data ────────────────────────────────────────────────────────
+const CHALLENGES = [
+  { id:'voluntary_discomfort', numeral:'I', name:'Voluntary Discomfort',
+    desc:'Choose one comfort to forgo today — a warm shower, a morning coffee, a familiar ease. Live simply, by choice.',
+    context:'"Set aside a certain number of days, during which you shall be content with the scantiest and cheapest fare." — Seneca, Letters' },
+  { id:'digital_minimalism', numeral:'II', name:'Digital Minimalism',
+    desc:'No social media, no news, no streaming for one full day. Observe what fills the silence when distraction is removed.',
+    context:'"The greatest remedy for anger is delay." The same is true of impulse. Silence creates space for reason.' },
+  { id:'silent_walk', numeral:'III', name:'The Silent Walk',
+    desc:'Walk for at least 30 minutes without your phone, without music, without agenda. Simply observe what is around and within you.',
+    context:'The peripatetic tradition knew that movement clarifies thought. Walk as Aristotle walked — to think.' },
+  { id:'memento_mori', numeral:'IV', name:'Memento Mori',
+    desc:'Spend ten minutes in quiet contemplation of your mortality. Write what becomes clear when you remember you will die.',
+    context:'"Let us prepare our minds as if we had come to the very end of life. Let us postpone nothing." — Seneca, Letters' },
+  { id:'deep_gratitude', numeral:'V', name:'Deep Gratitude',
+    desc:'Write in detail about three things you are grateful for. Not what they are — why they matter, what it would mean to lose them.',
+    context:'"He is a wise man who does not grieve for the things which he has not, but rejoices for those which he has." — Epictetus' },
+  { id:'premeditatio', numeral:'VI', name:'Premeditatio Malorum',
+    desc:'Visualize in concrete detail a difficulty you fear. Sit with it. Plan your response. Remove its power through familiarity.',
+    context:'"He robs present ills of their power who has perceived their coming beforehand." — Seneca, Letters' },
+  { id:'full_virtue_day', numeral:'VII', name:'Full Virtue Day',
+    desc:'In every interaction and decision today, pause and ask: Is this wise? Is this courageous? Is this just? Is this temperate?',
+    context:'"Virtue is the only true good." To live one full day by the four cardinal virtues is to know what it means to live well.' }
+];
+
+// ── State ──────────────────────────────────────────────────────────────────
+let activeSection = 'today';
+let activeTab = 'morning';
+let selectedVirtue = null;
+const virtueRatings = { wisdom: 0, courage: 0, justice: 0, temperance: 0 };
+
+// ── Date utilities ─────────────────────────────────────────────────────────
+const dateKey = (d = new Date()) =>
+  `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+
+const getWeekKey = () => {
+  const d = new Date();
+  const jan1 = new Date(d.getFullYear(), 0, 1);
+  const wk = Math.ceil(((d - jan1) / 86400000 + jan1.getDay() + 1) / 7);
+  return `${d.getFullYear()}-W${String(wk).padStart(2,'0')}`;
+};
+
+const getMonthKey = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+};
+
+const formatDateLong = (iso) => {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m-1, d).toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+};
+
+const formatWeekLabel = (wk) => {
+  const [year, w] = wk.split('-W');
+  return `Week ${parseInt(w)} &middot; ${year}`;
+};
+
+const formatMonthLabel = (mo) => {
+  const [y, m] = mo.split('-').map(Number);
+  return new Date(y, m-1, 1).toLocaleDateString('en-US', { month:'long', year:'numeric' });
+};
+
+const formatTimestamp = (iso) => {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' }) + ' &middot; ' +
+         d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+};
+
+const getDailyQuote = () => {
+  const d = new Date();
+  const start = new Date(d.getFullYear(), 0, 0);
+  const dayOfYear = Math.floor((d - start) / 86400000);
+  return QUOTES[(dayOfYear + d.getFullYear()) % QUOTES.length];
+};
+
+// ── Storage ────────────────────────────────────────────────────────────────
+const getData = (key) => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } };
+const setData = (key, val) => localStorage.setItem(key, JSON.stringify(val));
+const deleteData = (key) => localStorage.removeItem(key);
+
+// ── Toast ──────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ── Navigation ─────────────────────────────────────────────────────────────
+function switchSection(name) {
+  activeSection = name;
+  document.querySelectorAll('.section-page').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+  document.getElementById(`section-${name}`).classList.add('active');
+  document.querySelector(`.nav-link[onclick*="'${name}'"]`).classList.add('active');
+  if (name === 'entries') renderEntries(document.getElementById('search-input').value);
+  if (name === 'challenges') renderChallenges();
+  if (name === 'weekly') loadSection('weekly');
+  if (name === 'monthly') loadSection('monthly');
+}
+
+function beginPractice() {
+  document.getElementById('main-nav').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => switchSection('today'), 400);
+}
+
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`tab-btn-${tab}`).classList.add('active');
+  document.getElementById(`tab-${tab}`).classList.add('active');
+}
+
+// ── Tab indicators ─────────────────────────────────────────────────────────
+function updateTabIndicators() {
+  const today = dateKey();
+  ['morning','midday','evening'].forEach(p => {
+    const dot = document.getElementById(`dot-${p}`);
+    if (dot) dot.classList.toggle('visible', !!getData(`sj_${p}_${today}`));
+  });
+}
+
+// ── Virtue selection (morning) ─────────────────────────────────────────────
+function selectVirtue(v) {
+  selectedVirtue = v;
+  document.querySelectorAll('.virtue-card').forEach(c => {
+    c.classList.toggle('selected', c.dataset.virtue === v);
+  });
+}
+
+// ── Virtue ratings (evening) ──────────────────────────────────────────────
+function setVirtueRating(virtue, rating) {
+  virtueRatings[virtue] = rating;
+  renderVirtueDots();
+}
+
+function renderVirtueDots() {
+  ['wisdom','courage','justice','temperance'].forEach(v => {
+    const row = document.getElementById(`vdots-${v}`);
+    if (!row) return;
+    row.querySelectorAll('.vdot').forEach((dot, i) => {
+      dot.classList.toggle('filled', i < virtueRatings[v]);
+    });
+  });
+}
+
+// ── Panel save / load / clear ─────────────────────────────────────────────
+function savePanel(panel) {
+  const today = dateKey();
+  let data;
+
+  if (panel === 'morning') {
+    data = {
+      intention: document.getElementById('m-intention').value,
+      within_control: document.getElementById('m-within').value,
+      outside_control: document.getElementById('m-outside').value,
+      premeditatio: document.getElementById('m-premeditatio').value,
+      virtue: selectedVirtue,
+      savedAt: new Date().toISOString()
+    };
+  } else if (panel === 'midday') {
+    data = {
+      morning_review: document.getElementById('md-review').value,
+      emotional_awareness: document.getElementById('md-emotional').value,
+      control_check: document.getElementById('md-control').value,
+      afternoon_intention: document.getElementById('md-intention').value,
+      savedAt: new Date().toISOString()
+    };
+  } else if (panel === 'evening') {
+    data = {
+      went_well: document.getElementById('e-well').value,
+      improve: document.getElementById('e-improve').value,
+      virtue_act: document.getElementById('e-virtue-act').value,
+      gratitude: document.getElementById('e-gratitude').value,
+      lesson: document.getElementById('e-lesson').value,
+      virtue_ratings: { ...virtueRatings },
+      savedAt: new Date().toISOString()
+    };
+  }
+
+  setData(`sj_${panel}_${today}`, data);
+  document.getElementById(`${panel}-saved-ts`).innerHTML = 'Saved at ' + formatTimestamp(data.savedAt);
+  updateTabIndicators();
+  renderStreak();
+  showToast(`${panel.charAt(0).toUpperCase() + panel.slice(1)} entry saved`);
+}
+
+function loadPanel(panel) {
+  const today = dateKey();
+  const data = getData(`sj_${panel}_${today}`);
+
+  if (panel === 'morning') {
+    document.getElementById('m-intention').value = data?.intention || '';
+    document.getElementById('m-within').value = data?.within_control || '';
+    document.getElementById('m-outside').value = data?.outside_control || '';
+    document.getElementById('m-premeditatio').value = data?.premeditatio || '';
+    selectedVirtue = data?.virtue || null;
+    document.querySelectorAll('.virtue-card').forEach(c => {
+      c.classList.toggle('selected', c.dataset.virtue === selectedVirtue);
+    });
+    if (data?.savedAt) document.getElementById('morning-saved-ts').innerHTML = 'Saved at ' + formatTimestamp(data.savedAt);
+  } else if (panel === 'midday') {
+    document.getElementById('md-review').value = data?.morning_review || '';
+    document.getElementById('md-emotional').value = data?.emotional_awareness || '';
+    document.getElementById('md-control').value = data?.control_check || '';
+    document.getElementById('md-intention').value = data?.afternoon_intention || '';
+    if (data?.savedAt) document.getElementById('midday-saved-ts').innerHTML = 'Saved at ' + formatTimestamp(data.savedAt);
+  } else if (panel === 'evening') {
+    document.getElementById('e-well').value = data?.went_well || '';
+    document.getElementById('e-improve').value = data?.improve || '';
+    document.getElementById('e-virtue-act').value = data?.virtue_act || '';
+    document.getElementById('e-gratitude').value = data?.gratitude || '';
+    document.getElementById('e-lesson').value = data?.lesson || '';
+    if (data?.virtue_ratings) {
+      Object.assign(virtueRatings, data.virtue_ratings);
+      renderVirtueDots();
+    }
+    if (data?.savedAt) document.getElementById('evening-saved-ts').innerHTML = 'Saved at ' + formatTimestamp(data.savedAt);
+  }
+}
+
+function clearPanel(panel) {
+  if (!confirm(`Clear the ${panel} fields? Your saved entry is not affected.`)) return;
+  if (panel === 'morning') {
+    ['m-intention','m-within','m-outside','m-premeditatio'].forEach(id => { document.getElementById(id).value = ''; });
+    selectedVirtue = null;
+    document.querySelectorAll('.virtue-card').forEach(c => c.classList.remove('selected'));
+  } else if (panel === 'midday') {
+    ['md-review','md-emotional','md-control','md-intention'].forEach(id => { document.getElementById(id).value = ''; });
+  } else if (panel === 'evening') {
+    ['e-well','e-improve','e-virtue-act','e-gratitude','e-lesson'].forEach(id => { document.getElementById(id).value = ''; });
+    Object.keys(virtueRatings).forEach(k => { virtueRatings[k] = 0; });
+    renderVirtueDots();
+  }
+}
+
+// ── Weekly / Monthly ──────────────────────────────────────────────────────
+function saveSection(section) {
+  let data, key;
+  if (section === 'weekly') {
+    key = `sj_weekly_${getWeekKey()}`;
+    data = {
+      challenge: document.getElementById('w-challenge').value,
+      growth: document.getElementById('w-growth').value,
+      stoic_principle: document.getElementById('w-stoic').value,
+      focus_next_week: document.getElementById('w-focus').value,
+      savedAt: new Date().toISOString()
+    };
+  } else if (section === 'monthly') {
+    key = `sj_monthly_${getMonthKey()}`;
+    data = {
+      virtue_audit: document.getElementById('mo-virtue-audit').value,
+      distractions: document.getElementById('mo-distractions').value,
+      fear_inventory: document.getElementById('mo-fears').value,
+      letter_future_self: document.getElementById('mo-letter').value,
+      next_month_commitment: document.getElementById('mo-commitment').value,
+      savedAt: new Date().toISOString()
+    };
+  }
+  setData(key, data);
+  document.getElementById(`${section}-saved-ts`).innerHTML = 'Saved at ' + formatTimestamp(data.savedAt);
+  showToast(`${section.charAt(0).toUpperCase() + section.slice(1)} entry saved`);
+}
+
+function loadSection(section) {
+  let data, key;
+  if (section === 'weekly') {
+    key = `sj_weekly_${getWeekKey()}`;
+    data = getData(key);
+    document.getElementById('weekly-period-label').innerHTML = formatWeekLabel(getWeekKey());
+    document.getElementById('w-challenge').value = data?.challenge || '';
+    document.getElementById('w-growth').value = data?.growth || '';
+    document.getElementById('w-stoic').value = data?.stoic_principle || '';
+    document.getElementById('w-focus').value = data?.focus_next_week || '';
+    if (data?.savedAt) document.getElementById('weekly-saved-ts').innerHTML = 'Saved at ' + formatTimestamp(data.savedAt);
+  } else if (section === 'monthly') {
+    key = `sj_monthly_${getMonthKey()}`;
+    data = getData(key);
+    document.getElementById('monthly-period-label').textContent = formatMonthLabel(getMonthKey());
+    document.getElementById('mo-virtue-audit').value = data?.virtue_audit || '';
+    document.getElementById('mo-distractions').value = data?.distractions || '';
+    document.getElementById('mo-fears').value = data?.fear_inventory || '';
+    document.getElementById('mo-letter').value = data?.letter_future_self || '';
+    document.getElementById('mo-commitment').value = data?.next_month_commitment || '';
+    if (data?.savedAt) document.getElementById('monthly-saved-ts').innerHTML = 'Saved at ' + formatTimestamp(data.savedAt);
+  }
+}
+
+function clearSection(section) {
+  if (!confirm(`Clear the ${section} fields? Your saved entry is not affected.`)) return;
+  if (section === 'weekly') {
+    ['w-challenge','w-growth','w-stoic','w-focus'].forEach(id => { document.getElementById(id).value = ''; });
+  } else if (section === 'monthly') {
+    ['mo-virtue-audit','mo-distractions','mo-fears','mo-letter','mo-commitment'].forEach(id => { document.getElementById(id).value = ''; });
+  }
+}
+
+// ── Streak ────────────────────────────────────────────────────────────────
+function calcStreak() {
+  let streak = 0;
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const k = dateKey(d);
+    const has = localStorage.getItem(`sj_morning_${k}`) ||
+                localStorage.getItem(`sj_midday_${k}`) ||
+                localStorage.getItem(`sj_evening_${k}`);
+    if (has) streak++;
+    else if (i > 0) break;
+  }
+  return streak;
+}
+
+function renderStreak() {
+  document.getElementById('streak-num').textContent = calcStreak();
+  const dotsEl = document.getElementById('streak-dots');
+  dotsEl.innerHTML = '';
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const k = dateKey(d);
+    const filled = !!(localStorage.getItem(`sj_morning_${k}`) ||
+                      localStorage.getItem(`sj_midday_${k}`) ||
+                      localStorage.getItem(`sj_evening_${k}`));
+    const dot = document.createElement('div');
+    dot.className = 'streak-dot' + (filled ? ' filled' : '');
+    dotsEl.appendChild(dot);
+  }
+}
+
+// ── Challenges ────────────────────────────────────────────────────────────
+function completeChallenge(id) {
+  const all = getData('sj_challenges') || {};
+  if (!all[id]) all[id] = { completedDates: [] };
+  const today = dateKey();
+  if (!all[id].completedDates.includes(today)) {
+    all[id].completedDates.push(today);
+    setData('sj_challenges', all);
+    renderChallenges();
+    showToast('Challenge completed — well done.');
+  }
+}
+
+function renderChallenges() {
+  const all = getData('sj_challenges') || {};
+  const today = dateKey();
+  document.getElementById('challenges-container').innerHTML = CHALLENGES.map(c => {
+    const done = all[c.id]?.completedDates?.includes(today);
+    return `<div class="challenge-card">
+      <div class="challenge-numeral">${c.numeral}</div>
+      <div class="challenge-body">
+        <div class="challenge-name">${c.name}</div>
+        <div class="challenge-desc">${c.desc}</div>
+        <div class="challenge-context">${c.context}</div>
+        <button class="btn-challenge${done?' completed':''}" ${done?'disabled':''} onclick="completeChallenge('${c.id}')">
+          ${done ? '&#10003; Completed Today' : 'Begin Challenge'}
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Entries timeline ──────────────────────────────────────────────────────
+function escapeHtml(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderField(label, value) {
+  if (!value || (typeof value === 'string' && !value.trim())) return '';
+  return `<div class="entry-field">
+    <div class="entry-field-label">${label}</div>
+    <div class="entry-field-value">${escapeHtml(value)}</div>
+  </div>`;
+}
+
+function deletePanelEntry(panel, date) {
+  const name = panel.charAt(0).toUpperCase() + panel.slice(1);
+  if (!confirm(`Delete the ${name} entry from ${formatDateLong(date)}? This cannot be undone.`)) return;
+  deleteData(`sj_${panel}_${date}`);
+  renderEntries(document.getElementById('search-input').value);
+  updateTabIndicators();
+  renderStreak();
+  showToast('Entry deleted');
+  if (date === dateKey()) loadPanel(panel);
+}
+
+function deleteWeeklyEntry(week) {
+  if (!confirm('Delete this weekly entry? This cannot be undone.')) return;
+  deleteData(`sj_weekly_${week}`);
+  renderEntries(document.getElementById('search-input').value);
+  showToast('Entry deleted');
+  if (week === getWeekKey()) loadSection('weekly');
+}
+
+function deleteMonthlyEntry(month) {
+  if (!confirm('Delete this monthly entry? This cannot be undone.')) return;
+  deleteData(`sj_monthly_${month}`);
+  renderEntries(document.getElementById('search-input').value);
+  showToast('Entry deleted');
+  if (month === getMonthKey()) loadSection('monthly');
+}
+
+function renderEntries(filter = '') {
+  const f = filter.toLowerCase();
+  const items = [];
+
+  // Collect daily entries
+  const dates = new Set();
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    const m = k.match(/^sj_(morning|midday|evening)_(\d{4}-\d{2}-\d{2})$/);
+    if (m) dates.add(m[2]);
+  }
+  [...dates].sort().reverse().forEach(date => {
+    const morning = getData(`sj_morning_${date}`);
+    const midday = getData(`sj_midday_${date}`);
+    const evening = getData(`sj_evening_${date}`);
+    if (!f) { items.push({ type:'daily', date, morning, midday, evening, sortKey: date }); return; }
+    const text = [morning, midday, evening].filter(Boolean)
+      .map(d => Object.values(d).filter(v => typeof v === 'string').join(' ')).join(' ').toLowerCase();
+    if (text.includes(f)) items.push({ type:'daily', date, morning, midday, evening, sortKey: date });
+  });
+
+  // Collect weekly entries
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    const m = k.match(/^sj_weekly_(\d{4}-W\d{2})$/);
+    if (!m) continue;
+    const week = m[1];
+    const data = getData(k);
+    if (!data) continue;
+    if (f) {
+      const text = Object.values(data).filter(v => typeof v === 'string').join(' ').toLowerCase();
+      if (!text.includes(f)) continue;
+    }
+    const [yr, wn] = week.split('-W').map(Number);
+    const d = new Date(yr, 0, 1 + (wn - 1) * 7);
+    items.push({ type:'weekly', week, data, sortKey: dateKey(d) });
+  }
+
+  // Collect monthly entries
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    const m = k.match(/^sj_monthly_(\d{4}-\d{2})$/);
+    if (!m) continue;
+    const month = m[1];
+    const data = getData(k);
+    if (!data) continue;
+    if (f) {
+      const text = Object.values(data).filter(v => typeof v === 'string').join(' ').toLowerCase();
+      if (!text.includes(f)) continue;
+    }
+    items.push({ type:'monthly', month, data, sortKey: `${month}-01` });
+  }
+
+  items.sort((a, b) => b.sortKey.localeCompare(a.sortKey));
+
+  const container = document.getElementById('entries-timeline');
+  const countLabel = document.getElementById('entries-count-label');
+  countLabel.textContent = `${items.length} entr${items.length !== 1 ? 'ies' : 'y'} found`;
+
+  if (items.length === 0) {
+    container.innerHTML = `<div class="entries-empty"><p>${f ? 'No entries match.' : 'No entries yet.'}</p><p>${f ? 'Try different terms.' : 'Begin your practice today.'}</p></div>`;
+    return;
+  }
+
+  container.innerHTML = items.map(item => {
+    if (item.type === 'daily') {
+      const panels = [];
+      if (item.morning) {
+        const d = item.date;
+        panels.push(`<div class="entry-panel">
+          <div class="entry-panel-head" onclick="this.closest('.entry-panel').classList.toggle('open')">
+            <span class="entry-panel-name">&#9728; Morning</span>
+            <span class="entry-panel-toggle">&#8964;</span>
+          </div>
+          <div class="entry-panel-body">
+            ${renderField('Intention', item.morning.intention)}
+            ${renderField('Within My Control', item.morning.within_control)}
+            ${renderField('Outside My Control', item.morning.outside_control)}
+            ${renderField('Premeditatio Malorum', item.morning.premeditatio)}
+            ${item.morning.virtue ? renderField('Guiding Virtue', item.morning.virtue.charAt(0).toUpperCase() + item.morning.virtue.slice(1)) : ''}
+            <div class="entry-panel-actions">
+              <button class="btn-danger" onclick="deletePanelEntry('morning','${d}')">Delete</button>
+            </div>
+          </div>
+        </div>`);
+      }
+      if (item.midday) {
+        const d = item.date;
+        panels.push(`<div class="entry-panel">
+          <div class="entry-panel-head" onclick="this.closest('.entry-panel').classList.toggle('open')">
+            <span class="entry-panel-name">&#9675; Midday</span>
+            <span class="entry-panel-toggle">&#8964;</span>
+          </div>
+          <div class="entry-panel-body">
+            ${renderField('Morning Review', item.midday.morning_review)}
+            ${renderField('Emotional Awareness', item.midday.emotional_awareness)}
+            ${renderField('Control Check', item.midday.control_check)}
+            ${renderField('Afternoon Intention', item.midday.afternoon_intention)}
+            <div class="entry-panel-actions">
+              <button class="btn-danger" onclick="deletePanelEntry('midday','${d}')">Delete</button>
+            </div>
+          </div>
+        </div>`);
+      }
+      if (item.evening) {
+        const d = item.date;
+        const vr = item.evening.virtue_ratings;
+        const vrText = vr ? `Wisdom ${vr.wisdom}/5 · Courage ${vr.courage}/5 · Justice ${vr.justice}/5 · Temperance ${vr.temperance}/5` : '';
+        panels.push(`<div class="entry-panel">
+          <div class="entry-panel-head" onclick="this.closest('.entry-panel').classList.toggle('open')">
+            <span class="entry-panel-name">&#9790; Evening</span>
+            <span class="entry-panel-toggle">&#8964;</span>
+          </div>
+          <div class="entry-panel-body">
+            ${renderField('What Went Well', item.evening.went_well)}
+            ${renderField('What I Would Improve', item.evening.improve)}
+            ${renderField('A Virtuous Act', item.evening.virtue_act)}
+            ${renderField('Gratitude', item.evening.gratitude)}
+            ${renderField('The Lesson', item.evening.lesson)}
+            ${vrText ? renderField('Virtue Ratings', vrText) : ''}
+            <div class="entry-panel-actions">
+              <button class="btn-danger" onclick="deletePanelEntry('evening','${d}')">Delete</button>
+            </div>
+          </div>
+        </div>`);
+      }
+      return `<div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">${formatDateLong(item.date)}</div>
+        <div class="timeline-entries">${panels.join('')}</div>
+      </div>`;
+
+    } else if (item.type === 'weekly') {
+      const w = item.week;
+      const d = item.data;
+      return `<div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Weekly &mdash; ${formatWeekLabel(w)}</div>
+        <div class="timeline-entries"><div class="entry-panel">
+          <div class="entry-panel-head" onclick="this.closest('.entry-panel').classList.toggle('open')">
+            <span class="entry-panel-name">Weekly Reflection</span>
+            <span class="entry-panel-toggle">&#8964;</span>
+          </div>
+          <div class="entry-panel-body">
+            ${renderField("The Week's Challenge", d.challenge)}
+            ${renderField('Growth Observed', d.growth)}
+            ${renderField('Stoic Principle Applied', d.stoic_principle)}
+            ${renderField('Focus for Next Week', d.focus_next_week)}
+            <div class="entry-panel-actions">
+              <button class="btn-danger" onclick="deleteWeeklyEntry('${w}')">Delete</button>
+            </div>
+          </div>
+        </div></div>
+      </div>`;
+
+    } else {
+      const mo = item.month;
+      const d = item.data;
+      return `<div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-date">Monthly &mdash; ${formatMonthLabel(mo)}</div>
+        <div class="timeline-entries"><div class="entry-panel">
+          <div class="entry-panel-head" onclick="this.closest('.entry-panel').classList.toggle('open')">
+            <span class="entry-panel-name">Monthly Examination</span>
+            <span class="entry-panel-toggle">&#8964;</span>
+          </div>
+          <div class="entry-panel-body">
+            ${renderField('Virtue Audit', d.virtue_audit)}
+            ${renderField('What Distracted Me', d.distractions)}
+            ${renderField('Fear Inventory', d.fear_inventory)}
+            ${renderField('Letter from Future Self', d.letter_future_self)}
+            ${renderField("Next Month's Commitment", d.next_month_commitment)}
+            <div class="entry-panel-actions">
+              <button class="btn-danger" onclick="deleteMonthlyEntry('${mo}')">Delete</button>
+            </div>
+          </div>
+        </div></div>
+      </div>`;
+    }
+  }).join('');
+}
+
+// ── Keyboard shortcut ─────────────────────────────────────────────────────
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    e.preventDefault();
+    if (activeSection === 'today') savePanel(activeTab);
+    else if (activeSection === 'weekly') saveSection('weekly');
+    else if (activeSection === 'monthly') saveSection('monthly');
+  }
+});
+
+// ── Scroll shadow on nav ──────────────────────────────────────────────────
+const nav = document.getElementById('main-nav');
+const hero = document.getElementById('hero');
+const observer = new IntersectionObserver(
+  ([entry]) => nav.classList.toggle('scrolled', !entry.isIntersecting),
+  { threshold: 0 }
+);
+observer.observe(hero);
+
+// ── Init ──────────────────────────────────────────────────────────────────
+(function init() {
+  const today = dateKey();
+  const d = new Date(today.split('-')[0], today.split('-')[1]-1, today.split('-')[2]);
+  document.getElementById('today-date-label').textContent =
+    d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+
+  const q = getDailyQuote();
+  document.getElementById('morning-quote-text').textContent = q.quote;
+  document.getElementById('morning-quote-author').textContent = q.author;
+  document.getElementById('morning-quote-source').textContent = q.source;
+
+  loadPanel('morning');
+  loadPanel('midday');
+  loadPanel('evening');
+  renderStreak();
+  updateTabIndicators();
+})();
+</script>
+</body>
+</html>
