@@ -23,13 +23,15 @@ function shareReflection() {
   var client = _getAuthClient();
   if (!client) { showToast('Unable to connect to the server'); return; }
 
+  var payload = { user_id: userId, text: text };
+
   client
     .from('community_reflections')
-    .insert({ user_id: userId, text: text })
+    .insert(payload)
     .then(function(result) {
       if (result.error) {
-        console.error('[Community] Insert failed:', result.error);
-        showToast('Failed to share reflection — please try again');
+        console.log('[Community] Insert failed — full error:', result.error, '| user_id:', userId, '| payload:', payload);
+        showToast('Failed to share: ' + (result.error.message || JSON.stringify(result.error)));
         return;
       }
       input.value = '';
