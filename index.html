@@ -1262,9 +1262,12 @@
             _checkWelcome();
             _bootApp();
           })
-          .catch(function () {
+          .catch(function (e) {
+            console.error('[Atarax] Failed to load data from Supabase:', e);
             _hideLoading();
-            _bootApp();
+            if (typeof showToast === 'function') {
+              showToast('Unable to load your data. Please check your connection and refresh.');
+            }
           });
       })
       .catch(function () {

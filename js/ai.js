@@ -1,7 +1,9 @@
 // ── AI Journaling Companion ───────────────────────────────────────────────
 
+// The API key is a device-local credential — never synced to Supabase.
+// It is stored directly in localStorage, bypassing db.js intentionally.
 function getStoredAPIKey() {
-  return getData('sj_api_key') || '';
+  try { return localStorage.getItem('sj_api_key') || ''; } catch (e) { return ''; }
 }
 
 function saveAPIKey(panel) {
@@ -12,14 +14,14 @@ function saveAPIKey(panel) {
     showToast('Please enter a valid Anthropic API key (starts with sk-)');
     return;
   }
-  setData('sj_api_key', key);
+  try { localStorage.setItem('sj_api_key', key); } catch (e) {}
   showToast('API key saved');
   renderAISection(panel);
 }
 
 function clearAPIKey() {
   if (!confirm('Remove your saved API key?')) return;
-  deleteData('sj_api_key');
+  try { localStorage.removeItem('sj_api_key'); } catch (e) {}
   ['morning', 'midday', 'evening'].forEach(function(p) { renderAISection(p); });
   showToast('API key removed');
 }

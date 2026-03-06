@@ -155,7 +155,7 @@ function formatTimestamp(iso) {
 
 // ── Quote deck system ─────────────────────────────────────────────────────
 // A shuffled deck ensures every quote appears before any repeats.
-// State: { date, index, deck } stored in localStorage under sj_quote_state.
+// State: { date, index, deck } stored in Supabase under sj_quote_state.
 
 function shuffleDeck(n) {
   var deck = [];
@@ -193,11 +193,11 @@ function getDailyQuote() {
 }
 
 // ── Storage ────────────────────────────────────────────────────────────────
-function getData(key) {
-  try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; }
-}
-function setData(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
-function deleteData(key) { localStorage.removeItem(key); }
+// getData / setData / deleteData are defined in db.js (Supabase-backed).
+// These stubs exist only so the file parses before db.js loads.
+function getData(key) { return null; }
+function setData(key, val) {}
+function deleteData(key) {}
 
 // ── Toast ──────────────────────────────────────────────────────────────────
 function showToast(msg) {
@@ -585,15 +585,7 @@ function renderEntries(opts) {
   var moodFilter = opts.mood || '';
   var items = [];
 
-  // Use the in-memory cache key list when available (Supabase mode),
-  // falling back to iterating localStorage directly.
-  var _allKeys = (typeof sjCacheKeys === 'function')
-    ? sjCacheKeys()
-    : (function () {
-        var ks = [];
-        for (var _i = 0; _i < localStorage.length; _i++) ks.push(localStorage.key(_i));
-        return ks;
-      }());
+  var _allKeys = (typeof sjCacheKeys === 'function') ? sjCacheKeys() : [];
 
   // Daily entries
   var dates = new Set();

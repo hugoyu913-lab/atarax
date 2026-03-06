@@ -7,7 +7,9 @@ function toggleDarkMode() {
   var isDark = html.getAttribute('data-theme') === 'dark';
   var next = isDark ? 'light' : 'dark';
   html.setAttribute('data-theme', next);
-  setData('sj_theme', next);
+  // Theme is a device-local UI preference — stored directly in localStorage
+  // so it can be applied before Supabase loads (prevents flash on page load).
+  try { localStorage.setItem('sj_theme', next); } catch (e) {}
   updateDarkToggleIcon();
 }
 
@@ -20,10 +22,11 @@ function updateDarkToggleIcon() {
 }
 
 function initDarkMode() {
-  var saved = getData('sj_theme');
-  if (saved === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-  }
+  try {
+    if (localStorage.getItem('sj_theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  } catch (e) {}
   updateDarkToggleIcon();
 }
 

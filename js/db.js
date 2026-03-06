@@ -2,12 +2,16 @@
 //
 // Requires js/auth.js to be loaded first (provides _getAuthClient, getCurrentUserId).
 //
-// Overrides the localStorage-based getData / setData / deleteData helpers
-// defined in core.js with Supabase-backed versions that:
-//   1.  Keep an in-memory cache (_sjCache) as the authoritative source.
+// Overrides the getData / setData / deleteData helpers defined in core.js
+// with Supabase-backed versions that:
+//   1.  Keep an in-memory cache (_sjCache) as the authoritative source
+//       (populated from Supabase on every app load — no localStorage).
 //   2.  Write through to Supabase on every setData / deleteData call.
-//   3.  Fall back silently to localStorage when Supabase is unavailable.
-//   4.  Scope ALL reads and writes to the current authenticated user.
+//   3.  Scope ALL reads and writes to the current authenticated user.
+//
+// NOTE: sj_theme and sj_api_key are intentionally excluded — they are
+// device-local UI preferences handled directly with localStorage in
+// extras.js and ai.js respectively.
 //
 // Tables used (see supabase-schema.sql for CREATE statements):
 //   journal_entries   — morning / midday / evening / weekly / monthly entries
@@ -35,19 +39,16 @@ function _getDbClient() {
 // ── Core storage overrides ─────────────────────────────────────────────────
 
 function getData(key) {
-  if (_sjCache.hasOwnProperty(key)) return _sjCache[key];
-  try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; }
+  return _sjCache.hasOwnProperty(key) ? _sjCache[key] : null;
 }
 
 function setData(key, val) {
   _sjCache[key] = val;
-  try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
   if (_getDbClient() && getCurrentUserId()) _writeToSupabase(key, val);
 }
 
 function deleteData(key) {
   delete _sjCache[key];
-  try { localStorage.removeItem(key); } catch (e) {}
   if (_getDbClient() && getCurrentUserId()) _deleteFromSupabase(key);
 }
 
@@ -129,7 +130,7 @@ function _writeToSupabase(key, val) {
     } else if (key === 'sj_reading') {
       _syncReadingToSupabase(val);
     }
-    // sj_theme and sj_api_key intentionally kept localStorage-only
+    // sj_theme and sj_api_key are device-local — handled outside db.js
   } catch (e) {
     console.warn('[Atarax] Supabase sync error:', e.message);
   }
@@ -308,59 +309,6 @@ function _updateStreakData() {
   } catch (e) { console.warn('[Atarax] streak update exception:', e.message); }
 }
 
-// ── Seed in-memory cache from localStorage (offline fallback) ─────────────
-
-function _seedCacheFromLocalStorage() {
-  try {
-    for (var i = 0; i < localStorage.length; i++) {
-      var k = localStorage.key(i);
-      if (k && k.startsWith('sj_')) {
-        try { _sjCache[k] = JSON.parse(localStorage.getItem(k)); } catch (e) {}
-      }
-    }
-  } catch (e) {}
-}
-
-// ── One-time migration: push existing localStorage data to Supabase ────────
-
-function _migrateLocalStorageToSupabase() {
-  var db = _getDbClient();
-  var userId = getCurrentUserId();
-  if (!db || !userId) return;
-  // Key is user-scoped so each user only migrates once per device
-  var MIGRATION_KEY = 'sj_supabase_migrated_v2_' + userId;
-  if (localStorage.getItem(MIGRATION_KEY)) return;
-
-  var migrationData = {};
-  try {
-    for (var i = 0; i < localStorage.length; i++) {
-      var k = localStorage.key(i);
-      if (!k || !k.startsWith('sj_')) continue;
-      if (k === 'sj_theme' || k === 'sj_api_key') continue;
-      if (k.startsWith('sj_supabase_migrated')) continue;
-      if (_sjCache.hasOwnProperty(k)) continue; // Already loaded from Supabase
-      try {
-        var val = JSON.parse(localStorage.getItem(k));
-        if (val !== null) migrationData[k] = val;
-      } catch (e) {}
-    }
-  } catch (e) {}
-
-  var keys = Object.keys(migrationData);
-  if (!keys.length) {
-    localStorage.setItem(MIGRATION_KEY, '1');
-    return;
-  }
-
-  console.log('[Atarax] Migrating', keys.length, 'localStorage entries to Supabase...');
-  keys.forEach(function (k) {
-    _sjCache[k] = migrationData[k];
-    _writeToSupabase(k, migrationData[k]);
-  });
-  localStorage.setItem(MIGRATION_KEY, '1');
-  console.log('[Atarax] Migration complete.');
-}
-
 // ── Public init ───────────────────────────────────────────────────────────
 //
 // Called from the inline init block in index.html AFTER auth has been
@@ -368,23 +316,18 @@ function _migrateLocalStorageToSupabase() {
 // getCurrentUserId() is guaranteed to be non-null.
 
 function initDB() {
-  return new Promise(function (resolve) {
+  return new Promise(function (resolve, reject) {
     _getDbClient(); // Ensure client is initialised
 
     if (_db && getCurrentUserId()) {
       _loadAllFromSupabase()
-        .then(function () {
-          _migrateLocalStorageToSupabase();
-          resolve();
-        })
+        .then(function () { resolve(); })
         .catch(function (e) {
-          console.warn('[Atarax] Supabase load failed, using localStorage:', e.message);
-          _seedCacheFromLocalStorage();
-          resolve();
+          console.error('[Atarax] Supabase load failed:', e.message);
+          reject(e);
         });
     } else {
-      _seedCacheFromLocalStorage();
-      resolve();
+      reject(new Error('No Supabase client or user ID'));
     }
   });
 }
