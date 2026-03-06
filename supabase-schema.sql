@@ -81,15 +81,31 @@ CREATE TABLE IF NOT EXISTS streak_data (
 
 CREATE INDEX IF NOT EXISTS streak_data_user_idx ON streak_data (user_id);
 
+-- 6. community_reflections
+--    Shared across all users.  Content is anonymous — user_id is stored for
+--    ownership checks but is never exposed to the client via the SELECT query.
+CREATE TABLE IF NOT EXISTS community_reflections (
+  id         uuid        DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id    uuid        NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  text       TEXT        NOT NULL CHECK (char_length(text) BETWEEN 1 AND 280),
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS community_reflections_created_idx ON community_reflections (created_at DESC);
+
+-- Enable Supabase Realtime for this table so all clients receive live updates.
+ALTER PUBLICATION supabase_realtime ADD TABLE community_reflections;
+
 
 -- ══ ROW LEVEL SECURITY ════════════════════════════════════════════════════
 -- Each user can only read and write their own rows.
 
-ALTER TABLE journal_entries    ENABLE ROW LEVEL SECURITY;
-ALTER TABLE favorite_quotes    ENABLE ROW LEVEL SECURITY;
-ALTER TABLE challenge_progress ENABLE ROW LEVEL SECURITY;
-ALTER TABLE reading_list       ENABLE ROW LEVEL SECURITY;
-ALTER TABLE streak_data        ENABLE ROW LEVEL SECURITY;
+ALTER TABLE journal_entries       ENABLE ROW LEVEL SECURITY;
+ALTER TABLE favorite_quotes       ENABLE ROW LEVEL SECURITY;
+ALTER TABLE challenge_progress    ENABLE ROW LEVEL SECURITY;
+ALTER TABLE reading_list          ENABLE ROW LEVEL SECURITY;
+ALTER TABLE streak_data           ENABLE ROW LEVEL SECURITY;
+ALTER TABLE community_reflections ENABLE ROW LEVEL SECURITY;
 
 -- journal_entries
 DROP POLICY IF EXISTS "journal_entries_user_policy" ON journal_entries;
@@ -125,6 +141,21 @@ CREATE POLICY "streak_data_user_policy" ON streak_data
   FOR ALL
   USING      (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
+
+-- community_reflections
+-- Any authenticated user can read all posts; only the author can insert or delete.
+DROP POLICY IF EXISTS "community_reflections_read"   ON community_reflections;
+DROP POLICY IF EXISTS "community_reflections_insert" ON community_reflections;
+DROP POLICY IF EXISTS "community_reflections_delete" ON community_reflections;
+
+CREATE POLICY "community_reflections_read" ON community_reflections
+  FOR SELECT USING (auth.uid() IS NOT NULL);
+
+CREATE POLICY "community_reflections_insert" ON community_reflections
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "community_reflections_delete" ON community_reflections
+  FOR DELETE USING (auth.uid() = user_id);
 
 
 -- ══ MIGRATION (only if you already ran the v1 schema) ════════════════════

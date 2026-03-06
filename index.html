@@ -579,6 +579,23 @@
     .community-delete { background: none; border: none; color: rgba(192,112,112,0.4); cursor: pointer; font-size: 0.7rem; transition: color 0.15s ease; padding: 0; }
     .community-delete:hover { color: #c07070; }
     .community-seed-tag { font-size: 0.55rem; color: var(--muted); font-style: italic; }
+    .community-post--seed { opacity: 0.6; }
+    .community-time { font-size: 0.58rem; color: var(--muted); letter-spacing: 0.06em; text-transform: none; font-weight: 400; }
+
+    /* Live indicator */
+    .community-label-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-top: 8px; }
+    .community-section-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0; padding-top: 0; }
+    .community-live-badge { display: flex; align-items: center; gap: 5px; font-size: 0.55rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    #community-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); transition: background 0.4s ease; }
+    #community-live-dot.connected { background: #7cb87c; animation: live-pulse 2.5s ease-in-out infinite; }
+    @keyframes live-pulse { 0%,100%{opacity:0.6} 50%{opacity:1} }
+
+    /* Feed loading state */
+    .community-loading { display: flex; justify-content: center; padding: 40px 0; }
+    .community-loading-dots { display: flex; gap: 8px; }
+    .community-loading-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: db-pulse 1.2s ease-in-out infinite; }
+    .community-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .community-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
 
     /* ── AI Wisdom ── */
     .ai-wisdom-wrap { margin-top: 16px; }
@@ -1109,7 +1126,7 @@
   <section id="section-community" class="section-page">
     <div class="section-eyebrow">Shared Wisdom</div>
     <h2 class="section-title">Reflections Board</h2>
-    <p class="section-subtitle">A local board of Stoic reflections. Write what your practice has revealed, and read what others have shared.</p>
+    <p class="section-subtitle">A shared board of Stoic reflections. Write what your practice has revealed, and read what others have shared — anonymously, in real time.</p>
     <div class="card community-share-card">
       <div class="card-label">Share a Reflection</div>
       <div class="card-title">What has your practice revealed?</div>
@@ -1117,11 +1134,17 @@
       <textarea class="community-input" id="community-input" maxlength="280" placeholder="One thing my practice has taught me..." oninput="updateCharCount()"></textarea>
       <div class="community-char-count"><span id="char-count">0</span> / 280</div>
       <div class="save-row">
-        <span class="community-local-note">Reflections are stored locally on your device.</span>
+        <span class="community-local-note">All reflections are anonymous — your name is never shown.</span>
         <button class="btn-primary" onclick="shareReflection()">Share Reflection</button>
       </div>
     </div>
-    <div class="community-section-label" id="community-feed-label">Reflections</div>
+    <div class="community-label-row">
+      <div class="community-section-label" id="community-feed-label">Reflections</div>
+      <div class="community-live-badge">
+        <span id="community-live-dot"></span>
+        Live
+      </div>
+    </div>
     <div class="community-feed" id="community-feed"></div>
   </section>
 
