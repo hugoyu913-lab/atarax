@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atarax &mdash; Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: 'Inter', sans-serif;
+      background: #1C1C1C;
+      color: #ede9e0;
+      overflow-x: hidden;
+    }
+
+    /* ── Background ── */
+    .auth-bg {
+      min-height: 100vh;
+      background: radial-gradient(ellipse at 50% 30%, #2d2417 0%, #1C1C1C 72%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px 60px;
+    }
+
+    /* ── Logo ── */
+    .auth-logo {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+    .auth-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 11vw, 5rem);
+      font-weight: 400;
+      line-height: 1;
+      color: rgba(247,245,239,0.95);
+      letter-spacing: 0.02em;
+      margin-bottom: 12px;
+    }
+    .auth-logo-divider {
+      width: 32px; height: 1px;
+      background: rgba(201,164,108,0.5);
+      margin: 14px auto;
+    }
+    .auth-sub {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: rgba(201,164,108,0.6);
+    }
+
+    /* ── Card ── */
+    .auth-card {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(33, 31, 27, 0.85);
+      border: 1px solid rgba(201,164,108,0.14);
+      border-top: 2px solid rgba(201,164,108,0.45);
+      padding: 36px 36px 32px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    /* ── Tabs ── */
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgba(201,164,108,0.12);
+      gap: 4px;
+    }
+    .auth-tab {
+      flex: 1;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: rgba(247,245,239,0.28);
+      padding: 0 0 14px;
+      position: relative;
+      transition: color 0.15s ease;
+    }
+    .auth-tab::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 2px;
+      background: #C9A46C;
+      transform: scaleX(0);
+      transition: transform 0.2s ease;
+    }
+    .auth-tab:hover { color: rgba(247,245,239,0.55); }
+    .auth-tab.active { color: rgba(247,245,239,0.92); }
+    .auth-tab.active::after { transform: scaleX(1); }
+
+    /* ── Message bar ── */
+    .auth-msg {
+      font-size: 0.78rem;
+      line-height: 1.5;
+      text-align: center;
+      min-height: 20px;
+      margin-bottom: 18px;
+      padding: 0 4px;
+      transition: opacity 0.2s ease;
+    }
+    .auth-msg:empty { margin-bottom: 0; }
+    .auth-msg.error   { color: #e8a87c; }
+    .auth-msg.success { color: #a8c87a; }
+
+    /* ── View transition ── */
+    .auth-view { animation: fadeInUp 0.25s ease; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Fields ── */
+    .auth-field { margin-bottom: 22px; }
+    .auth-field label {
+      display: block;
+      font-size: 0.58rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(247,245,239,0.35);
+      margin-bottom: 8px;
+    }
+    .auth-field input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(201,164,108,0.2);
+      color: rgba(247,245,239,0.92);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 300;
+      padding: 8px 0;
+      outline: none;
+      transition: border-color 0.15s ease;
+      -webkit-appearance: none;
+    }
+    .auth-field input:focus {
+      border-bottom-color: rgba(201,164,108,0.65);
+    }
+    .auth-field input::placeholder {
+      color: rgba(247,245,239,0.18);
+      font-size: 0.9rem;
+    }
+    /* Chrome autofill styling */
+    .auth-field input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0 1000px #211f1b inset;
+      -webkit-text-fill-color: rgba(247,245,239,0.92);
+    }
+
+    /* ── Primary button ── */
+    .auth-btn {
+      width: 100%;
+      margin-top: 30px;
+      background: #C9A46C;
+      color: #1C1C1C;
+      border: none;
+      cursor: pointer;
+      padding: 15px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: background 0.2s ease, transform 0.15s ease, opacity 0.15s ease;
+    }
+    .auth-btn:hover:not(:disabled) { background: #d4b07a; transform: translateY(-1px); }
+    .auth-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    /* ── Secondary link-style button ── */
+    .auth-link-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-top: 18px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.66rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: rgba(247,245,239,0.28);
+      transition: color 0.15s ease;
+      padding: 4px 0;
+    }
+    .auth-link-btn:hover { color: rgba(201,164,108,0.65); }
+
+    /* ── Description text (forgot password intro) ── */
+    .auth-desc {
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: rgba(247,245,239,0.38);
+      line-height: 1.65;
+      margin-bottom: 26px;
+    }
+
+    /* ── Footer quote ── */
+    .auth-footer {
+      margin-top: 44px;
+      max-width: 340px;
+      padding-left: 20px;
+      border-left: 1px solid rgba(201,164,108,0.22);
+      text-align: left;
+      align-self: flex-start;
+      margin-left: calc(50% - 200px);
+    }
+    @media (max-width: 480px) {
+      .auth-footer { display: none; }
+    }
+    .auth-footer-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.88rem;
+      color: rgba(247,245,239,0.32);
+      line-height: 1.75;
+      margin-bottom: 10px;
+    }
+    .auth-footer-attr {
+      font-size: 0.56rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(201,164,108,0.45);
+    }
+
+    /* ── Welcome overlay ── */
+    #welcome-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: radial-gradient(ellipse at 50% 35%, #2d2417 0%, #1C1C1C 70%);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+    }
+    #welcome-overlay.visible { opacity: 1; }
+    .welcome-greeting {
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(201,164,108,0.65);
+      margin-bottom: 16px;
+    }
+    .welcome-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 10vw, 5rem);
+      font-weight: 400;
+      color: rgba(247,245,239,0.96);
+      line-height: 1.1;
+      margin-bottom: 22px;
+    }
+    .welcome-divider {
+      width: 36px; height: 1px;
+      background: rgba(201,164,108,0.4);
+      margin: 0 auto 22px;
+    }
+    .welcome-sub {
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: rgba(247,245,239,0.32);
+      letter-spacing: 0.06em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="auth-bg">
+
+  <!-- Logo -->
+  <div class="auth-logo">
+    <div class="auth-brand">Atarax</div>
+    <div class="auth-logo-divider"></div>
+    <div class="auth-sub">A Stoic Journal</div>
+  </div>
+
+  <!-- Form card -->
+  <div class="auth-card">
+
+    <!-- Tab bar -->
+    <div class="auth-tabs" role="tablist">
+      <button class="auth-tab active" id="tab-signin" role="tab"
+        onclick="showView('signin')">Sign In</button>
+      <button class="auth-tab" id="tab-signup" role="tab"
+        onclick="showView('signup')">Create Account</button>
+    </div>
+
+    <!-- Message -->
+    <div class="auth-msg" id="auth-msg" role="alert" aria-live="polite"></div>
+
+    <!-- ── Sign In ── -->
+    <div class="auth-view" id="view-signin">
+      <form id="signin-form" onsubmit="handleSignIn(event)" novalidate>
+        <div class="auth-field">
+          <label for="signin-email">Email</label>
+          <input type="email" id="signin-email" autocomplete="email"
+            placeholder="your@email.com" required />
+        </div>
+        <div class="auth-field">
+          <label for="signin-password">Password</label>
+          <input type="password" id="signin-password" autocomplete="current-password"
+            placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="auth-btn" id="signin-btn">Sign In</button>
+      </form>
+      <button class="auth-link-btn" onclick="showView('forgot')">Forgot your password?</button>
+    </div>
+
+    <!-- ── Sign Up ── -->
+    <div class="auth-view" id="view-signup" style="display:none">
+      <form id="signup-form" onsubmit="handleSignUp(event)" novalidate>
+        <div class="auth-field">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" autocomplete="email"
+            placeholder="your@email.com" required />
+        </div>
+        <div class="auth-field">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" autocomplete="new-password"
+            placeholder="•••••••• (min. 8 characters)" required />
+        </div>
+        <div class="auth-field">
+          <label for="signup-confirm">Confirm Password</label>
+          <input type="password" id="signup-confirm" autocomplete="new-password"
+            placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="auth-btn" id="signup-btn">Create Account</button>
+      </form>
+    </div>
+
+    <!-- ── Forgot Password ── -->
+    <div class="auth-view" id="view-forgot" style="display:none">
+      <p class="auth-desc">Enter your email address and we&rsquo;ll send you a link to reset your password.</p>
+      <form id="forgot-form" onsubmit="handleForgot(event)" novalidate>
+        <div class="auth-field">
+          <label for="forgot-email">Email</label>
+          <input type="email" id="forgot-email" autocomplete="email"
+            placeholder="your@email.com" required />
+        </div>
+        <button type="submit" class="auth-btn" id="forgot-btn">Send Reset Link</button>
+      </form>
+      <button class="auth-link-btn" onclick="showView('signin')">&larr; Back to Sign In</button>
+    </div>
+
+  </div><!-- /auth-card -->
+
+  <!-- Footer quote -->
+  <div class="auth-footer">
+    <div class="auth-footer-text">&ldquo;The first step: don&rsquo;t be anxious.<br>Nature controls it all.&rdquo;</div>
+    <div class="auth-footer-attr">Marcus Aurelius &mdash; Meditations</div>
+  </div>
+
+</div><!-- /auth-bg -->
+
+<!-- Welcome overlay (shown briefly after sign in before redirect) -->
+<div id="welcome-overlay" role="status" aria-live="polite">
+  <div class="welcome-greeting" id="welcome-greeting">Welcome back,</div>
+  <div class="welcome-name" id="welcome-name"></div>
+  <div class="welcome-divider"></div>
+  <div class="welcome-sub">Your journal awaits.</div>
+</div>
+
+<!-- Supabase client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/auth.js"></script>
+<script>
+(function () {
+
+  // ── Redirect if already logged in ─────────────────────────────────────
+  checkSession().then(function (user) {
+    if (user) window.location.replace('index.html');
+  });
+
+  // ── View switching ──────────────────────────────────────────────────────
+  window.showView = function (view) {
+    ['signin', 'signup', 'forgot'].forEach(function (v) {
+      var el = document.getElementById('view-' + v);
+      if (el) el.style.display = (v === view) ? '' : 'none';
+    });
+    document.getElementById('tab-signin').classList.toggle('active', view === 'signin');
+    document.getElementById('tab-signup').classList.toggle('active', view === 'signup');
+    clearMsg();
+  };
+
+  // ── Message helpers ─────────────────────────────────────────────────────
+  function showMsg(msg, isError) {
+    var el = document.getElementById('auth-msg');
+    el.textContent = msg;
+    el.className = 'auth-msg ' + (isError ? 'error' : 'success');
+  }
+  function clearMsg() {
+    var el = document.getElementById('auth-msg');
+    el.textContent = '';
+    el.className = 'auth-msg';
+  }
+
+  // ── Button state ────────────────────────────────────────────────────────
+  function setBusy(btnId, busy, label) {
+    var btn = document.getElementById(btnId);
+    if (!btn) return;
+    btn.disabled = busy;
+    btn.textContent = busy ? 'Please wait\u2026' : label;
+  }
+
+  // ── Welcome overlay ─────────────────────────────────────────────────────
+  function showWelcome(email, isNew) {
+    var name = email.split('@')[0];
+    name = name.charAt(0).toUpperCase() + name.slice(1);
+    document.getElementById('welcome-name').textContent = name;
+    document.getElementById('welcome-greeting').textContent =
+      isNew ? 'Welcome to Atarax,' : 'Welcome back,';
+    var overlay = document.getElementById('welcome-overlay');
+    overlay.style.display = 'flex';
+    // Store for index.html to pick up
+    try {
+      sessionStorage.setItem('sj_welcome', JSON.stringify({ name: name, isNew: !!isNew }));
+    } catch (e) {}
+    setTimeout(function () { overlay.classList.add('visible'); }, 20);
+    setTimeout(function () {
+      overlay.style.opacity = '0';
+      setTimeout(function () { window.location.replace('index.html'); }, 700);
+    }, 2200);
+  }
+
+  // ── Sign In ─────────────────────────────────────────────────────────────
+  window.handleSignIn = function (e) {
+    e.preventDefault();
+    clearMsg();
+    var email    = document.getElementById('signin-email').value.trim();
+    var password = document.getElementById('signin-password').value;
+    if (!email || !password) { showMsg('Please fill in all fields.', true); return; }
+    setBusy('signin-btn', true, 'Sign In');
+    authSignIn(email, password)
+      .then(function () { showWelcome(email, false); })
+      .catch(function (err) {
+        setBusy('signin-btn', false, 'Sign In');
+        showMsg(err.message || 'Incorrect email or password.', true);
+      });
+  };
+
+  // ── Sign Up ─────────────────────────────────────────────────────────────
+  window.handleSignUp = function (e) {
+    e.preventDefault();
+    clearMsg();
+    var email    = document.getElementById('signup-email').value.trim();
+    var password = document.getElementById('signup-password').value;
+    var confirm  = document.getElementById('signup-confirm').value;
+    if (!email || !password || !confirm) { showMsg('Please fill in all fields.', true); return; }
+    if (password !== confirm) { showMsg('Passwords do not match.', true); return; }
+    if (password.length < 8)  { showMsg('Password must be at least 8 characters.', true); return; }
+    setBusy('signup-btn', true, 'Create Account');
+    authSignUp(email, password)
+      .then(function (data) {
+        // If session is null, email confirmation is required
+        if (!data.session) {
+          setBusy('signup-btn', false, 'Create Account');
+          showMsg('Account created! Check your inbox to confirm your email, then sign in.', false);
+        } else {
+          showWelcome(email, true);
+        }
+      })
+      .catch(function (err) {
+        setBusy('signup-btn', false, 'Create Account');
+        showMsg(err.message || 'Sign up failed. Please try again.', true);
+      });
+  };
+
+  // ── Forgot Password ─────────────────────────────────────────────────────
+  window.handleForgot = function (e) {
+    e.preventDefault();
+    clearMsg();
+    var email = document.getElementById('forgot-email').value.trim();
+    if (!email) { showMsg('Please enter your email address.', true); return; }
+    setBusy('forgot-btn', true, 'Send Reset Link');
+    authResetPassword(email)
+      .then(function () {
+        setBusy('forgot-btn', false, 'Send Reset Link');
+        showMsg('Reset link sent. Check your inbox.', false);
+      })
+      .catch(function (err) {
+        setBusy('forgot-btn', false, 'Send Reset Link');
+        showMsg(err.message || 'Failed to send reset link.', true);
+      });
+  };
+
+})();
+</script>
+</body>
+</html>

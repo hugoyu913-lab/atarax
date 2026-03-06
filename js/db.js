@@ -1,11 +1,13 @@
 // ── Atarax — Supabase Integration ────────────────────────────────────────
 //
-// This file is loaded AFTER all other JS files but BEFORE the inline init
-// block.  It overrides the localStorage-based getData / setData / deleteData
-// helpers defined in core.js with Supabase-backed versions that:
+// Requires js/auth.js to be loaded first (provides _getAuthClient, getCurrentUserId).
+//
+// Overrides the localStorage-based getData / setData / deleteData helpers
+// defined in core.js with Supabase-backed versions that:
 //   1.  Keep an in-memory cache (_sjCache) as the authoritative source.
 //   2.  Write through to Supabase on every setData / deleteData call.
 //   3.  Fall back silently to localStorage when Supabase is unavailable.
+//   4.  Scope ALL reads and writes to the current authenticated user.
 //
 // Tables used (see supabase-schema.sql for CREATE statements):
 //   journal_entries   — morning / midday / evening / weekly / monthly entries
@@ -15,30 +17,38 @@
 //   streak_data       — current streak metadata
 // ─────────────────────────────────────────────────────────────────────────
 
-var SUPABASE_URL      = 'https://pcfqrqbqwhhewkfzvtni.supabase.co';
-var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBjZnFycWJxd2hoZXdrZnp2dG5pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI4MTU1OTksImV4cCI6MjA4ODM5MTU5OX0.YeT4aRlVf-q4abiBspmwqvecuAz6DwFlTEUXoR8pOwE';
+var _db      = null;   // Supabase client (shared with auth.js)
+var _sjCache = {};     // key → parsed value, in-memory mirror
 
-var _db       = null;   // Supabase client instance (null if unavailable)
-var _sjCache  = {};     // key → parsed value, in-memory mirror of Supabase
+// ── Reuse auth client ──────────────────────────────────────────────────────
+// auth.js already initialised the Supabase client; we reuse it so there is
+// only one connection.
 
-// ── Override core.js storage helpers ──────────────────────────────────────
+function _getDbClient() {
+  if (_db) return _db;
+  if (typeof _getAuthClient === 'function') {
+    _db = _getAuthClient();
+  }
+  return _db;
+}
+
+// ── Core storage overrides ─────────────────────────────────────────────────
 
 function getData(key) {
   if (_sjCache.hasOwnProperty(key)) return _sjCache[key];
-  // Fall back to localStorage (also serves local-only keys: sj_theme, sj_api_key)
   try { return JSON.parse(localStorage.getItem(key)); } catch (e) { return null; }
 }
 
 function setData(key, val) {
   _sjCache[key] = val;
   try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {}
-  if (_db) _writeToSupabase(key, val);
+  if (_getDbClient() && getCurrentUserId()) _writeToSupabase(key, val);
 }
 
 function deleteData(key) {
   delete _sjCache[key];
   try { localStorage.removeItem(key); } catch (e) {}
-  if (_db) _deleteFromSupabase(key);
+  if (_getDbClient() && getCurrentUserId()) _deleteFromSupabase(key);
 }
 
 // Returns all sj_* keys currently held in the cache.
@@ -70,18 +80,21 @@ function _getDateKey(key) {
 // ── Supabase write operations ──────────────────────────────────────────────
 
 function _writeToSupabase(key, val) {
-  if (!_db) return;
+  var db = _getDbClient();
+  var userId = getCurrentUserId();
+  if (!db || !userId) return;
   try {
     if (_isJournalKey(key)) {
-      _db.from('journal_entries')
+      db.from('journal_entries')
         .upsert({
+          user_id:     userId,
           storage_key: key,
           entry_type:  _getEntryType(key),
           date_key:    _getDateKey(key),
           content:     val,
           saved_at:    (val && val.savedAt) ? val.savedAt : new Date().toISOString(),
           updated_at:  new Date().toISOString()
-        }, { onConflict: 'storage_key' })
+        }, { onConflict: 'user_id,storage_key' })
         .then(function (r) {
           if (r.error) console.warn('[Atarax] journal write error:', r.error.message);
         });
@@ -90,17 +103,25 @@ function _writeToSupabase(key, val) {
       _syncFavoritesToSupabase(val);
 
     } else if (key === 'sj_challenges') {
-      _db.from('challenge_progress')
-        .upsert({ challenge_type: 'seven',  data: val, updated_at: new Date().toISOString() },
-                { onConflict: 'challenge_type' })
+      db.from('challenge_progress')
+        .upsert({
+          user_id:        userId,
+          challenge_type: 'seven',
+          data:            val,
+          updated_at:      new Date().toISOString()
+        }, { onConflict: 'user_id,challenge_type' })
         .then(function (r) {
           if (r.error) console.warn('[Atarax] challenges write error:', r.error.message);
         });
 
     } else if (key === 'sj_30day') {
-      _db.from('challenge_progress')
-        .upsert({ challenge_type: 'thirty', data: val, updated_at: new Date().toISOString() },
-                { onConflict: 'challenge_type' })
+      db.from('challenge_progress')
+        .upsert({
+          user_id:        userId,
+          challenge_type: 'thirty',
+          data:            val,
+          updated_at:      new Date().toISOString()
+        }, { onConflict: 'user_id,challenge_type' })
         .then(function (r) {
           if (r.error) console.warn('[Atarax] 30day write error:', r.error.message);
         });
@@ -114,23 +135,26 @@ function _writeToSupabase(key, val) {
   }
 }
 
-// Replace entire favorites list (delete-all + re-insert preserves sort order)
+// Replace entire favorites list for this user (delete-all + re-insert preserves sort order)
 function _syncFavoritesToSupabase(favs) {
-  if (!_db || !Array.isArray(favs)) return;
-  _db.from('favorite_quotes')
+  var db = _getDbClient();
+  var userId = getCurrentUserId();
+  if (!db || !userId || !Array.isArray(favs)) return;
+  db.from('favorite_quotes')
     .delete()
-    .not('id', 'is', null)
+    .eq('user_id', userId)
     .then(function () {
       if (!favs.length) return Promise.resolve();
       var rows = favs.map(function (q, i) {
         return {
+          user_id:    userId,
           quote_text: q.quote  || '',
           author:     q.author || '',
           source:     q.source || '',
           sort_order: i
         };
       });
-      return _db.from('favorite_quotes').insert(rows);
+      return db.from('favorite_quotes').insert(rows);
     })
     .then(function (r) {
       if (r && r.error) console.warn('[Atarax] favorites sync error:', r.error.message);
@@ -138,26 +162,36 @@ function _syncFavoritesToSupabase(favs) {
     .catch(function (e) { console.warn('[Atarax] favorites sync error:', e.message); });
 }
 
-// Upsert one row per book
+// Upsert one row per book for this user
 function _syncReadingToSupabase(status) {
-  if (!_db || typeof status !== 'object' || status === null) return;
+  var db = _getDbClient();
+  var userId = getCurrentUserId();
+  if (!db || !userId || typeof status !== 'object' || status === null) return;
   var rows = Object.keys(status).map(function (bookId) {
-    return { book_id: bookId, is_read: !!status[bookId], updated_at: new Date().toISOString() };
+    return {
+      user_id:    userId,
+      book_id:    bookId,
+      is_read:    !!status[bookId],
+      updated_at: new Date().toISOString()
+    };
   });
   if (!rows.length) return;
-  _db.from('reading_list')
-    .upsert(rows, { onConflict: 'book_id' })
+  db.from('reading_list')
+    .upsert(rows, { onConflict: 'user_id,book_id' })
     .then(function (r) {
       if (r.error) console.warn('[Atarax] reading_list sync error:', r.error.message);
     });
 }
 
 function _deleteFromSupabase(key) {
-  if (!_db) return;
+  var db = _getDbClient();
+  var userId = getCurrentUserId();
+  if (!db || !userId) return;
   try {
     if (_isJournalKey(key)) {
-      _db.from('journal_entries')
+      db.from('journal_entries')
         .delete()
+        .eq('user_id', userId)
         .eq('storage_key', key)
         .then(function (r) {
           if (r.error) console.warn('[Atarax] journal delete error:', r.error.message);
@@ -166,11 +200,14 @@ function _deleteFromSupabase(key) {
   } catch (e) { console.warn('[Atarax] Supabase delete error:', e.message); }
 }
 
-// ── Load all Supabase data into _sjCache ───────────────────────────────────
+// ── Load this user's data from Supabase ───────────────────────────────────
 
 function _loadJournalEntries() {
-  return _db.from('journal_entries')
+  var db = _getDbClient();
+  var userId = getCurrentUserId();
+  return db.from('journal_entries')
     .select('storage_key, content')
+    .eq('user_id', userId)
     .then(function (r) {
       if (r.error) { console.warn('[Atarax] load journal error:', r.error.message); return; }
       (r.data || []).forEach(function (row) {
@@ -181,8 +218,11 @@ function _loadJournalEntries() {
 }
 
 function _loadFavoriteQuotes() {
-  return _db.from('favorite_quotes')
+  var db = _getDbClient();
+  var userId = getCurrentUserId();
+  return db.from('favorite_quotes')
     .select('quote_text, author, source')
+    .eq('user_id', userId)
     .order('sort_order', { ascending: true })
     .then(function (r) {
       if (r.error) { console.warn('[Atarax] load favorites error:', r.error.message); return; }
@@ -195,8 +235,11 @@ function _loadFavoriteQuotes() {
 }
 
 function _loadChallengeProgress() {
-  return _db.from('challenge_progress')
+  var db = _getDbClient();
+  var userId = getCurrentUserId();
+  return db.from('challenge_progress')
     .select('challenge_type, data')
+    .eq('user_id', userId)
     .then(function (r) {
       if (r.error) { console.warn('[Atarax] load challenges error:', r.error.message); return; }
       (r.data || []).forEach(function (row) {
@@ -208,8 +251,11 @@ function _loadChallengeProgress() {
 }
 
 function _loadReadingList() {
-  return _db.from('reading_list')
+  var db = _getDbClient();
+  var userId = getCurrentUserId();
+  return db.from('reading_list')
     .select('book_id, is_read')
+    .eq('user_id', userId)
     .then(function (r) {
       if (r.error) { console.warn('[Atarax] load reading error:', r.error.message); return; }
       var status = {};
@@ -220,11 +266,12 @@ function _loadReadingList() {
 }
 
 function _loadStreakData() {
-  return _db.from('streak_data')
+  var db = _getDbClient();
+  var userId = getCurrentUserId();
+  return db.from('streak_data')
     .select('record_key, data')
+    .eq('user_id', userId)
     .then(function (r) {
-      // Streak is always recomputed from journal_entries at render time.
-      // We load the row here only to confirm the table is accessible.
       if (r.error) console.warn('[Atarax] load streak error:', r.error.message);
     })
     .catch(function (e) { console.warn('[Atarax] load streak exception:', e.message); });
@@ -243,15 +290,18 @@ function _loadAllFromSupabase() {
 // ── Streak sync (called from renderStreak in core.js) ─────────────────────
 
 function _updateStreakData() {
-  if (!_db || typeof calcStreak !== 'function') return;
+  var db = _getDbClient();
+  var userId = getCurrentUserId();
+  if (!db || !userId || typeof calcStreak !== 'function') return;
   try {
     var streak = calcStreak();
-    _db.from('streak_data')
+    db.from('streak_data')
       .upsert({
+        user_id:    userId,
         record_key: 'current',
         data:       { current_streak: streak, last_updated: new Date().toISOString() },
         updated_at: new Date().toISOString()
-      }, { onConflict: 'record_key' })
+      }, { onConflict: 'user_id,record_key' })
       .then(function (r) {
         if (r.error) console.warn('[Atarax] streak update error:', r.error.message);
       });
@@ -274,8 +324,11 @@ function _seedCacheFromLocalStorage() {
 // ── One-time migration: push existing localStorage data to Supabase ────────
 
 function _migrateLocalStorageToSupabase() {
-  if (!_db) return;
-  var MIGRATION_KEY = 'sj_supabase_migrated_v1';
+  var db = _getDbClient();
+  var userId = getCurrentUserId();
+  if (!db || !userId) return;
+  // Key is user-scoped so each user only migrates once per device
+  var MIGRATION_KEY = 'sj_supabase_migrated_v2_' + userId;
   if (localStorage.getItem(MIGRATION_KEY)) return;
 
   var migrationData = {};
@@ -283,9 +336,9 @@ function _migrateLocalStorageToSupabase() {
     for (var i = 0; i < localStorage.length; i++) {
       var k = localStorage.key(i);
       if (!k || !k.startsWith('sj_')) continue;
-      if (k === 'sj_theme' || k === 'sj_api_key' || k === MIGRATION_KEY) continue;
-      // Only migrate keys not already loaded from Supabase
-      if (_sjCache.hasOwnProperty(k)) continue;
+      if (k === 'sj_theme' || k === 'sj_api_key') continue;
+      if (k.startsWith('sj_supabase_migrated')) continue;
+      if (_sjCache.hasOwnProperty(k)) continue; // Already loaded from Supabase
       try {
         var val = JSON.parse(localStorage.getItem(k));
         if (val !== null) migrationData[k] = val;
@@ -310,25 +363,17 @@ function _migrateLocalStorageToSupabase() {
 
 // ── Public init ───────────────────────────────────────────────────────────
 //
-// Returns a Promise that resolves when the cache is ready.
-// Called from the inline init block in index.html instead of calling
-// initCore / initMood / etc. directly.
+// Called from the inline init block in index.html AFTER auth has been
+// verified (checkSession resolves to a user).  By the time this runs,
+// getCurrentUserId() is guaranteed to be non-null.
 
 function initDB() {
   return new Promise(function (resolve) {
-    // Try to initialise the Supabase JS client (loaded from CDN)
-    try {
-      if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-        _db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      }
-    } catch (e) {
-      console.warn('[Atarax] Supabase client init failed:', e.message);
-    }
+    _getDbClient(); // Ensure client is initialised
 
-    if (_db) {
+    if (_db && getCurrentUserId()) {
       _loadAllFromSupabase()
         .then(function () {
-          // After Supabase load, migrate any pre-existing localStorage data
           _migrateLocalStorageToSupabase();
           resolve();
         })
@@ -338,7 +383,6 @@ function initDB() {
           resolve();
         });
     } else {
-      // Supabase JS not available — run entirely from localStorage
       _seedCacheFromLocalStorage();
       resolve();
     }

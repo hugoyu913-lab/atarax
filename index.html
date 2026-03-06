@@ -623,6 +623,41 @@
     }
     #toast.show { opacity: 1; transform: translateY(0); }
 
+    /* ── Welcome Overlay (shown briefly after sign-in redirect) ── */
+    #welcome-overlay {
+      position: fixed; inset: 0; z-index: 210;
+      background: radial-gradient(ellipse at 50% 35%, #2d2417 0%, #1C1C1C 70%);
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 40px 24px;
+      opacity: 0; transition: opacity 0.7s ease;
+    }
+    #welcome-overlay.visible { opacity: 1; }
+    .wlc-greeting {
+      font-size: 0.6rem; font-weight: 500; letter-spacing: 0.32em;
+      text-transform: uppercase; color: rgba(201,164,108,0.65); margin-bottom: 16px;
+    }
+    .wlc-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.6rem, 9vw, 5rem); font-weight: 400;
+      color: rgba(247,245,239,0.96); line-height: 1.1; margin-bottom: 22px;
+    }
+    .wlc-divider { width: 36px; height: 1px; background: rgba(201,164,108,0.4); margin: 0 auto 22px; }
+    .wlc-sub {
+      font-size: 0.76rem; font-weight: 300;
+      color: rgba(247,245,239,0.3); letter-spacing: 0.06em;
+    }
+
+    /* ── Logout button ── */
+    .logout-btn {
+      background: none; border: 1px solid var(--border); color: var(--muted);
+      padding: 0 13px; height: 34px; cursor: pointer; flex-shrink: 0;
+      font-family: 'Inter', sans-serif; font-size: 0.58rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.15s ease;
+    }
+    .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
+    [data-theme="dark"] .logout-btn { border-color: #36322a; color: var(--muted); }
+    [data-theme="dark"] .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
+
     /* ── DB Loading Overlay ── */
     #db-loading {
       position: fixed; inset: 0; background: var(--parchment);
@@ -787,7 +822,10 @@
       <button class="nav-link" onclick="switchSection('reading')">Reading</button>
       <button class="nav-link" onclick="switchSection('community')">Community</button>
     </div>
-    <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode" title="Toggle dark mode">&#9790;</button>
+    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <button class="logout-btn" onclick="authSignOut()" title="Sign out">Sign Out</button>
+      <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode" title="Toggle dark mode">&#9790;</button>
+    </div>
   </div>
 </nav>
 
@@ -1091,6 +1129,14 @@
 
 <div id="toast"></div>
 
+<!-- ── Welcome Overlay ── -->
+<div id="welcome-overlay" role="status" aria-live="polite">
+  <div class="wlc-greeting" id="wlc-greeting">Welcome back,</div>
+  <div class="wlc-name" id="wlc-name"></div>
+  <div class="wlc-divider"></div>
+  <div class="wlc-sub">Your journal awaits.</div>
+</div>
+
 <!-- ── DB Loading Overlay ── -->
 <div id="db-loading" role="status" aria-live="polite">
   <div class="db-loading-title">Atarax</div>
@@ -1155,11 +1201,13 @@
 <script src="js/challenge30.js"></script>
 <script src="js/pdf.js"></script>
 <script src="js/extras.js"></script>
+<!-- auth.js: Supabase Auth utilities (must load before db.js) -->
+<script src="js/auth.js"></script>
 <!-- db.js overrides getData/setData/deleteData with Supabase-backed versions -->
 <script src="js/db.js"></script>
 <script>
   (function () {
-    // Apply dark mode immediately (before Supabase load) for no flash
+    // Apply dark mode immediately (before auth/Supabase load) for no flash
     initExtras();
 
     function _hideLoading() {
@@ -1169,22 +1217,59 @@
       setTimeout(function () { el.style.display = 'none'; }, 450);
     }
 
-    // Load all data from Supabase (or localStorage fallback), then boot the app
-    initDB()
-      .then(function () {
-        _hideLoading();
-        initCore();
-        initMood();
-        initAI();
-        initCommunity();
+    function _bootApp() {
+      initCore();
+      initMood();
+      initAI();
+      initCommunity();
+    }
+
+    // Show brief welcome message if user just signed in/up
+    function _checkWelcome() {
+      try {
+        var raw = sessionStorage.getItem('sj_welcome');
+        if (!raw) return;
+        var data = JSON.parse(raw);
+        sessionStorage.removeItem('sj_welcome');
+        if (!data || !data.name) return;
+        var overlay = document.getElementById('welcome-overlay');
+        var nameEl  = document.getElementById('wlc-name');
+        var greetEl = document.getElementById('wlc-greeting');
+        if (!overlay || !nameEl) return;
+        greetEl.textContent = data.isNew ? 'Welcome to Atarax,' : 'Welcome back,';
+        nameEl.textContent  = data.name;
+        overlay.style.display = 'flex';
+        setTimeout(function () { overlay.classList.add('visible'); }, 20);
+        setTimeout(function () {
+          overlay.style.opacity = '0';
+          setTimeout(function () { overlay.style.display = 'none'; }, 700);
+        }, 2400);
+      } catch (e) {}
+    }
+
+    // ── Auth check → load data → boot ─────────────────────────────────
+    checkSession()
+      .then(function (user) {
+        if (!user) {
+          // Not authenticated — redirect to login
+          window.location.replace('auth.html');
+          return;
+        }
+        // Authenticated: load user data then boot
+        return initDB()
+          .then(function () {
+            _hideLoading();
+            _checkWelcome();
+            _bootApp();
+          })
+          .catch(function () {
+            _hideLoading();
+            _bootApp();
+          });
       })
       .catch(function () {
-        // Supabase unavailable — boot anyway from localStorage cache
-        _hideLoading();
-        initCore();
-        initMood();
-        initAI();
-        initCommunity();
+        // Auth check network failure — redirect to login
+        window.location.replace('auth.html');
       });
   })();
 </script>
