@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Stoic Journal</title>
+  <title>Atarax &mdash; A Stoic Journal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -21,8 +21,80 @@
       --text-soft: #5a5650;
     }
 
+    /* ── Dark Theme ── */
+    [data-theme="dark"] {
+      --parchment: #191814;
+      --surface: #211f1b;
+      --border: #36322a;
+      --muted: #7a7468;
+      --text-soft: #9e9688;
+    }
+    [data-theme="dark"] body { color: #ede9e0; }
+    [data-theme="dark"] .nav-brand,
+    [data-theme="dark"] .section-title,
+    [data-theme="dark"] .today-heading,
+    [data-theme="dark"] .streak-num,
+    [data-theme="dark"] .card-title,
+    [data-theme="dark"] .ven,
+    [data-theme="dark"] .challenge-name,
+    [data-theme="dark"] .entry-panel-name,
+    [data-theme="dark"] .entry-field-value,
+    [data-theme="dark"] .def-term { color: #ede9e0; }
+    [data-theme="dark"] textarea { background: #191814; color: #ede9e0; border-color: #36322a; }
+    [data-theme="dark"] textarea::placeholder { color: #4a4640; }
+    [data-theme="dark"] textarea:focus { border-color: var(--gold); }
+    [data-theme="dark"] #main-nav { background: rgba(25,24,20,0.96); border-bottom-color: #36322a; }
+    [data-theme="dark"] .nav-link { color: var(--muted); }
+    [data-theme="dark"] .nav-link:hover,
+    [data-theme="dark"] .nav-link.active { color: #ede9e0; }
+    [data-theme="dark"] .search-input,
+    [data-theme="dark"] .filter-input,
+    [data-theme="dark"] .filter-select { background: #211f1b; color: #ede9e0; border-color: #36322a; }
+    [data-theme="dark"] .search-input::placeholder { color: #4a4640; }
+    [data-theme="dark"] .virtue-card { background: #211f1b; }
+    [data-theme="dark"] .virtue-card.selected { background: var(--gold); }
+    [data-theme="dark"] .virtue-card.selected .ven { color: #1C1C1C; }
+    [data-theme="dark"] .btn-primary { background: #ede9e0; color: #1C1C1C; }
+    [data-theme="dark"] .btn-primary:hover { background: #d4d0c8; }
+    [data-theme="dark"] .btn-secondary { color: var(--muted); border-color: #36322a; }
+    [data-theme="dark"] .btn-secondary:hover { color: #ede9e0; border-color: #ede9e0; }
+    [data-theme="dark"] .tab-btn { color: var(--muted); }
+    [data-theme="dark"] .tab-btn:hover,
+    [data-theme="dark"] .tab-btn.active { color: #ede9e0; }
+    [data-theme="dark"] .tab-btn::after { background: var(--gold); }
+    [data-theme="dark"] .tab-bar { border-bottom-color: #36322a; }
+    [data-theme="dark"] .save-row { border-top-color: #36322a; }
+    [data-theme="dark"] .def-panel { background: #191814; border-left-color: #36322a; }
+    [data-theme="dark"] .def-search { background: #211f1b; color: #ede9e0; border-color: #36322a; }
+    [data-theme="dark"] .def-search::placeholder { color: #4a4640; }
+    [data-theme="dark"] .def-item { border-bottom-color: #36322a; }
+    [data-theme="dark"] .def-text { color: #9e9688; }
+    [data-theme="dark"] .def-search-wrap { border-bottom-color: #36322a; }
+    [data-theme="dark"] .callout { background: #211f1b; }
+    [data-theme="dark"] .memento-callout { background: #111; }
+    [data-theme="dark"] .entry-panel { background: #211f1b; border-color: #36322a; }
+    [data-theme="dark"] .entry-panel-body { border-top-color: #36322a; }
+    [data-theme="dark"] .entry-panel-actions { border-top-color: #36322a; }
+    [data-theme="dark"] .timeline::before { background: #36322a; }
+    [data-theme="dark"] .challenge-card { background: #211f1b; border-color: #36322a; }
+    [data-theme="dark"] .challenge-desc { color: #9e9688; }
+    [data-theme="dark"] .challenge-context { border-left-color: #36322a; }
+    [data-theme="dark"] .btn-challenge { border-color: #ede9e0; color: #ede9e0; }
+    [data-theme="dark"] .btn-challenge:hover { background: #ede9e0; color: #1C1C1C; }
+    [data-theme="dark"] .ch-tab { color: var(--muted); }
+    [data-theme="dark"] .ch-tab.active { color: #ede9e0; }
+    [data-theme="dark"] .ch-tab-bar { border-bottom-color: #36322a; }
+    [data-theme="dark"] .dark-toggle { border-color: #36322a; color: var(--muted); }
+
     html { font-size: 16px; scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: var(--parchment); color: var(--charcoal); min-height: 100vh; line-height: 1.6; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--parchment);
+      color: var(--charcoal);
+      min-height: 100vh;
+      line-height: 1.6;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
 
     /* ── Hero ── */
     #hero {
@@ -31,36 +103,38 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       text-align: center; padding: 80px 24px; position: relative;
     }
-    .hero-mark { margin-bottom: 36px; opacity: 0.9; }
-    .hero-eyebrow {
-      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 20px;
+    .hero-mark { margin-bottom: 40px; opacity: 0.9; }
+    .hero-brand { margin-bottom: 28px; }
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 12vw, 7rem);
+      font-weight: 400; line-height: 1; color: var(--parchment);
+      letter-spacing: 0.02em; margin-bottom: 10px;
     }
-    .hero-title {
-      font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 8vw, 5.5rem);
-      font-weight: 400; line-height: 1.1; color: var(--parchment); margin-bottom: 28px;
+    .brand-sub-hero {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.38em;
+      text-transform: uppercase; color: rgba(201,164,108,0.65);
     }
-    .hero-title em { font-style: italic; color: var(--gold); }
     .hero-divider { width: 40px; height: 1px; background: var(--gold); margin: 0 auto 28px; opacity: 0.5; }
     .hero-subtitle {
-      font-size: 0.95rem; font-weight: 300; color: rgba(247,245,239,0.55);
-      letter-spacing: 0.04em; max-width: 380px; margin-bottom: 48px;
+      font-size: 0.92rem; font-weight: 300; color: rgba(247,245,239,0.5);
+      letter-spacing: 0.04em; max-width: 360px; margin-bottom: 48px;
     }
     .hero-quote-block {
-      max-width: 520px; margin: 0 auto 52px; padding: 0 0 0 24px;
-      border-left: 1px solid rgba(201,164,108,0.5); text-align: left;
+      max-width: 500px; margin: 0 auto 52px; padding: 0 0 0 24px;
+      border-left: 1px solid rgba(201,164,108,0.4); text-align: left;
     }
     .hero-quote-text {
-      font-family: 'Playfair Display', serif; font-size: 1.15rem; font-style: italic;
-      color: rgba(247,245,239,0.75); line-height: 1.7; margin-bottom: 14px;
+      font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic;
+      color: rgba(247,245,239,0.72); line-height: 1.7; margin-bottom: 12px;
     }
     .hero-quote-attr {
-      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.15em;
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em;
       text-transform: uppercase; color: var(--gold);
     }
     .hero-cta {
-      font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600;
-      letter-spacing: 0.18em; text-transform: uppercase; padding: 16px 40px;
+      font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase; padding: 15px 38px;
       background: var(--gold); color: var(--charcoal); border: none; cursor: pointer;
       transition: all 0.2s ease; margin-bottom: 72px;
     }
@@ -68,7 +142,7 @@
     .scroll-indicator {
       position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
       display: flex; flex-direction: column; align-items: center; gap: 10px;
-      color: rgba(247,245,239,0.3); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(247,245,239,0.28); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
     }
     .scroll-line {
       width: 1px; height: 40px;
@@ -80,40 +154,51 @@
     /* ── Navigation ── */
     #main-nav {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(247,245,239,0.94); backdrop-filter: blur(14px);
+      background: rgba(247,245,239,0.95); backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--border);
-      transition: box-shadow 0.2s ease;
+      transition: box-shadow 0.2s ease, background 0.25s ease;
     }
     #main-nav.scrolled { box-shadow: 0 2px 24px rgba(28,28,28,0.08); }
     .nav-inner {
-      max-width: 1100px; margin: 0 auto; padding: 0 32px;
-      display: flex; align-items: center; justify-content: space-between; height: 64px;
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px;
     }
-    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 400; color: var(--charcoal); }
-    .nav-logo em { font-style: italic; color: var(--gold-dim); }
-    .nav-links { display: flex; }
+    .nav-logo { display: flex; flex-direction: column; gap: 1px; flex-shrink: 0; }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 400; color: var(--charcoal); line-height: 1.1; }
+    .nav-brand-sub { font-size: 0.5rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-dim); }
+    .nav-links {
+      display: flex; overflow-x: auto; scrollbar-width: none; flex: 1;
+    }
+    .nav-links::-webkit-scrollbar { display: none; }
     .nav-link {
-      font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 500;
-      letter-spacing: 0.12em; text-transform: uppercase; padding: 0 18px; height: 64px;
-      display: flex; align-items: center; background: none; border: none;
+      font-family: 'Inter', sans-serif; font-size: 0.66rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 0 14px; height: 60px;
+      display: flex; align-items: center; background: none; border: none; white-space: nowrap;
       color: var(--muted); cursor: pointer; position: relative; transition: color 0.15s ease;
     }
     .nav-link::after {
-      content: ''; position: absolute; bottom: 0; left: 18px; right: 18px;
+      content: ''; position: absolute; bottom: 0; left: 14px; right: 14px;
       height: 2px; background: var(--gold); transform: scaleX(0); transition: transform 0.2s ease;
     }
     .nav-link:hover { color: var(--charcoal); }
     .nav-link.active { color: var(--charcoal); }
     .nav-link.active::after { transform: scaleX(1); }
+    .dark-toggle {
+      background: none; border: 1px solid var(--border); color: var(--muted);
+      width: 34px; height: 34px; border-radius: 50%; cursor: pointer; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 0.9rem;
+      transition: all 0.15s ease;
+    }
+    .dark-toggle:hover { border-color: var(--gold); color: var(--gold); }
 
     /* ── Main content ── */
     .main-content { max-width: 1100px; margin: 0 auto; padding: 60px 32px 100px; }
     .section-page { display: none; }
     .section-page.active { display: block; }
 
-    /* ── Shared heading styles ── */
+    /* ── Shared heading ── */
     .section-eyebrow {
-      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.22em;
+      font-size: 0.63rem; font-weight: 500; letter-spacing: 0.22em;
       text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
     }
     .section-title {
@@ -121,45 +206,38 @@
       color: var(--charcoal); margin-bottom: 6px;
     }
     .section-subtitle {
-      font-size: 0.88rem; font-weight: 300; color: var(--muted); margin-bottom: 44px;
+      font-size: 0.86rem; font-weight: 300; color: var(--muted); margin-bottom: 44px;
     }
 
     /* ── Today header ── */
     .today-header {
       display: flex; align-items: flex-start; justify-content: space-between;
-      margin-bottom: 40px; gap: 32px; flex-wrap: wrap;
+      margin-bottom: 36px; gap: 32px; flex-wrap: wrap;
     }
     .today-date-label {
-      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.2em;
+      font-size: 0.66rem; font-weight: 500; letter-spacing: 0.2em;
       text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
     }
-    .today-heading {
-      font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; color: var(--charcoal);
-    }
-    .streak-widget { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    .today-heading { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; color: var(--charcoal); }
+    .streak-widget { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
     .streak-number-row { display: flex; align-items: baseline; gap: 8px; }
+    .streak-flame { font-size: 1.4rem; line-height: 1; }
     .streak-num {
       font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 400;
       color: var(--charcoal); line-height: 1;
     }
-    .streak-label-text {
-      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--muted);
-    }
+    .streak-label-text { font-size: 0.63rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
     .streak-dots { display: flex; gap: 6px; }
-    .streak-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+    .streak-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
     .streak-dot.filled { background: var(--gold); }
 
     /* ── Tab bar ── */
-    .tab-bar {
-      display: flex; border-bottom: 1px solid var(--border); margin-bottom: 40px;
-    }
+    .tab-bar { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
     .tab-btn {
-      font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 500;
-      letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 24px;
+      font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 22px;
       background: none; border: none; color: var(--muted); cursor: pointer;
-      position: relative; transition: color 0.15s ease;
-      display: flex; align-items: center; gap: 8px;
+      position: relative; transition: color 0.15s ease; display: flex; align-items: center; gap: 8px;
     }
     .tab-btn::after {
       content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
@@ -168,31 +246,35 @@
     .tab-btn:hover { color: var(--charcoal); }
     .tab-btn.active { color: var(--charcoal); }
     .tab-btn.active::after { transform: scaleX(1); }
-    .tab-dot {
-      width: 6px; height: 6px; border-radius: 50%; background: var(--gold); display: none;
-    }
+    .tab-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); display: none; }
     .tab-dot.visible { display: block; }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; }
 
-    /* ── Card ── */
-    .card {
-      background: var(--surface); border: 1px solid var(--border);
-      padding: 32px 36px; margin-bottom: 16px;
+    /* ── Challenges sub-tabs ── */
+    .ch-tab-bar { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+    .ch-tab {
+      font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 20px;
+      background: none; border: none; color: var(--muted); cursor: pointer;
+      position: relative; transition: color 0.15s ease;
     }
-    .card-label {
-      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
+    .ch-tab::after {
+      content: ''; position: absolute; bottom: -1px; left: 0; right: 0;
+      height: 2px; background: var(--gold); transform: scaleX(0); transition: transform 0.2s ease;
     }
-    .card-title {
-      font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 400;
-      color: var(--charcoal); margin-bottom: 6px;
-    }
-    .card-description {
-      font-size: 0.82rem; font-weight: 300; color: var(--muted); line-height: 1.65; margin-bottom: 20px;
-    }
+    .ch-tab.active { color: var(--charcoal); }
+    .ch-tab.active::after { transform: scaleX(1); }
+    .ch-panel { display: none; }
+    .ch-panel.active { display: block; }
 
-    /* ── Dark quote card ── */
+    /* ── Card ── */
+    .card { background: var(--surface); border: 1px solid var(--border); padding: 32px 36px; margin-bottom: 16px; }
+    .card-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .card-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 400; color: var(--charcoal); margin-bottom: 6px; }
+    .card-description { font-size: 0.82rem; font-weight: 300; color: var(--muted); line-height: 1.65; margin-bottom: 20px; }
+
+    /* ── Quote card dark ── */
     .quote-card-dark {
       background: var(--charcoal); padding: 48px; margin-bottom: 16px;
       position: relative; overflow: hidden;
@@ -203,23 +285,27 @@
       top: 16px; left: 24px; pointer-events: none; user-select: none;
     }
     .quote-card-dark .qtext {
-      font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic;
+      font-family: 'Playfair Display', serif; font-size: 1.25rem; font-style: italic;
       font-weight: 400; color: var(--parchment); line-height: 1.7; margin-bottom: 24px;
       position: relative; z-index: 1;
     }
+    [data-theme="dark"] .quote-card-dark .qtext { color: #ede9e0; }
     .qmeta { display: flex; align-items: center; gap: 14px; }
     .qline { width: 28px; height: 1px; background: var(--gold); }
-    .qauthor {
-      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--gold);
+    .qauthor { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
+    .qsource { font-size: 0.66rem; color: rgba(201,164,108,0.5); font-style: italic; }
+
+    /* ── Fav button on quote card ── */
+    .fav-btn {
+      position: absolute; top: 16px; right: 16px; background: none; border: none;
+      color: rgba(201,164,108,0.3); font-size: 1.3rem; cursor: pointer;
+      transition: all 0.2s ease; padding: 6px; line-height: 1; z-index: 2;
     }
-    .qsource { font-size: 0.68rem; color: rgba(201,164,108,0.55); font-style: italic; }
+    .fav-btn:hover { color: var(--gold); transform: scale(1.15); }
+    .fav-btn.favorited { color: var(--gold); }
 
     /* ── Textarea / field ── */
-    .field-label {
-      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--text-soft); margin-bottom: 10px; display: block;
-    }
+    .field-label { font-size: 0.63rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-soft); margin-bottom: 10px; display: block; }
     textarea {
       width: 100%; font-family: 'Playfair Display', serif; font-size: 1rem;
       font-weight: 400; line-height: 1.8; color: var(--charcoal); background: var(--parchment);
@@ -229,12 +315,39 @@
     textarea::placeholder { color: #c0bab0; font-style: italic; }
     textarea:focus { border-color: var(--gold); }
 
+    /* ── Mood Selector ── */
+    .mood-card { margin-bottom: 16px; }
+    .mood-icons { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .mood-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      padding: 12px 14px; background: transparent; border: 1px solid var(--border);
+      cursor: pointer; transition: all 0.15s ease; min-width: 68px;
+    }
+    .mood-emoji { font-size: 1.5rem; line-height: 1; }
+    .mood-lbl { font-family: 'Inter', sans-serif; font-size: 0.58rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .mood-btn:hover { border-color: var(--gold); }
+    .mood-btn.selected { border-color: var(--charcoal); background: var(--charcoal); }
+    .mood-btn.selected .mood-lbl { color: var(--parchment); }
+    [data-theme="dark"] .mood-btn.selected { border-color: var(--gold); background: rgba(201,164,108,0.15); }
+    [data-theme="dark"] .mood-btn.selected .mood-lbl { color: var(--gold); }
+
+    /* ── Mood chart ── */
+    .mood-chart { margin-bottom: 28px; }
+    .mood-chart-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+    .mood-chart-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+    .mood-chart-sub { font-size: 0.7rem; color: var(--muted); }
+    .mood-chart-bars { display: flex; gap: 3px; align-items: flex-end; height: 52px; }
+    .mood-bar { flex: 1; border-radius: 2px 2px 0 0; min-width: 6px; transition: opacity 0.2s ease; cursor: default; }
+    .mood-bar[data-mood="1"] { background: #8a6a5a; }
+    .mood-bar[data-mood="2"] { background: #9a8a7a; }
+    .mood-bar[data-mood="3"] { background: #9aaa88; }
+    .mood-bar[data-mood="4"] { background: var(--gold); }
+    .mood-bar[data-mood="5"] { background: #7a9a6a; }
+    .mood-bar-empty { flex: 1; min-width: 6px; height: 4px; background: var(--border); border-radius: 2px; }
+
     /* ── Dichotomy grid ── */
     .dichotomy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .dichotomy-label {
-      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
-      margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
-    }
+    .dichotomy-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
     .dichotomy-label.within { color: #6a8a5a; }
     .dichotomy-label.outside { color: var(--muted); }
     .dichotomy-label::before { content: ''; display: block; width: 14px; height: 1px; }
@@ -243,205 +356,274 @@
 
     /* ── Virtue cards ── */
     .virtue-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
-    .virtue-card {
-      border: 1px solid var(--border); padding: 22px 12px; text-align: center;
-      cursor: pointer; transition: all 0.15s ease; background: var(--surface);
-    }
+    .virtue-card { border: 1px solid var(--border); padding: 22px 12px; text-align: center; cursor: pointer; transition: all 0.15s ease; background: var(--surface); }
     .virtue-card:hover { border-color: var(--gold); }
     .virtue-card.selected { border-color: var(--charcoal); background: var(--charcoal); }
     .virtue-card.selected .ven { color: var(--parchment); }
     .virtue-card.selected .vgr { color: var(--gold); }
     .ven { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 400; color: var(--charcoal); margin-bottom: 4px; }
-    .vgr { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .vgr { font-size: 0.58rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 
     /* ── Save row ── */
-    .save-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 24px 0; border-top: 1px solid var(--border); margin-top: 8px;
-    }
-    .last-saved-ts { font-size: 0.7rem; color: var(--muted); font-weight: 300; }
-    .save-btns { display: flex; gap: 10px; }
+    .save-row { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; border-top: 1px solid var(--border); margin-top: 8px; }
+    .last-saved-ts { font-size: 0.68rem; color: var(--muted); font-weight: 300; }
+    .save-btns { display: flex; gap: 10px; flex-wrap: wrap; }
 
     /* ── Buttons ── */
     .btn-primary {
-      font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 600;
-      letter-spacing: 0.15em; text-transform: uppercase; padding: 13px 32px;
+      font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase; padding: 13px 30px;
       background: var(--charcoal); color: var(--parchment); border: none; cursor: pointer;
       transition: background 0.15s ease;
     }
     .btn-primary:hover { background: #333; }
     .btn-secondary {
-      font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 500;
-      letter-spacing: 0.12em; text-transform: uppercase; padding: 13px 24px;
+      font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase; padding: 13px 22px;
       background: transparent; color: var(--muted); border: 1px solid var(--border);
       cursor: pointer; transition: all 0.15s ease;
     }
     .btn-secondary:hover { border-color: var(--charcoal); color: var(--charcoal); }
 
     /* ── Callout ── */
-    .callout {
-      border-left: 3px solid var(--gold); padding: 18px 24px;
-      background: var(--surface); margin-bottom: 16px;
-    }
-    .callout-label {
-      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
-    }
-    .callout-text {
-      font-family: 'Playfair Display', serif; font-size: 0.98rem; font-style: italic;
-      color: var(--text-soft); line-height: 1.65;
-    }
+    .callout { border-left: 3px solid var(--gold); padding: 18px 24px; background: var(--surface); margin-bottom: 16px; }
+    .callout-label { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .callout-text { font-family: 'Playfair Display', serif; font-size: 0.97rem; font-style: italic; color: var(--text-soft); line-height: 1.65; }
 
     /* ── Virtue rating dots ── */
     .virtue-ratings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
     .virtue-rating-row { display: flex; flex-direction: column; gap: 10px; }
-    .vrating-label {
-      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--text-soft);
-    }
+    .vrating-label { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-soft); }
     .vdots-row { display: flex; gap: 10px; }
-    .vdot {
-      width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border);
-      cursor: pointer; transition: all 0.15s ease;
-    }
+    .vdot { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border); cursor: pointer; transition: all 0.15s ease; }
     .vdot:hover { border-color: var(--gold); }
     .vdot.filled { background: var(--gold); border-color: var(--gold); }
 
     /* ── Dark memento callout ── */
-    .memento-callout {
-      background: var(--charcoal); padding: 36px 40px; margin-bottom: 24px;
-      position: relative; overflow: hidden;
-    }
-    .memento-callout::before {
-      content: 'MEMENTO MORI'; font-family: 'Playfair Display', serif; font-size: 4.5rem;
-      font-weight: 700; color: rgba(255,255,255,0.03); position: absolute;
-      right: -5px; bottom: -8px; pointer-events: none; line-height: 1; white-space: nowrap;
-    }
-    .memento-label {
-      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.22em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
-    }
-    .memento-text {
-      font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic;
-      color: var(--parchment); line-height: 1.65; margin-bottom: 10px;
-    }
-    .memento-attr {
-      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.12em;
-      text-transform: uppercase; color: rgba(201,164,108,0.55);
-    }
+    .memento-callout { background: var(--charcoal); padding: 36px 40px; margin-bottom: 24px; position: relative; overflow: hidden; }
+    .memento-callout::before { content: 'MEMENTO MORI'; font-family: 'Playfair Display', serif; font-size: 4.5rem; font-weight: 700; color: rgba(255,255,255,0.03); position: absolute; right: -5px; bottom: -8px; pointer-events: none; line-height: 1; white-space: nowrap; }
+    .memento-label { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .memento-text { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; color: var(--parchment); line-height: 1.65; margin-bottom: 10px; }
+    .memento-attr { font-size: 0.63rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(201,164,108,0.5); }
 
     /* ── Challenges ── */
     .challenges-grid { display: flex; flex-direction: column; gap: 14px; }
-    .challenge-card {
-      background: var(--surface); border: 1px solid var(--border);
-      padding: 32px 36px; display: flex; gap: 32px; align-items: flex-start;
-    }
-    .challenge-numeral {
-      font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 400;
-      color: var(--border); line-height: 1; flex-shrink: 0; width: 52px; text-align: right;
-    }
+    .challenge-card { background: var(--surface); border: 1px solid var(--border); padding: 32px 36px; display: flex; gap: 32px; align-items: flex-start; }
+    .challenge-numeral { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 400; color: var(--border); line-height: 1; flex-shrink: 0; width: 52px; text-align: right; }
     .challenge-body { flex: 1; }
-    .challenge-name {
-      font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 400;
-      color: var(--charcoal); margin-bottom: 8px;
-    }
-    .challenge-desc {
-      font-size: 0.85rem; font-weight: 300; color: var(--text-soft); line-height: 1.65; margin-bottom: 12px;
-    }
-    .challenge-context {
-      font-size: 0.78rem; font-style: italic; color: var(--muted); line-height: 1.55;
-      margin-bottom: 20px; padding-left: 14px; border-left: 2px solid var(--border);
-    }
+    .challenge-name { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 400; color: var(--charcoal); margin-bottom: 8px; }
+    .challenge-desc { font-size: 0.85rem; font-weight: 300; color: var(--text-soft); line-height: 1.65; margin-bottom: 12px; }
+    .challenge-context { font-size: 0.78rem; font-style: italic; color: var(--muted); line-height: 1.55; margin-bottom: 20px; padding-left: 14px; border-left: 2px solid var(--border); }
     .btn-challenge {
-      font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600;
+      font-family: 'Inter', sans-serif; font-size: 0.63rem; font-weight: 600;
       letter-spacing: 0.15em; text-transform: uppercase; padding: 10px 22px;
       border: 1px solid var(--charcoal); background: transparent; color: var(--charcoal);
       cursor: pointer; transition: all 0.15s ease;
     }
     .btn-challenge:hover { background: var(--charcoal); color: var(--parchment); }
-    .btn-challenge.completed {
-      border-color: var(--gold); color: var(--gold); cursor: default;
-    }
+    .btn-challenge.completed { border-color: var(--gold); color: var(--gold); cursor: default; }
     .btn-challenge.completed:hover { background: transparent; color: var(--gold); }
 
+    /* ── 30-Day Challenge ── */
+    .progress-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+    .progress-stats { font-size: 0.8rem; color: var(--muted); }
+    .progress-stats strong { color: var(--gold); font-weight: 600; }
+    .progress-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; margin-bottom: 36px; }
+    .progress-cell {
+      aspect-ratio: 1; border: 1px solid var(--border); display: flex; align-items: center;
+      justify-content: center; font-size: 0.62rem; font-weight: 600; color: var(--muted);
+      cursor: pointer; transition: all 0.15s ease; position: relative;
+    }
+    .progress-cell:hover { border-color: var(--gold); color: var(--gold); }
+    .progress-cell.done { background: var(--charcoal); border-color: var(--charcoal); color: transparent; }
+    [data-theme="dark"] .progress-cell.done { background: var(--gold); border-color: var(--gold); }
+    .progress-cell.done::after { content: ''; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+    .day-tasks-list { display: flex; flex-direction: column; gap: 12px; }
+    .day-task-card { background: var(--surface); border: 1px solid var(--border); padding: 24px 28px; display: flex; gap: 20px; align-items: flex-start; transition: border-color 0.15s ease; }
+    .day-task-card.done { border-left: 3px solid var(--gold); opacity: 0.75; }
+    .day-number { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 400; color: var(--border); flex-shrink: 0; width: 40px; text-align: right; line-height: 1.1; }
+    .day-task-card.done .day-number { color: var(--gold); }
+    .day-body { flex: 1; }
+    .day-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--charcoal); margin-bottom: 6px; }
+    [data-theme="dark"] .day-title { color: #ede9e0; }
+    .day-task { font-size: 0.84rem; font-weight: 300; color: var(--text-soft); line-height: 1.65; margin-bottom: 8px; }
+    .day-virtue { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .btn-complete-day {
+      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 18px;
+      border: 1px solid var(--charcoal); background: transparent; color: var(--charcoal);
+      cursor: pointer; transition: all 0.15s ease;
+    }
+    [data-theme="dark"] .btn-complete-day { border-color: #ede9e0; color: #ede9e0; }
+    .btn-complete-day:hover { background: var(--charcoal); color: var(--parchment); }
+    [data-theme="dark"] .btn-complete-day:hover { background: #ede9e0; color: #1C1C1C; }
+    .btn-complete-day.done { border-color: var(--gold); color: var(--gold); cursor: default; }
+    .btn-complete-day.done:hover { background: transparent; }
+
     /* ── Entries ── */
-    .search-wrap { position: relative; margin-bottom: 32px; }
-    .search-input {
-      width: 100%; font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 300;
+    .entries-header-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+    .search-filters { display: flex; gap: 10px; flex-wrap: wrap; flex: 1; }
+    .filter-group { display: flex; flex-direction: column; gap: 4px; }
+    .filter-label { font-size: 0.56rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .filter-input, .filter-select {
+      font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 300;
       color: var(--charcoal); background: var(--surface); border: 1px solid var(--border);
-      padding: 14px 20px 14px 46px; outline: none; transition: border-color 0.2s ease;
+      padding: 8px 12px; outline: none; transition: border-color 0.2s ease;
+    }
+    .filter-input:focus, .filter-select:focus { border-color: var(--gold); }
+    .filter-select { cursor: pointer; }
+    .search-wrap { position: relative; flex: 2; min-width: 180px; }
+    .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.85rem; pointer-events: none; }
+    .search-input {
+      width: 100%; font-family: 'Inter', sans-serif; font-size: 0.86rem; font-weight: 300;
+      color: var(--charcoal); background: var(--surface); border: 1px solid var(--border);
+      padding: 10px 18px 10px 42px; outline: none; transition: border-color 0.2s ease;
     }
     .search-input:focus { border-color: var(--gold); }
     .search-input::placeholder { color: #c0bab0; }
-    .search-icon {
-      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
-      color: var(--muted); font-size: 0.85rem; pointer-events: none;
+    .btn-export {
+      font-family: 'Inter', sans-serif; font-size: 0.63rem; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase; padding: 10px 18px;
+      border: 1px solid var(--border); background: transparent; color: var(--muted);
+      cursor: pointer; transition: all 0.15s ease; white-space: nowrap; flex-shrink: 0;
     }
+    .btn-export:hover { border-color: var(--gold); color: var(--charcoal); }
+    [data-theme="dark"] .btn-export:hover { color: #ede9e0; }
 
     .timeline { position: relative; padding-left: 32px; }
-    .timeline::before {
-      content: ''; position: absolute; left: 4px; top: 8px; bottom: 8px;
-      width: 1px; background: var(--border);
-    }
+    .timeline::before { content: ''; position: absolute; left: 4px; top: 8px; bottom: 8px; width: 1px; background: var(--border); }
     .timeline-item { position: relative; margin-bottom: 36px; }
-    .timeline-dot {
-      position: absolute; left: -36px; top: 8px; width: 8px; height: 8px;
-      border-radius: 50%; background: var(--gold);
-    }
-    .timeline-date {
-      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
-    }
+    .timeline-dot { position: absolute; left: -36px; top: 8px; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
+    .timeline-date { font-size: 0.63rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .timeline-mood { font-size: 0.85rem; }
     .timeline-entries { display: flex; flex-direction: column; gap: 6px; }
-
     .entry-panel { background: var(--surface); border: 1px solid var(--border); }
-    .entry-panel-head {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 20px; cursor: pointer; user-select: none;
-    }
-    .entry-panel-name {
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--charcoal);
-    }
+    .entry-panel-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; cursor: pointer; user-select: none; }
+    .entry-panel-name { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--charcoal); }
     .entry-panel-toggle { font-size: 0.75rem; color: var(--muted); transition: transform 0.2s ease; }
     .entry-panel.open .entry-panel-toggle { transform: rotate(180deg); }
     .entry-panel-body { display: none; border-top: 1px solid var(--border); padding: 20px 20px 16px; }
     .entry-panel.open .entry-panel-body { display: block; }
     .entry-field { margin-bottom: 16px; }
     .entry-field:last-child { margin-bottom: 0; }
-    .entry-field-label {
-      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 6px;
-    }
-    .entry-field-value {
-      font-family: 'Playfair Display', serif; font-size: 0.95rem;
-      color: var(--charcoal); line-height: 1.7; white-space: pre-wrap;
-    }
+    .entry-field-label { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+    .entry-field-value { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--charcoal); line-height: 1.7; white-space: pre-wrap; }
     .entry-panel-actions { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
     .btn-danger {
-      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 500;
+      font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 500;
       letter-spacing: 0.12em; text-transform: uppercase; padding: 8px 18px;
       border: 1px solid #e0c0be; background: transparent; color: #c07070;
       cursor: pointer; transition: all 0.15s ease;
     }
     .btn-danger:hover { background: #c07070; color: white; border-color: #c07070; }
-
     .entries-empty { text-align: center; padding: 80px 0; color: var(--muted); }
-    .entries-empty p:first-child {
-      font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic;
-      margin-bottom: 10px; color: var(--text-soft);
+    .entries-empty p:first-child { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic; margin-bottom: 10px; color: var(--text-soft); }
+    .entries-empty p:last-child { font-size: 0.76rem; letter-spacing: 0.06em; }
+
+    /* ── Favorites ── */
+    .favorites-grid { display: flex; flex-direction: column; gap: 12px; }
+    .fav-quote-card { background: var(--charcoal); padding: 28px 32px; position: relative; overflow: hidden; }
+    [data-theme="dark"] .fav-quote-card { background: #2a271f; border: 1px solid #36322a; }
+    .fav-quote-card::before { content: '\201C'; font-family: 'Playfair Display', serif; font-size: 9rem; line-height: 0.8; color: rgba(201,164,108,0.06); position: absolute; top: 4px; left: 16px; pointer-events: none; }
+    .fav-quote-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-style: italic; color: var(--parchment); line-height: 1.7; margin-bottom: 16px; position: relative; z-index: 1; }
+    [data-theme="dark"] .fav-quote-text { color: #ede9e0; }
+    .fav-quote-footer { display: flex; align-items: center; justify-content: space-between; }
+    .fav-quote-attr { font-size: 0.63rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
+    .fav-remove-btn { background: none; border: none; color: rgba(201,164,108,0.3); cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 8px; transition: color 0.15s ease; }
+    .fav-remove-btn:hover { color: #c07070; }
+    .favorites-empty { text-align: center; padding: 80px 0; color: var(--muted); }
+    .favorites-empty p:first-child { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-style: italic; margin-bottom: 10px; color: var(--text-soft); }
+    .favorites-empty p:last-child { font-size: 0.76rem; }
+
+    /* ── Reading list ── */
+    .reading-grid { display: flex; flex-direction: column; gap: 12px; }
+    .book-card { background: var(--surface); border: 1px solid var(--border); padding: 24px 28px; display: flex; gap: 20px; align-items: flex-start; transition: border-color 0.15s ease; }
+    .book-card.read { border-left: 3px solid var(--gold); }
+    .book-check-btn { width: 22px; height: 22px; border: 1.5px solid var(--border); border-radius: 50%; flex-shrink: 0; margin-top: 3px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.15s ease; background: transparent; font-size: 0.7rem; font-weight: 700; color: transparent; }
+    .book-check-btn:hover { border-color: var(--gold); }
+    .book-check-btn.checked { background: var(--gold); border-color: var(--gold); color: white; }
+    .book-body { flex: 1; }
+    .book-title { font-family: 'Playfair Display', serif; font-size: 1.08rem; color: var(--charcoal); margin-bottom: 4px; }
+    [data-theme="dark"] .book-title { color: #ede9e0; }
+    .book-author-line { font-size: 0.66rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .book-period { font-weight: 400; letter-spacing: 0; color: var(--muted); margin-left: 6px; }
+    .book-desc { font-size: 0.83rem; font-weight: 300; color: var(--text-soft); line-height: 1.65; margin-bottom: 10px; }
+    .book-why { font-size: 0.77rem; font-style: italic; color: var(--muted); line-height: 1.55; padding-left: 14px; border-left: 2px solid var(--border); }
+    .reading-progress-bar { height: 3px; background: var(--border); margin-bottom: 32px; border-radius: 2px; }
+    .reading-progress-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.4s ease; }
+    .reading-stats { font-size: 0.78rem; color: var(--muted); margin-bottom: 8px; }
+    .reading-stats strong { color: var(--gold); }
+
+    /* ── Community ── */
+    .community-share-card { margin-bottom: 28px; }
+    .community-input {
+      width: 100%; font-family: 'Playfair Display', serif; font-size: 1rem;
+      color: var(--charcoal); background: var(--parchment); border: 1px solid var(--border);
+      padding: 14px 18px; resize: vertical; outline: none; min-height: 80px;
+      transition: border-color 0.2s ease; line-height: 1.7;
     }
-    .entries-empty p:last-child { font-size: 0.78rem; letter-spacing: 0.06em; }
+    [data-theme="dark"] .community-input { background: #191814; color: #ede9e0; border-color: #36322a; }
+    .community-input:focus { border-color: var(--gold); }
+    .community-input::placeholder { color: #c0bab0; font-style: italic; }
+    .community-char-count { font-size: 0.66rem; color: var(--muted); margin-top: 6px; }
+    .community-local-note { font-size: 0.7rem; color: var(--muted); font-style: italic; }
+    .community-section-label { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; padding-top: 8px; }
+    .community-feed { display: flex; flex-direction: column; gap: 8px; }
+    .community-post { background: var(--surface); border: 1px solid var(--border); padding: 20px 24px; display: flex; gap: 16px; align-items: flex-start; }
+    .community-avatar { width: 30px; height: 30px; background: var(--charcoal); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 0.66rem; font-weight: 600; flex-shrink: 0; }
+    [data-theme="dark"] .community-avatar { background: #36322a; }
+    .community-post-body { flex: 1; }
+    .community-post-text { font-family: 'Playfair Display', serif; font-size: 0.97rem; font-style: italic; color: var(--charcoal); line-height: 1.65; margin-bottom: 8px; }
+    [data-theme="dark"] .community-post-text { color: #ede9e0; }
+    .community-post-meta { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 12px; }
+    .community-delete { background: none; border: none; color: rgba(192,112,112,0.4); cursor: pointer; font-size: 0.7rem; transition: color 0.15s ease; padding: 0; }
+    .community-delete:hover { color: #c07070; }
+    .community-seed-tag { font-size: 0.55rem; color: var(--muted); font-style: italic; }
+
+    /* ── AI Wisdom ── */
+    .ai-wisdom-wrap { margin-top: 16px; }
+    .ai-key-card { background: var(--surface); border: 1px solid var(--border); padding: 24px 28px; }
+    .ai-key-eyebrow { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .ai-key-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--charcoal); margin-bottom: 8px; }
+    [data-theme="dark"] .ai-key-title { color: #ede9e0; }
+    .ai-key-desc { font-size: 0.8rem; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
+    .ai-key-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .api-key-input {
+      flex: 1; min-width: 200px; font-family: 'Inter', sans-serif; font-size: 0.82rem;
+      color: var(--charcoal); background: var(--parchment); border: 1px solid var(--border);
+      padding: 10px 14px; outline: none; transition: border-color 0.2s ease;
+    }
+    [data-theme="dark"] .api-key-input { background: #191814; color: #ede9e0; border-color: #36322a; }
+    .api-key-input:focus { border-color: var(--gold); }
+    .ai-wisdom-btn-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .btn-wisdom {
+      font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase; padding: 12px 26px;
+      background: transparent; border: 1px solid var(--gold); color: var(--gold);
+      cursor: pointer; transition: all 0.2s ease;
+    }
+    .btn-wisdom:hover { background: var(--gold); color: var(--charcoal); }
+    .btn-wisdom:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-change-key { background: none; border: none; font-size: 0.65rem; color: var(--muted); cursor: pointer; text-decoration: underline; transition: color 0.15s ease; }
+    .btn-change-key:hover { color: var(--gold); }
+    .ai-response-card { background: var(--charcoal); padding: 32px 36px; margin-top: 12px; }
+    [data-theme="dark"] .ai-response-card { background: #2a271f; border: 1px solid #36322a; }
+    .ai-response-eyebrow { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .ai-response-text { font-family: 'Playfair Display', serif; font-size: 1rem; font-style: italic; color: var(--parchment); line-height: 1.75; }
+    [data-theme="dark"] .ai-response-text { color: #ede9e0; }
+    .ai-loading { color: rgba(247,245,239,0.45); font-style: italic; font-family: 'Playfair Display', serif; font-size: 0.95rem; }
+    .ai-error { color: #c09090; font-size: 0.82rem; font-family: 'Inter', sans-serif; }
 
     /* ── Toast ── */
     #toast {
       position: fixed; bottom: 32px; right: 32px; background: var(--charcoal);
-      color: var(--parchment); font-size: 0.75rem; font-weight: 400; letter-spacing: 0.06em;
+      color: var(--parchment); font-size: 0.73rem; font-weight: 400; letter-spacing: 0.06em;
       padding: 14px 24px; opacity: 0; transform: translateY(8px);
       transition: all 0.25s ease; pointer-events: none; z-index: 999;
     }
     #toast.show { opacity: 1; transform: translateY(0); }
 
-    /* ── Weekly / Monthly section cards ── */
+    /* ── Section cards shared ── */
     .section-cards { display: flex; flex-direction: column; gap: 16px; }
 
     /* ── Definitions Panel ── */
@@ -449,105 +631,65 @@
       position: fixed; right: 0; top: 50%; transform: translateY(-50%);
       z-index: 200; background: var(--charcoal); color: var(--gold);
       writing-mode: vertical-rl; text-orientation: mixed;
-      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 600;
+      font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 600;
       letter-spacing: 0.2em; text-transform: uppercase;
       padding: 20px 12px; cursor: pointer; border: none;
       border-left: 1px solid rgba(201,164,108,0.3);
-      transition: background 0.15s ease, padding 0.15s ease;
+      transition: background 0.15s ease;
       display: flex; align-items: center; gap: 10px;
     }
     .def-tab:hover { background: #2d2417; }
-    .def-tab-icon {
-      writing-mode: horizontal-tb; font-size: 0.75rem; opacity: 0.7;
-    }
-
-    .def-overlay {
-      position: fixed; inset: 0; background: rgba(28,28,28,0.35);
-      z-index: 201; opacity: 0; pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
+    .def-tab-icon { writing-mode: horizontal-tb; font-size: 0.75rem; opacity: 0.7; }
+    .def-overlay { position: fixed; inset: 0; background: rgba(28,28,28,0.35); z-index: 201; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
     .def-overlay.open { opacity: 1; pointer-events: auto; }
-
-    .def-panel {
-      position: fixed; right: 0; top: 0; bottom: 0; width: 380px; max-width: 92vw;
-      z-index: 202; background: var(--parchment);
-      border-left: 1px solid var(--border);
-      transform: translateX(100%); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
-      display: flex; flex-direction: column; overflow: hidden;
-    }
+    .def-panel { position: fixed; right: 0; top: 0; bottom: 0; width: 380px; max-width: 92vw; z-index: 202; background: var(--parchment); border-left: 1px solid var(--border); transform: translateX(100%); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1); display: flex; flex-direction: column; overflow: hidden; }
     .def-panel.open { transform: translateX(0); }
-
-    .def-panel-head {
-      background: var(--charcoal); padding: 28px 28px 24px;
-      flex-shrink: 0;
-    }
-    .def-panel-eyebrow {
-      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.22em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
-    }
-    .def-panel-title {
-      font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 400;
-      font-style: italic; color: var(--parchment); margin-bottom: 4px;
-    }
-    .def-panel-subtitle {
-      font-size: 0.75rem; font-weight: 300; color: rgba(247,245,239,0.45);
-      letter-spacing: 0.03em;
-    }
-    .def-close {
-      position: absolute; top: 20px; right: 20px;
-      background: none; border: none; color: rgba(247,245,239,0.4);
-      font-size: 1.1rem; cursor: pointer; padding: 6px; line-height: 1;
-      transition: color 0.15s ease;
-    }
+    .def-panel-head { background: var(--charcoal); padding: 28px 28px 24px; flex-shrink: 0; }
+    .def-panel-eyebrow { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .def-panel-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 400; font-style: italic; color: var(--parchment); margin-bottom: 4px; }
+    .def-panel-subtitle { font-size: 0.73rem; font-weight: 300; color: rgba(247,245,239,0.4); }
+    .def-close { position: absolute; top: 20px; right: 20px; background: none; border: none; color: rgba(247,245,239,0.4); font-size: 1.1rem; cursor: pointer; padding: 6px; line-height: 1; transition: color 0.15s ease; }
     .def-close:hover { color: var(--gold); }
-
-    .def-search-wrap { padding: 16px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-    .def-search {
-      width: 100%; font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 300;
-      color: var(--charcoal); background: var(--surface); border: 1px solid var(--border);
-      padding: 9px 14px; outline: none; transition: border-color 0.2s ease;
-    }
+    .def-search-wrap { padding: 14px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .def-search { width: 100%; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 300; color: var(--charcoal); background: var(--surface); border: 1px solid var(--border); padding: 9px 14px; outline: none; transition: border-color 0.2s ease; }
     .def-search:focus { border-color: var(--gold); }
     .def-search::placeholder { color: #c0bab0; }
-
     .def-body { flex: 1; overflow-y: auto; padding: 8px 0 24px; }
     .def-body::-webkit-scrollbar { width: 4px; }
     .def-body::-webkit-scrollbar-track { background: transparent; }
     .def-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-    .def-category {
-      padding: 18px 28px 4px;
-    }
-    .def-category-label {
-      font-size: 0.58rem; font-weight: 600; letter-spacing: 0.22em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 0;
-    }
-
-    .def-item {
-      padding: 14px 28px; border-bottom: 1px solid var(--border);
-      transition: background 0.12s ease;
-    }
+    .def-category { padding: 18px 28px 4px; }
+    .def-category-label { font-size: 0.56rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); }
+    .def-item { padding: 14px 28px; border-bottom: 1px solid var(--border); transition: background 0.12s ease; }
     .def-item:last-child { border-bottom: none; }
     .def-item:hover { background: rgba(201,164,108,0.06); }
-    .def-term {
-      font-family: 'Playfair Display', serif; font-size: 0.98rem; font-weight: 400;
-      color: var(--charcoal); margin-bottom: 2px;
-      display: flex; align-items: baseline; gap: 8px;
-    }
-    .def-greek {
-      font-size: 0.65rem; font-weight: 400; color: var(--gold);
-      font-family: 'Inter', sans-serif; letter-spacing: 0.08em; font-style: normal;
-    }
-    .def-text {
-      font-size: 0.8rem; font-weight: 300; color: var(--text-soft);
-      line-height: 1.6;
-    }
+    .def-term { font-family: 'Playfair Display', serif; font-size: 0.97rem; font-weight: 400; color: var(--charcoal); margin-bottom: 2px; display: flex; align-items: baseline; gap: 8px; }
+    .def-greek { font-size: 0.63rem; font-weight: 400; color: var(--gold); font-family: 'Inter', sans-serif; letter-spacing: 0.08em; }
+    .def-text { font-size: 0.78rem; font-weight: 300; color: var(--text-soft); line-height: 1.6; }
     .def-item.hidden { display: none; }
+
+    /* ── Print ── */
+    @media print {
+      #hero, #main-nav, .def-tab, .def-overlay, .def-panel, #toast,
+      .entries-header-row, #section-today, #section-weekly, #section-monthly,
+      #section-challenges, #section-favorites, #section-reading, #section-community,
+      .ai-wisdom-wrap { display: none !important; }
+      #section-entries { display: block !important; }
+      .btn-danger, .entry-panel-actions { display: none !important; }
+      .entry-panel-body { display: block !important; }
+      .main-content { padding: 20px; max-width: 100%; }
+      .timeline::before { display: none; }
+      .timeline { padding-left: 0; }
+      .timeline-dot { display: none; }
+      .timeline-item { break-inside: avoid; margin-bottom: 20px; }
+      .entry-panel { break-inside: avoid; }
+      @page { margin: 2cm; }
+    }
 
     /* ── Responsive ── */
     @media (max-width: 768px) {
       .nav-logo { display: none; }
-      .nav-link { padding: 0 12px; font-size: 0.62rem; }
+      .nav-link { padding: 0 10px; font-size: 0.6rem; }
       .main-content { padding: 40px 20px 80px; }
       .today-header { flex-direction: column; }
       .streak-widget { align-items: flex-start; }
@@ -556,9 +698,14 @@
       .virtue-ratings-grid { grid-template-columns: 1fr; }
       .challenge-card { flex-direction: column; gap: 16px; }
       .challenge-numeral { width: auto; text-align: left; font-size: 1.8rem; }
-      .card { padding: 24px 20px; }
-      .quote-card-dark { padding: 32px 24px; }
-      .tab-btn { padding: 14px 16px; font-size: 0.65rem; }
+      .card { padding: 22px 18px; }
+      .quote-card-dark { padding: 28px 22px; }
+      .tab-btn { padding: 12px 14px; font-size: 0.63rem; }
+      .progress-grid { grid-template-columns: repeat(6, 1fr); }
+      .day-task-card { flex-direction: column; gap: 12px; }
+      .day-number { width: auto; text-align: left; }
+      .book-card { flex-direction: column; gap: 14px; }
+      .search-filters { flex-direction: column; }
     }
   </style>
 </head>
@@ -574,8 +721,10 @@
       <circle cx="28" cy="28" r="3.5" stroke="#C9A46C" stroke-width="0.8" fill="none"/>
     </svg>
   </div>
-  <p class="hero-eyebrow">A daily practice in philosophy</p>
-  <h1 class="hero-title">The Stoic<br><em>Journal</em></h1>
+  <div class="hero-brand">
+    <h1 class="brand-name">Atarax</h1>
+    <p class="brand-sub-hero">A Stoic Journal</p>
+  </div>
   <div class="hero-divider"></div>
   <p class="hero-subtitle">Morning intention. Midday reflection. Evening examination.</p>
   <div class="hero-quote-block">
@@ -592,14 +741,21 @@
 <!-- ── Navigation ── -->
 <nav id="main-nav">
   <div class="nav-inner">
-    <div class="nav-logo">The Stoic <em>Journal</em></div>
+    <div class="nav-logo">
+      <span class="nav-brand">Atarax</span>
+      <span class="nav-brand-sub">A Stoic Journal</span>
+    </div>
     <div class="nav-links">
       <button class="nav-link active" onclick="switchSection('today')">Today</button>
       <button class="nav-link" onclick="switchSection('weekly')">Weekly</button>
       <button class="nav-link" onclick="switchSection('monthly')">Monthly</button>
       <button class="nav-link" onclick="switchSection('challenges')">Challenges</button>
       <button class="nav-link" onclick="switchSection('entries')">Entries</button>
+      <button class="nav-link" onclick="switchSection('favorites')">Favourites</button>
+      <button class="nav-link" onclick="switchSection('reading')">Reading</button>
+      <button class="nav-link" onclick="switchSection('community')">Community</button>
     </div>
+    <button class="dark-toggle" id="dark-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode" title="Toggle dark mode">&#9790;</button>
   </div>
 </nav>
 
@@ -615,6 +771,7 @@
       </div>
       <div class="streak-widget">
         <div class="streak-number-row">
+          <span class="streak-flame">&#128293;</span>
           <span class="streak-num" id="streak-num">0</span>
           <span class="streak-label-text">day streak</span>
         </div>
@@ -623,20 +780,27 @@
     </div>
 
     <div class="tab-bar">
-      <button class="tab-btn active" id="tab-btn-morning" onclick="switchTab('morning')">
-        &#9728; Morning <span class="tab-dot" id="dot-morning"></span>
-      </button>
-      <button class="tab-btn" id="tab-btn-midday" onclick="switchTab('midday')">
-        &#9675; Midday <span class="tab-dot" id="dot-midday"></span>
-      </button>
-      <button class="tab-btn" id="tab-btn-evening" onclick="switchTab('evening')">
-        &#9790; Evening <span class="tab-dot" id="dot-evening"></span>
-      </button>
+      <button class="tab-btn active" id="tab-btn-morning" onclick="switchTab('morning')">&#9728; Morning <span class="tab-dot" id="dot-morning"></span></button>
+      <button class="tab-btn" id="tab-btn-midday" onclick="switchTab('midday')">&#9675; Midday <span class="tab-dot" id="dot-midday"></span></button>
+      <button class="tab-btn" id="tab-btn-evening" onclick="switchTab('evening')">&#9790; Evening <span class="tab-dot" id="dot-evening"></span></button>
     </div>
 
     <!-- Morning Tab -->
     <div id="tab-morning" class="tab-panel active">
-      <div class="quote-card-dark">
+      <div class="card mood-card">
+        <div class="card-label">Morning Mood</div>
+        <div class="card-title">How are you feeling right now?</div>
+        <div class="mood-icons" id="mood-icons">
+          <button class="mood-btn" data-mood="1" onclick="setMood(1)"><span class="mood-emoji">&#128532;</span><span class="mood-lbl">Struggling</span></button>
+          <button class="mood-btn" data-mood="2" onclick="setMood(2)"><span class="mood-emoji">&#128528;</span><span class="mood-lbl">Low</span></button>
+          <button class="mood-btn" data-mood="3" onclick="setMood(3)"><span class="mood-emoji">&#128578;</span><span class="mood-lbl">Neutral</span></button>
+          <button class="mood-btn" data-mood="4" onclick="setMood(4)"><span class="mood-emoji">&#128522;</span><span class="mood-lbl">Good</span></button>
+          <button class="mood-btn" data-mood="5" onclick="setMood(5)"><span class="mood-emoji">&#10024;</span><span class="mood-lbl">Excellent</span></button>
+        </div>
+      </div>
+
+      <div class="quote-card-dark" style="position:relative">
+        <button class="fav-btn" id="fav-quote-btn" onclick="toggleFavoriteQuote()" aria-label="Save quote to favourites" title="Save to favourites">&#9825;</button>
         <p class="qtext" id="morning-quote-text"></p>
         <div class="qmeta">
           <div class="qline"></div>
@@ -652,11 +816,10 @@
         <label class="field-label" for="m-intention">Set your intention</label>
         <textarea id="m-intention" placeholder="Today I intend to..."></textarea>
       </div>
-
       <div class="card">
         <div class="card-label">Card II &mdash; Dichotomy of Control</div>
         <div class="card-title">What Is Within My Power?</div>
-        <div class="card-description">Distinguish clearly between what you control and what you do not. Direct energy accordingly.</div>
+        <div class="card-description">Distinguish clearly between what you control and what you do not.</div>
         <div class="dichotomy-grid">
           <div>
             <div class="dichotomy-label within">Within my control</div>
@@ -668,35 +831,24 @@
           </div>
         </div>
       </div>
-
       <div class="card">
         <div class="card-label">Card III &mdash; Premeditatio Malorum</div>
         <div class="card-title">Premeditation of Adversity</div>
-        <div class="card-description">Visualize what could go wrong today. Plan your response. Remove surprise's power over you.</div>
+        <div class="card-description">Visualize what could go wrong today. Plan your response. Remove surprise's power.</div>
         <label class="field-label" for="m-premeditatio">What challenges might arise, and how will you meet them?</label>
         <textarea id="m-premeditatio" placeholder="The challenge I anticipate most is..."></textarea>
       </div>
-
       <div class="card">
         <div class="card-label">Card IV &mdash; Guiding Virtue</div>
         <div class="card-title">Choose Your Anchor Virtue</div>
-        <div class="card-description">Which cardinal virtue will guide your choices today? Select one as your compass.</div>
+        <div class="card-description">Which cardinal virtue will guide your choices today?</div>
         <div class="virtue-grid">
-          <div class="virtue-card" data-virtue="wisdom" onclick="selectVirtue('wisdom')">
-            <div class="ven">Wisdom</div><div class="vgr">Sophia</div>
-          </div>
-          <div class="virtue-card" data-virtue="courage" onclick="selectVirtue('courage')">
-            <div class="ven">Courage</div><div class="vgr">Andreia</div>
-          </div>
-          <div class="virtue-card" data-virtue="justice" onclick="selectVirtue('justice')">
-            <div class="ven">Justice</div><div class="vgr">Dikaiosyne</div>
-          </div>
-          <div class="virtue-card" data-virtue="temperance" onclick="selectVirtue('temperance')">
-            <div class="ven">Temperance</div><div class="vgr">Sophrosyne</div>
-          </div>
+          <div class="virtue-card" data-virtue="wisdom" onclick="selectVirtue('wisdom')"><div class="ven">Wisdom</div><div class="vgr">Sophia</div></div>
+          <div class="virtue-card" data-virtue="courage" onclick="selectVirtue('courage')"><div class="ven">Courage</div><div class="vgr">Andreia</div></div>
+          <div class="virtue-card" data-virtue="justice" onclick="selectVirtue('justice')"><div class="ven">Justice</div><div class="vgr">Dikaiosyne</div></div>
+          <div class="virtue-card" data-virtue="temperance" onclick="selectVirtue('temperance')"><div class="ven">Temperance</div><div class="vgr">Sophrosyne</div></div>
         </div>
       </div>
-
       <div class="save-row">
         <span class="last-saved-ts" id="morning-saved-ts"></span>
         <div class="save-btns">
@@ -704,6 +856,7 @@
           <button class="btn-primary" onclick="savePanel('morning')">Save Morning</button>
         </div>
       </div>
+      <div class="ai-wisdom-wrap" id="ai-wrap-morning"></div>
     </div>
 
     <!-- Midday Tab -->
@@ -712,35 +865,10 @@
         <div class="callout-label">Stoic Reminder</div>
         <p class="callout-text">"Nowhere can man find a quieter or more untroubled retreat than in his own soul." &mdash; Marcus Aurelius</p>
       </div>
-
-      <div class="card">
-        <div class="card-label">Card I</div>
-        <div class="card-title">Morning Review</div>
-        <div class="card-description">How has your morning intention held up? Where did you succeed or fall short?</div>
-        <textarea id="md-review" placeholder="This morning I..."></textarea>
-      </div>
-
-      <div class="card">
-        <div class="card-label">Card II</div>
-        <div class="card-title">Emotional Awareness</div>
-        <div class="card-description">What emotions have arisen today? Were they proportionate? Did you react or respond?</div>
-        <textarea id="md-emotional" placeholder="I noticed that I felt..."></textarea>
-      </div>
-
-      <div class="card">
-        <div class="card-label">Card III</div>
-        <div class="card-title">The Control Check</div>
-        <div class="card-description">Identify one thing you have spent energy on today that is outside your control. Release it.</div>
-        <textarea id="md-control" placeholder="I have been trying to control..."></textarea>
-      </div>
-
-      <div class="card">
-        <div class="card-label">Card IV</div>
-        <div class="card-title">Afternoon Intention</div>
-        <div class="card-description">What is most important in the hours remaining? Set a clear purpose.</div>
-        <textarea id="md-intention" placeholder="This afternoon I will focus on..."></textarea>
-      </div>
-
+      <div class="card"><div class="card-label">Card I</div><div class="card-title">Morning Review</div><div class="card-description">How has your morning intention held up? Where did you succeed or fall short?</div><textarea id="md-review" placeholder="This morning I..."></textarea></div>
+      <div class="card"><div class="card-label">Card II</div><div class="card-title">Emotional Awareness</div><div class="card-description">What emotions have arisen today? Were they proportionate? Did you react or respond?</div><textarea id="md-emotional" placeholder="I noticed that I felt..."></textarea></div>
+      <div class="card"><div class="card-label">Card III</div><div class="card-title">The Control Check</div><div class="card-description">Identify one thing you've spent energy on today that is outside your control. Release it.</div><textarea id="md-control" placeholder="I have been trying to control..."></textarea></div>
+      <div class="card"><div class="card-label">Card IV</div><div class="card-title">Afternoon Intention</div><div class="card-description">What is most important in the hours remaining? Set a clear purpose.</div><textarea id="md-intention" placeholder="This afternoon I will focus on..."></textarea></div>
       <div class="save-row">
         <span class="last-saved-ts" id="midday-saved-ts"></span>
         <div class="save-btns">
@@ -748,6 +876,7 @@
           <button class="btn-primary" onclick="savePanel('midday')">Save Midday</button>
         </div>
       </div>
+      <div class="ai-wisdom-wrap" id="ai-wrap-midday"></div>
     </div>
 
     <!-- Evening Tab -->
@@ -756,90 +885,22 @@
         <div class="callout-label">Seneca's Examination</div>
         <p class="callout-text">"I examine my entire day and go back over what I've done and said, hiding nothing from myself, passing nothing by." &mdash; Seneca</p>
       </div>
-
-      <div class="card">
-        <div class="card-label">Card I</div>
-        <div class="card-title">What Went Well</div>
-        <div class="card-description">What did you do, say, or think that you are proud of today?</div>
-        <textarea id="e-well" placeholder="I am proud that I..."></textarea>
-      </div>
-
-      <div class="card">
-        <div class="card-label">Card II</div>
-        <div class="card-title">What I Would Improve</div>
-        <div class="card-description">Where did you fall short of your own standards? Without judgment — only honesty.</div>
-        <textarea id="e-improve" placeholder="I could have done better when..."></textarea>
-      </div>
-
-      <div class="card">
-        <div class="card-label">Card III</div>
-        <div class="card-title">A Virtuous Act</div>
-        <div class="card-description">Describe one moment today where you acted with virtue — however small.</div>
-        <textarea id="e-virtue-act" placeholder="I acted virtuously when..."></textarea>
-      </div>
-
-      <div class="card">
-        <div class="card-label">Card IV</div>
-        <div class="card-title">Gratitude</div>
-        <div class="card-description">What are you grateful for today? Sit with it rather than listing.</div>
-        <textarea id="e-gratitude" placeholder="I am genuinely grateful for..."></textarea>
-      </div>
-
-      <div class="card">
-        <div class="card-label">Card V</div>
-        <div class="card-title">The Lesson</div>
-        <div class="card-description">What did today teach you? One insight worth carrying forward.</div>
-        <textarea id="e-lesson" placeholder="Today taught me..."></textarea>
-      </div>
-
+      <div class="card"><div class="card-label">Card I</div><div class="card-title">What Went Well</div><div class="card-description">What did you do, say, or think that you are proud of today?</div><textarea id="e-well" placeholder="I am proud that I..."></textarea></div>
+      <div class="card"><div class="card-label">Card II</div><div class="card-title">What I Would Improve</div><div class="card-description">Where did you fall short of your own standards? Without judgment — only honesty.</div><textarea id="e-improve" placeholder="I could have done better when..."></textarea></div>
+      <div class="card"><div class="card-label">Card III</div><div class="card-title">A Virtuous Act</div><div class="card-description">Describe one moment today where you acted with virtue — however small.</div><textarea id="e-virtue-act" placeholder="I acted virtuously when..."></textarea></div>
+      <div class="card"><div class="card-label">Card IV</div><div class="card-title">Gratitude</div><div class="card-description">What are you grateful for today? Sit with it rather than listing.</div><textarea id="e-gratitude" placeholder="I am genuinely grateful for..."></textarea></div>
+      <div class="card"><div class="card-label">Card V</div><div class="card-title">The Lesson</div><div class="card-description">What did today teach you? One insight worth carrying forward.</div><textarea id="e-lesson" placeholder="Today taught me..."></textarea></div>
       <div class="card">
         <div class="card-label">Card VI &mdash; Virtue Audit</div>
         <div class="card-title">How Did You Embody the Virtues?</div>
-        <div class="card-description">Rate each virtue in today's conduct. Be honest — this is for your growth, not your ego.</div>
+        <div class="card-description">Rate each virtue in today's conduct. Be honest.</div>
         <div class="virtue-ratings-grid">
-          <div class="virtue-rating-row">
-            <div class="vrating-label">Wisdom</div>
-            <div class="vdots-row" id="vdots-wisdom">
-              <span class="vdot" onclick="setVirtueRating('wisdom',1)"></span>
-              <span class="vdot" onclick="setVirtueRating('wisdom',2)"></span>
-              <span class="vdot" onclick="setVirtueRating('wisdom',3)"></span>
-              <span class="vdot" onclick="setVirtueRating('wisdom',4)"></span>
-              <span class="vdot" onclick="setVirtueRating('wisdom',5)"></span>
-            </div>
-          </div>
-          <div class="virtue-rating-row">
-            <div class="vrating-label">Courage</div>
-            <div class="vdots-row" id="vdots-courage">
-              <span class="vdot" onclick="setVirtueRating('courage',1)"></span>
-              <span class="vdot" onclick="setVirtueRating('courage',2)"></span>
-              <span class="vdot" onclick="setVirtueRating('courage',3)"></span>
-              <span class="vdot" onclick="setVirtueRating('courage',4)"></span>
-              <span class="vdot" onclick="setVirtueRating('courage',5)"></span>
-            </div>
-          </div>
-          <div class="virtue-rating-row">
-            <div class="vrating-label">Justice</div>
-            <div class="vdots-row" id="vdots-justice">
-              <span class="vdot" onclick="setVirtueRating('justice',1)"></span>
-              <span class="vdot" onclick="setVirtueRating('justice',2)"></span>
-              <span class="vdot" onclick="setVirtueRating('justice',3)"></span>
-              <span class="vdot" onclick="setVirtueRating('justice',4)"></span>
-              <span class="vdot" onclick="setVirtueRating('justice',5)"></span>
-            </div>
-          </div>
-          <div class="virtue-rating-row">
-            <div class="vrating-label">Temperance</div>
-            <div class="vdots-row" id="vdots-temperance">
-              <span class="vdot" onclick="setVirtueRating('temperance',1)"></span>
-              <span class="vdot" onclick="setVirtueRating('temperance',2)"></span>
-              <span class="vdot" onclick="setVirtueRating('temperance',3)"></span>
-              <span class="vdot" onclick="setVirtueRating('temperance',4)"></span>
-              <span class="vdot" onclick="setVirtueRating('temperance',5)"></span>
-            </div>
-          </div>
+          <div class="virtue-rating-row"><div class="vrating-label">Wisdom</div><div class="vdots-row" id="vdots-wisdom"><span class="vdot" onclick="setVirtueRating('wisdom',1)"></span><span class="vdot" onclick="setVirtueRating('wisdom',2)"></span><span class="vdot" onclick="setVirtueRating('wisdom',3)"></span><span class="vdot" onclick="setVirtueRating('wisdom',4)"></span><span class="vdot" onclick="setVirtueRating('wisdom',5)"></span></div></div>
+          <div class="virtue-rating-row"><div class="vrating-label">Courage</div><div class="vdots-row" id="vdots-courage"><span class="vdot" onclick="setVirtueRating('courage',1)"></span><span class="vdot" onclick="setVirtueRating('courage',2)"></span><span class="vdot" onclick="setVirtueRating('courage',3)"></span><span class="vdot" onclick="setVirtueRating('courage',4)"></span><span class="vdot" onclick="setVirtueRating('courage',5)"></span></div></div>
+          <div class="virtue-rating-row"><div class="vrating-label">Justice</div><div class="vdots-row" id="vdots-justice"><span class="vdot" onclick="setVirtueRating('justice',1)"></span><span class="vdot" onclick="setVirtueRating('justice',2)"></span><span class="vdot" onclick="setVirtueRating('justice',3)"></span><span class="vdot" onclick="setVirtueRating('justice',4)"></span><span class="vdot" onclick="setVirtueRating('justice',5)"></span></div></div>
+          <div class="virtue-rating-row"><div class="vrating-label">Temperance</div><div class="vdots-row" id="vdots-temperance"><span class="vdot" onclick="setVirtueRating('temperance',1)"></span><span class="vdot" onclick="setVirtueRating('temperance',2)"></span><span class="vdot" onclick="setVirtueRating('temperance',3)"></span><span class="vdot" onclick="setVirtueRating('temperance',4)"></span><span class="vdot" onclick="setVirtueRating('temperance',5)"></span></div></div>
         </div>
       </div>
-
       <div class="save-row">
         <span class="last-saved-ts" id="evening-saved-ts"></span>
         <div class="save-btns">
@@ -847,6 +908,7 @@
           <button class="btn-primary" onclick="savePanel('evening')">Save Evening</button>
         </div>
       </div>
+      <div class="ai-wisdom-wrap" id="ai-wrap-evening"></div>
     </div>
   </section>
 
@@ -854,32 +916,12 @@
   <section id="section-weekly" class="section-page">
     <div class="section-eyebrow" id="weekly-period-label"></div>
     <h2 class="section-title">Weekly Reflection</h2>
-    <p class="section-subtitle">A broader view — patterns, growth, and the week's philosophical lesson.</p>
+    <p class="section-subtitle">Patterns, growth, and the week's philosophical lesson.</p>
     <div class="section-cards">
-      <div class="card">
-        <div class="card-label">Card I</div>
-        <div class="card-title">The Week's Challenge</div>
-        <div class="card-description">What was the most significant challenge you faced this week? How did you respond?</div>
-        <textarea id="w-challenge" placeholder="The greatest challenge this week was..."></textarea>
-      </div>
-      <div class="card">
-        <div class="card-label">Card II</div>
-        <div class="card-title">Growth Observed</div>
-        <div class="card-description">Where did you grow — in character, in understanding, in practice?</div>
-        <textarea id="w-growth" placeholder="I grew this week by..."></textarea>
-      </div>
-      <div class="card">
-        <div class="card-label">Card III</div>
-        <div class="card-title">Stoic Principle Applied</div>
-        <div class="card-description">Which Stoic teaching showed up most meaningfully in your week?</div>
-        <textarea id="w-stoic" placeholder="This week I applied the principle of..."></textarea>
-      </div>
-      <div class="card">
-        <div class="card-label">Card IV</div>
-        <div class="card-title">Focus for Next Week</div>
-        <div class="card-description">What one virtue, habit, or intention will anchor the coming week?</div>
-        <textarea id="w-focus" placeholder="Next week I will focus on..."></textarea>
-      </div>
+      <div class="card"><div class="card-label">Card I</div><div class="card-title">The Week's Challenge</div><div class="card-description">What was the most significant challenge you faced this week? How did you respond?</div><textarea id="w-challenge" placeholder="The greatest challenge this week was..."></textarea></div>
+      <div class="card"><div class="card-label">Card II</div><div class="card-title">Growth Observed</div><div class="card-description">Where did you grow — in character, in understanding, in practice?</div><textarea id="w-growth" placeholder="I grew this week by..."></textarea></div>
+      <div class="card"><div class="card-label">Card III</div><div class="card-title">Stoic Principle Applied</div><div class="card-description">Which Stoic teaching showed up most meaningfully in your week?</div><textarea id="w-stoic" placeholder="This week I applied the principle of..."></textarea></div>
+      <div class="card"><div class="card-label">Card IV</div><div class="card-title">Focus for Next Week</div><div class="card-description">What one virtue, habit, or intention will anchor the coming week?</div><textarea id="w-focus" placeholder="Next week I will focus on..."></textarea></div>
     </div>
     <div class="save-row">
       <span class="last-saved-ts" id="weekly-saved-ts"></span>
@@ -901,36 +943,11 @@
       <p class="memento-attr">Seneca &mdash; Letters to Lucilius</p>
     </div>
     <div class="section-cards">
-      <div class="card">
-        <div class="card-label">Card I</div>
-        <div class="card-title">Virtue Audit</div>
-        <div class="card-description">How did you embody each virtue this month? Be specific, be honest.</div>
-        <textarea id="mo-virtue-audit" placeholder="This month, in wisdom I... in courage I... in justice I... in temperance I..."></textarea>
-      </div>
-      <div class="card">
-        <div class="card-label">Card II</div>
-        <div class="card-title">What Distracted Me</div>
-        <div class="card-description">What consumed your attention that did not deserve it? What did you pursue that proved empty?</div>
-        <textarea id="mo-distractions" placeholder="I was distracted by..."></textarea>
-      </div>
-      <div class="card">
-        <div class="card-label">Card III &mdash; Fear Inventory</div>
-        <div class="card-title">What Am I Afraid Of?</div>
-        <div class="card-description">Name your fears plainly. The Stoic practice is to look at them clearly, not to pretend they don't exist.</div>
-        <textarea id="mo-fears" placeholder="If I am honest, I fear..."></textarea>
-      </div>
-      <div class="card">
-        <div class="card-label">Card IV</div>
-        <div class="card-title">Letter from Your Future Self</div>
-        <div class="card-description">Imagine yourself one year from now. What does that person want you to know today?</div>
-        <textarea id="mo-letter" style="min-height:180px" placeholder="One year from now, I want you to know..."></textarea>
-      </div>
-      <div class="card">
-        <div class="card-label">Card V</div>
-        <div class="card-title">Next Month's Commitment</div>
-        <div class="card-description">One specific, concrete commitment for the month ahead. Not a wish — a commitment.</div>
-        <textarea id="mo-commitment" placeholder="I commit to..."></textarea>
-      </div>
+      <div class="card"><div class="card-label">Card I</div><div class="card-title">Virtue Audit</div><div class="card-description">How did you embody each virtue this month? Be specific, be honest.</div><textarea id="mo-virtue-audit" placeholder="This month, in wisdom I... in courage I... in justice I... in temperance I..."></textarea></div>
+      <div class="card"><div class="card-label">Card II</div><div class="card-title">What Distracted Me</div><div class="card-description">What consumed your attention that did not deserve it?</div><textarea id="mo-distractions" placeholder="I was distracted by..."></textarea></div>
+      <div class="card"><div class="card-label">Card III &mdash; Fear Inventory</div><div class="card-title">What Am I Afraid Of?</div><div class="card-description">Name your fears plainly. Look at them clearly.</div><textarea id="mo-fears" placeholder="If I am honest, I fear..."></textarea></div>
+      <div class="card"><div class="card-label">Card IV</div><div class="card-title">Letter from Your Future Self</div><div class="card-description">Imagine yourself one year from now. What does that person want you to know?</div><textarea id="mo-letter" style="min-height:180px" placeholder="One year from now, I want you to know..."></textarea></div>
+      <div class="card"><div class="card-label">Card V</div><div class="card-title">Next Month's Commitment</div><div class="card-description">One specific, concrete commitment for the month ahead.</div><textarea id="mo-commitment" placeholder="I commit to..."></textarea></div>
     </div>
     <div class="save-row">
       <span class="last-saved-ts" id="monthly-saved-ts"></span>
@@ -944,9 +961,18 @@
   <!-- CHALLENGES -->
   <section id="section-challenges" class="section-page">
     <div class="section-eyebrow">Stoic Practice</div>
-    <h2 class="section-title">The Seven Challenges</h2>
-    <p class="section-subtitle">Each is a single day's exercise. Completion is noted. The practice is its own reward.</p>
-    <div class="challenges-grid" id="challenges-container"></div>
+    <h2 class="section-title">Challenges</h2>
+    <p class="section-subtitle">Structured exercises in Stoic living. The practice is its own reward.</p>
+    <div class="ch-tab-bar">
+      <button class="ch-tab active" id="chtab-seven" onclick="switchChallengesTab('seven')">Seven Challenges</button>
+      <button class="ch-tab" id="chtab-thirty" onclick="switchChallengesTab('thirty')">30-Day Journey</button>
+    </div>
+    <div id="ch-panel-seven" class="ch-panel active">
+      <div class="challenges-grid" id="challenges-container"></div>
+    </div>
+    <div id="ch-panel-thirty" class="ch-panel">
+      <div id="challenge30-container"></div>
+    </div>
   </section>
 
   <!-- ENTRIES -->
@@ -954,11 +980,79 @@
     <div class="section-eyebrow">Archive</div>
     <h2 class="section-title">Past Entries</h2>
     <p class="section-subtitle" id="entries-count-label">Your complete record of practice.</p>
-    <div class="search-wrap">
-      <span class="search-icon">&#9906;</span>
-      <input class="search-input" id="search-input" type="text" placeholder="Search entries..." oninput="renderEntries(this.value)" />
+    <div class="mood-chart">
+      <div class="mood-chart-head">
+        <span class="mood-chart-label">Mood &mdash; Last 30 Days</span>
+        <span class="mood-chart-sub">1 = Struggling &middot; 5 = Excellent</span>
+      </div>
+      <div class="mood-chart-bars" id="mood-chart-bars"></div>
+    </div>
+    <div class="entries-header-row">
+      <div class="search-filters">
+        <div class="search-wrap">
+          <span class="search-icon">&#9906;</span>
+          <input class="search-input" id="search-input" type="text" placeholder="Search entries..." oninput="applyEntryFilters()" />
+        </div>
+        <div class="filter-group">
+          <label class="filter-label" for="filter-date-from">From</label>
+          <input class="filter-input" id="filter-date-from" type="date" onchange="applyEntryFilters()" />
+        </div>
+        <div class="filter-group">
+          <label class="filter-label" for="filter-date-to">To</label>
+          <input class="filter-input" id="filter-date-to" type="date" onchange="applyEntryFilters()" />
+        </div>
+        <div class="filter-group">
+          <label class="filter-label" for="filter-mood">Mood</label>
+          <select class="filter-select" id="filter-mood" onchange="applyEntryFilters()">
+            <option value="">All moods</option>
+            <option value="5">&#10024; Excellent</option>
+            <option value="4">&#128522; Good</option>
+            <option value="3">&#128578; Neutral</option>
+            <option value="2">&#128528; Low</option>
+            <option value="1">&#128532; Struggling</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-export" onclick="exportToPDF()">&#8681; Export PDF</button>
     </div>
     <div class="timeline" id="entries-timeline"></div>
+  </section>
+
+  <!-- FAVOURITES -->
+  <section id="section-favorites" class="section-page">
+    <div class="section-eyebrow">Saved Quotes</div>
+    <h2 class="section-title">Favourite Quotes</h2>
+    <p class="section-subtitle">Stoic wisdom you have chosen to keep close. Heart any quote in the morning practice to save it here.</p>
+    <div class="favorites-grid" id="favorites-grid"></div>
+  </section>
+
+  <!-- READING -->
+  <section id="section-reading" class="section-page">
+    <div class="section-eyebrow">Essential Texts</div>
+    <h2 class="section-title">The Reading List</h2>
+    <p class="section-subtitle">Ten works that have shaped Stoic thought across centuries. Mark what you have read.</p>
+    <div id="reading-header"></div>
+    <div class="reading-grid" id="reading-grid"></div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section id="section-community" class="section-page">
+    <div class="section-eyebrow">Shared Wisdom</div>
+    <h2 class="section-title">Reflections Board</h2>
+    <p class="section-subtitle">A local board of Stoic reflections. Write what your practice has revealed, and read what others have shared.</p>
+    <div class="card community-share-card">
+      <div class="card-label">Share a Reflection</div>
+      <div class="card-title">What has your practice revealed?</div>
+      <div class="card-description">One sentence or short insight, written anonymously. Keep it brief and philosophical.</div>
+      <textarea class="community-input" id="community-input" maxlength="280" placeholder="One thing my practice has taught me..." oninput="updateCharCount()"></textarea>
+      <div class="community-char-count"><span id="char-count">0</span> / 280</div>
+      <div class="save-row">
+        <span class="community-local-note">Reflections are stored locally on your device.</span>
+        <button class="btn-primary" onclick="shareReflection()">Share Reflection</button>
+      </div>
+    </div>
+    <div class="community-section-label" id="community-feed-label">Reflections</div>
+    <div class="community-feed" id="community-feed"></div>
   </section>
 
 </main>
@@ -967,843 +1061,66 @@
 
 <!-- ── Definitions Panel ── -->
 <button class="def-tab" onclick="toggleDefinitions()" aria-label="Open Stoic Glossary">
-  <span class="def-tab-icon">📖</span>
+  <span class="def-tab-icon">&#128218;</span>
   Glossary
 </button>
 <div class="def-overlay" id="def-overlay" onclick="toggleDefinitions()"></div>
 <aside class="def-panel" id="def-panel" role="complementary" aria-label="Stoic Glossary">
-  <div class="def-panel-head">
+  <div class="def-panel-head" style="position:relative">
     <button class="def-close" onclick="toggleDefinitions()" aria-label="Close glossary">&#x2715;</button>
     <div class="def-panel-eyebrow">Reference</div>
     <div class="def-panel-title">Stoic Glossary</div>
-    <div class="def-panel-subtitle">Plain-language definitions of terms used in this journal</div>
+    <div class="def-panel-subtitle">Plain-language definitions of terms used in Atarax</div>
   </div>
   <div class="def-search-wrap">
     <input class="def-search" id="def-search" type="text" placeholder="Search terms..." oninput="filterDefinitions(this.value)" />
   </div>
   <div class="def-body" id="def-body">
-
     <div class="def-category"><div class="def-category-label">Philosophy &amp; Practice</div></div>
-
-    <div class="def-item" data-terms="stoicism stoic">
-      <div class="def-term">Stoicism</div>
-      <div class="def-text">A practical philosophy founded in ancient Greece, teaching that we cannot control what happens to us — only how we respond. True wellbeing comes from living virtuously, not from wealth, pleasure, or status.</div>
-    </div>
-
-    <div class="def-item" data-terms="virtue ethics virtue">
-      <div class="def-term">Virtue Ethics</div>
-      <div class="def-text">The idea that living well means developing good character — being wise, brave, fair, and self-controlled — rather than chasing pleasure or following rigid rules. For Stoics, virtue is the only true good.</div>
-    </div>
-
-    <div class="def-item" data-terms="dichotomy of control control">
-      <div class="def-term">Dichotomy of Control</div>
-      <div class="def-text">The core Stoic insight: some things are "up to us" (our thoughts, choices, and reactions) and some are not (everything else). Direct your energy only toward what you can control; release the rest.</div>
-    </div>
-
-    <div class="def-item" data-terms="logos reason nature">
-      <div class="def-term">Logos <span class="def-greek">λόγος</span></div>
-      <div class="def-text">The rational principle the Stoics believed governs the universe. Living "according to nature" means aligning your reason and actions with this universal order — not fighting reality, but flowing with it.</div>
-    </div>
-
-    <div class="def-item" data-terms="eudaimonia flourishing happiness">
-      <div class="def-term">Eudaimonia <span class="def-greek">εὐδαιμονία</span></div>
-      <div class="def-text">Often translated as "happiness," but closer to "flourishing" or living a genuinely good life. For Stoics, eudaimonia is achieved through virtue alone — not luck, circumstances, or possessions.</div>
-    </div>
-
-    <div class="def-item" data-terms="ataraxia tranquility peace equanimity">
-      <div class="def-term">Ataraxia <span class="def-greek">ἀταραξία</span></div>
-      <div class="def-text">A state of deep inner calm and freedom from mental disturbance. Not the absence of emotion, but a steady, untroubled mind that is not swept away by fear, craving, or anxiety.</div>
-    </div>
-
-    <div class="def-item" data-terms="apatheia passions emotions">
-      <div class="def-term">Apatheia <span class="def-greek">ἀπάθεια</span></div>
-      <div class="def-text">Not apathy, but freedom from destructive passions (excessive fear, greed, rage). Stoics still feel emotions — they simply don't let irrational impulses override clear judgment. Think: calm clarity, not coldness.</div>
-    </div>
-
+    <div class="def-item" data-terms="stoicism stoic"><div class="def-term">Stoicism</div><div class="def-text">A practical philosophy founded in ancient Greece, teaching that we cannot control what happens to us — only how we respond. True wellbeing comes from living virtuously, not from wealth, pleasure, or status.</div></div>
+    <div class="def-item" data-terms="virtue ethics virtue"><div class="def-term">Virtue Ethics</div><div class="def-text">The idea that living well means developing good character — being wise, brave, fair, and self-controlled — rather than chasing pleasure or following rigid rules. For Stoics, virtue is the only true good.</div></div>
+    <div class="def-item" data-terms="dichotomy of control control"><div class="def-term">Dichotomy of Control</div><div class="def-text">The core Stoic insight: some things are "up to us" (our thoughts, choices, and reactions) and some are not (everything else). Direct your energy only toward what you can control; release the rest.</div></div>
+    <div class="def-item" data-terms="logos reason nature"><div class="def-term">Logos <span class="def-greek">λόγος</span></div><div class="def-text">The rational principle the Stoics believed governs the universe. Living "according to nature" means aligning your reason and actions with this universal order — not fighting reality, but flowing with it.</div></div>
+    <div class="def-item" data-terms="eudaimonia flourishing happiness"><div class="def-term">Eudaimonia <span class="def-greek">εὐδαιμονία</span></div><div class="def-text">Often translated as "happiness," but closer to "flourishing" or living a genuinely good life. For Stoics, eudaimonia is achieved through virtue alone — not luck, circumstances, or possessions.</div></div>
+    <div class="def-item" data-terms="ataraxia tranquility peace equanimity"><div class="def-term">Ataraxia <span class="def-greek">ἀταραξία</span></div><div class="def-text">A state of deep inner calm and freedom from mental disturbance. The name of this journal. Not the absence of emotion, but a steady, untroubled mind not swept away by fear, craving, or anxiety.</div></div>
+    <div class="def-item" data-terms="apatheia passions emotions"><div class="def-term">Apatheia <span class="def-greek">ἀπάθεια</span></div><div class="def-text">Not apathy, but freedom from destructive passions. Stoics still feel emotions — they simply don't let irrational impulses override clear judgment. Think: calm clarity, not coldness.</div></div>
     <div class="def-category"><div class="def-category-label">Key Practices</div></div>
-
-    <div class="def-item" data-terms="premeditatio malorum premeditation adversity negative visualization">
-      <div class="def-term">Premeditatio Malorum <span class="def-greek">premeditation of evils</span></div>
-      <div class="def-text">The practice of imagining in advance what could go wrong. By mentally rehearsing setbacks, you remove their power to shock you and train yourself to respond calmly rather than react with panic.</div>
-    </div>
-
-    <div class="def-item" data-terms="memento mori death mortality remember">
-      <div class="def-term">Memento Mori <span class="def-greek">remember you will die</span></div>
-      <div class="def-text">A practice of regularly reflecting on death — not morbidly, but to clarify what matters. Remembering life is finite strips away trivialities and focuses attention on how you actually spend your days.</div>
-    </div>
-
-    <div class="def-item" data-terms="amor fati love fate">
-      <div class="def-term">Amor Fati <span class="def-greek">love of fate</span></div>
-      <div class="def-text">The practice of not merely accepting what happens, but embracing it wholeheartedly — including difficulty, failure, and loss. Turn every obstacle into fuel. Love your life exactly as it unfolds.</div>
-    </div>
-
-    <div class="def-item" data-terms="negative visualization">
-      <div class="def-term">Negative Visualization</div>
-      <div class="def-text">Deliberately imagining the loss of things you value — health, relationships, comfort — to cultivate genuine gratitude for what you already have. Closely related to Premeditatio Malorum.</div>
-    </div>
-
+    <div class="def-item" data-terms="premeditatio malorum premeditation adversity negative visualization"><div class="def-term">Premeditatio Malorum <span class="def-greek">premeditation of evils</span></div><div class="def-text">The practice of imagining in advance what could go wrong. By mentally rehearsing setbacks, you remove their power to shock you and train yourself to respond calmly rather than react with panic.</div></div>
+    <div class="def-item" data-terms="memento mori death mortality remember"><div class="def-term">Memento Mori <span class="def-greek">remember you will die</span></div><div class="def-text">A practice of regularly reflecting on death — not morbidly, but to clarify what matters. Remembering life is finite strips away trivialities and focuses attention on how you actually spend your days.</div></div>
+    <div class="def-item" data-terms="amor fati love fate"><div class="def-term">Amor Fati <span class="def-greek">love of fate</span></div><div class="def-text">The practice of not merely accepting what happens, but embracing it wholeheartedly — including difficulty, failure, and loss. Turn every obstacle into fuel. Love your life exactly as it unfolds.</div></div>
+    <div class="def-item" data-terms="negative visualization"><div class="def-term">Negative Visualization</div><div class="def-text">Deliberately imagining the loss of things you value — health, relationships, comfort — to cultivate genuine gratitude for what you already have. Closely related to Premeditatio Malorum.</div></div>
     <div class="def-category"><div class="def-category-label">The Four Virtues</div></div>
-
-    <div class="def-item" data-terms="wisdom sophia phronesis prudence">
-      <div class="def-term">Wisdom <span class="def-greek">Sophia / Phronesis</span></div>
-      <div class="def-text">The ability to see things clearly and make good judgments. Wisdom is knowing what is truly good, what is harmful, and how to act well in complex situations. It is the master virtue from which the others flow.</div>
-    </div>
-
-    <div class="def-item" data-terms="courage andreia bravery fortitude">
-      <div class="def-term">Courage <span class="def-greek">Andreia</span></div>
-      <div class="def-text">Not the absence of fear, but the willingness to act rightly despite it. Stoic courage includes enduring hardship, speaking truth, and persisting in virtue even when it is difficult or unpopular.</div>
-    </div>
-
-    <div class="def-item" data-terms="justice dikaiosyne fairness community">
-      <div class="def-term">Justice <span class="def-greek">Dikaiosyne</span></div>
-      <div class="def-text">Treating others fairly, contributing to the common good, and fulfilling your duties to your community. For Stoics, we are all part of one human family — justice means acting accordingly.</div>
-    </div>
-
-    <div class="def-item" data-terms="temperance sophrosyne moderation self-control">
-      <div class="def-term">Temperance <span class="def-greek">Sophrosyne</span></div>
-      <div class="def-text">Moderation, self-discipline, and balance. Neither extreme indulgence nor harsh deprivation — but choosing the right amount, at the right time, for the right reasons. Governing your appetites rather than being governed by them.</div>
-    </div>
-
+    <div class="def-item" data-terms="wisdom sophia phronesis prudence"><div class="def-term">Wisdom <span class="def-greek">Sophia / Phronesis</span></div><div class="def-text">The ability to see things clearly and make good judgments. Wisdom is knowing what is truly good, what is harmful, and how to act well in complex situations. It is the master virtue from which the others flow.</div></div>
+    <div class="def-item" data-terms="courage andreia bravery fortitude"><div class="def-term">Courage <span class="def-greek">Andreia</span></div><div class="def-text">Not the absence of fear, but the willingness to act rightly despite it. Stoic courage includes enduring hardship, speaking truth, and persisting in virtue even when it is difficult or unpopular.</div></div>
+    <div class="def-item" data-terms="justice dikaiosyne fairness community"><div class="def-term">Justice <span class="def-greek">Dikaiosyne</span></div><div class="def-text">Treating others fairly, contributing to the common good, and fulfilling your duties to your community. For Stoics, we are all part of one human family — justice means acting accordingly.</div></div>
+    <div class="def-item" data-terms="temperance sophrosyne moderation self-control"><div class="def-term">Temperance <span class="def-greek">Sophrosyne</span></div><div class="def-text">Moderation, self-discipline, and balance. Neither extreme indulgence nor harsh deprivation — but choosing the right amount, at the right time, for the right reasons.</div></div>
     <div class="def-category"><div class="def-category-label">The Stoic Teachers</div></div>
-
-    <div class="def-item" data-terms="marcus aurelius emperor meditations">
-      <div class="def-term">Marcus Aurelius <span class="def-greek">121–180 AD</span></div>
-      <div class="def-text">Roman Emperor and Stoic philosopher. His private notebook — the <em>Meditations</em> — was never meant to be published. It records his daily effort to live by Stoic principles despite immense power and responsibility.</div>
-    </div>
-
-    <div class="def-item" data-terms="epictetus slave discourses enchiridion">
-      <div class="def-term">Epictetus <span class="def-greek">c. 50–135 AD</span></div>
-      <div class="def-text">Born a slave, he became one of Stoicism's greatest teachers. His core message: external circumstances don't define you — your choices do. His <em>Discourses</em> and <em>Enchiridion</em> remain profoundly practical.</div>
-    </div>
-
-    <div class="def-item" data-terms="seneca letters lucilius tragedies rome">
-      <div class="def-term">Seneca <span class="def-greek">c. 4 BC–65 AD</span></div>
-      <div class="def-text">Roman statesman, playwright, and philosopher. His <em>Letters to Lucilius</em> are personal, warm, and accessible — a series of 124 letters exploring how to live well, face death, and spend time wisely.</div>
-    </div>
-
+    <div class="def-item" data-terms="marcus aurelius emperor meditations"><div class="def-term">Marcus Aurelius <span class="def-greek">121–180 AD</span></div><div class="def-text">Roman Emperor and Stoic philosopher. His private notebook — the <em>Meditations</em> — was never meant to be published. It records his daily effort to live by Stoic principles despite immense power and responsibility.</div></div>
+    <div class="def-item" data-terms="epictetus slave discourses enchiridion"><div class="def-term">Epictetus <span class="def-greek">c. 50–135 AD</span></div><div class="def-text">Born a slave, he became one of Stoicism's greatest teachers. His core message: external circumstances don't define you — your choices do. His <em>Discourses</em> and <em>Enchiridion</em> remain profoundly practical.</div></div>
+    <div class="def-item" data-terms="seneca letters lucilius tragedies rome"><div class="def-term">Seneca <span class="def-greek">c. 4 BC–65 AD</span></div><div class="def-text">Roman statesman, playwright, and philosopher. His <em>Letters to Lucilius</em> are personal, warm, and accessible — 124 letters exploring how to live well, face death, and spend time wisely.</div></div>
     <div class="def-category"><div class="def-category-label">Other Terms</div></div>
-
-    <div class="def-item" data-terms="hegemonikon ruling faculty mind reason">
-      <div class="def-term">Hegemonikon <span class="def-greek">ἡγεμονικόν</span></div>
-      <div class="def-text">The "ruling faculty" — the rational, decision-making center of the mind. Stoics believed this is where your character lives and where all moral choices are made. Guarding it is your primary duty.</div>
-    </div>
-
-    <div class="def-item" data-terms="sage sophos ideal wise person">
-      <div class="def-term">The Sage <span class="def-greek">Sophos</span></div>
-      <div class="def-text">The Stoic ideal of a perfectly wise and virtuous person. Stoics acknowledged no one fully achieves this — but it serves as a north star. The goal is to make progress toward it each day, not to claim you've arrived.</div>
-    </div>
-
-    <div class="def-item" data-terms="preferred indifferents externals health wealth reputation">
-      <div class="def-term">Preferred Indifferents</div>
-      <div class="def-text">Things like health, wealth, and good reputation are "indifferent" — they don't make you good or bad. But they are still "preferred" because, all else equal, they are better to have than not. The key: don't let them become your reason for living.</div>
-    </div>
-
-    <div class="def-item" data-terms="contemplation morning evening practice">
-      <div class="def-term">Morning &amp; Evening Practice</div>
-      <div class="def-text">Ancient Stoics began each day by setting intentions and anticipating challenges, and ended each day by reviewing their conduct honestly. This structure of reflection — used throughout this journal — was central to their daily life.</div>
-    </div>
-
+    <div class="def-item" data-terms="hegemonikon ruling faculty mind reason"><div class="def-term">Hegemonikon <span class="def-greek">ἡγεμονικόν</span></div><div class="def-text">The "ruling faculty" — the rational, decision-making center of the mind. Stoics believed this is where your character lives and where all moral choices are made. Guarding it is your primary duty.</div></div>
+    <div class="def-item" data-terms="sage sophos ideal wise person"><div class="def-term">The Sage <span class="def-greek">Sophos</span></div><div class="def-text">The Stoic ideal of a perfectly wise and virtuous person. No one fully achieves this — but it serves as a north star. The goal is to make progress toward it each day, not to claim you've arrived.</div></div>
+    <div class="def-item" data-terms="preferred indifferents externals health wealth reputation"><div class="def-term">Preferred Indifferents</div><div class="def-text">Things like health, wealth, and good reputation are "indifferent" — they don't make you good or bad. But they are still "preferred" because they are better to have than not. The key: don't let them become your reason for living.</div></div>
+    <div class="def-item" data-terms="contemplation morning evening practice"><div class="def-term">Morning &amp; Evening Practice</div><div class="def-text">Ancient Stoics began each day by setting intentions and anticipating challenges, and ended each day by reviewing their conduct honestly. This structure — used throughout Atarax — was central to their daily life.</div></div>
   </div>
 </aside>
 
+<script src="js/core.js"></script>
+<script src="js/mood.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/community.js"></script>
+<script src="js/challenge30.js"></script>
+<script src="js/pdf.js"></script>
+<script src="js/extras.js"></script>
 <script>
-// ── Stoic quotes ──────────────────────────────────────────────────────────
-const QUOTES = [
-  { quote:"You have power over your mind, not outside events. Realize this, and you will find strength.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"He who fears death will never do anything worthy of a living man.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"Make the best use of what is in your power, and take the rest as it happens.", author:"Epictetus", source:"Enchiridion" },
-  { quote:"Waste no more time arguing about what a good man should be. Be one.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"It is not that I am brave, but that I choose what to be afraid of.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"The first rule is to keep an untroubled spirit. The second is to look things in the face and know them for what they are.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"We suffer more in imagination than in reality.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"Seek not the good in external things; seek it in yourself.", author:"Epictetus", source:"Discourses" },
-  { quote:"How does it help to make troubles heavier by bemoaning them?", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"Confine yourself to the present.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"He is a wise man who does not grieve for the things which he has not, but rejoices for those which he has.", author:"Epictetus", source:"Fragments" },
-  { quote:"No man is free who is not a master of himself.", author:"Epictetus", source:"Discourses" },
-  { quote:"If it is not right, do not do it; if it is not true, do not say it.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"True happiness is to enjoy the present, without anxious dependence upon the future.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"The object of life is not to be on the side of the majority, but to escape finding oneself in the ranks of the insane.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"Man is not disturbed by events, but by the opinions he has of events.", author:"Epictetus", source:"Enchiridion" },
-  { quote:"Do not indulge in expectations of what is absent; count up the blessings you actually possess.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"Very little is needed to make a happy life; it is all within yourself, in your way of thinking.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"Let philosophy scrape off your own faults rather than be a way to rail at the faults of others.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"First say to yourself what you would be; and then do what you have to do.", author:"Epictetus", source:"Discourses" },
-  { quote:"Begin at once to live, and count each separate day as a separate life.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"The best revenge is not to be like your enemy.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"Difficulties strengthen the mind, as labor does the body.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"He has the most who is content with the least.", author:"Diogenes", source:"Lives of the Eminent Philosophers" },
-  { quote:"You are afraid of dying. But, come now, how is this life of yours anything but death?", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"Each day acquire something that will fortify you against poverty, against death, indeed against other misfortunes as well.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"How long are you going to wait before you demand the best for yourself?", author:"Epictetus", source:"Discourses" },
-  { quote:"Receive without pride, relinquish without struggle.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"The whole future lies in uncertainty: live immediately.", author:"Seneca", source:"Natural Questions" },
-  { quote:"Think of yourself as dead. You have lived your life. Now take what's left and live it properly.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"It never troubles the wolf how many the sheep may be.", author:"Virgil", source:"(cited by Marcus Aurelius)" }
-];
-
-// ── Challenges data ────────────────────────────────────────────────────────
-const CHALLENGES = [
-  { id:'voluntary_discomfort', numeral:'I', name:'Voluntary Discomfort',
-    desc:'Choose one comfort to forgo today — a warm shower, a morning coffee, a familiar ease. Live simply, by choice.',
-    context:'"Set aside a certain number of days, during which you shall be content with the scantiest and cheapest fare." — Seneca, Letters' },
-  { id:'digital_minimalism', numeral:'II', name:'Digital Minimalism',
-    desc:'No social media, no news, no streaming for one full day. Observe what fills the silence when distraction is removed.',
-    context:'"The greatest remedy for anger is delay." The same is true of impulse. Silence creates space for reason.' },
-  { id:'silent_walk', numeral:'III', name:'The Silent Walk',
-    desc:'Walk for at least 30 minutes without your phone, without music, without agenda. Simply observe what is around and within you.',
-    context:'The peripatetic tradition knew that movement clarifies thought. Walk as Aristotle walked — to think.' },
-  { id:'memento_mori', numeral:'IV', name:'Memento Mori',
-    desc:'Spend ten minutes in quiet contemplation of your mortality. Write what becomes clear when you remember you will die.',
-    context:'"Let us prepare our minds as if we had come to the very end of life. Let us postpone nothing." — Seneca, Letters' },
-  { id:'deep_gratitude', numeral:'V', name:'Deep Gratitude',
-    desc:'Write in detail about three things you are grateful for. Not what they are — why they matter, what it would mean to lose them.',
-    context:'"He is a wise man who does not grieve for the things which he has not, but rejoices for those which he has." — Epictetus' },
-  { id:'premeditatio', numeral:'VI', name:'Premeditatio Malorum',
-    desc:'Visualize in concrete detail a difficulty you fear. Sit with it. Plan your response. Remove its power through familiarity.',
-    context:'"He robs present ills of their power who has perceived their coming beforehand." — Seneca, Letters' },
-  { id:'full_virtue_day', numeral:'VII', name:'Full Virtue Day',
-    desc:'In every interaction and decision today, pause and ask: Is this wise? Is this courageous? Is this just? Is this temperate?',
-    context:'"Virtue is the only true good." To live one full day by the four cardinal virtues is to know what it means to live well.' }
-];
-
-// ── State ──────────────────────────────────────────────────────────────────
-let activeSection = 'today';
-let activeTab = 'morning';
-let selectedVirtue = null;
-const virtueRatings = { wisdom: 0, courage: 0, justice: 0, temperance: 0 };
-
-// ── Date utilities ─────────────────────────────────────────────────────────
-const dateKey = (d = new Date()) =>
-  `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-
-const getWeekKey = () => {
-  const d = new Date();
-  const jan1 = new Date(d.getFullYear(), 0, 1);
-  const wk = Math.ceil(((d - jan1) / 86400000 + jan1.getDay() + 1) / 7);
-  return `${d.getFullYear()}-W${String(wk).padStart(2,'0')}`;
-};
-
-const getMonthKey = () => {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-};
-
-const formatDateLong = (iso) => {
-  const [y, m, d] = iso.split('-').map(Number);
-  return new Date(y, m-1, d).toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-};
-
-const formatWeekLabel = (wk) => {
-  const [year, w] = wk.split('-W');
-  return `Week ${parseInt(w)} &middot; ${year}`;
-};
-
-const formatMonthLabel = (mo) => {
-  const [y, m] = mo.split('-').map(Number);
-  return new Date(y, m-1, 1).toLocaleDateString('en-US', { month:'long', year:'numeric' });
-};
-
-const formatTimestamp = (iso) => {
-  if (!iso) return '';
-  const d = new Date(iso);
-  return d.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit' }) + ' &middot; ' +
-         d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
-};
-
-const getDailyQuote = () => {
-  const d = new Date();
-  const start = new Date(d.getFullYear(), 0, 0);
-  const dayOfYear = Math.floor((d - start) / 86400000);
-  return QUOTES[(dayOfYear + d.getFullYear()) % QUOTES.length];
-};
-
-// ── Storage ────────────────────────────────────────────────────────────────
-const getData = (key) => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } };
-const setData = (key, val) => localStorage.setItem(key, JSON.stringify(val));
-const deleteData = (key) => localStorage.removeItem(key);
-
-// ── Toast ──────────────────────────────────────────────────────────────────
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2600);
-}
-
-// ── Navigation ─────────────────────────────────────────────────────────────
-function switchSection(name) {
-  activeSection = name;
-  document.querySelectorAll('.section-page').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
-  document.getElementById(`section-${name}`).classList.add('active');
-  document.querySelector(`.nav-link[onclick*="'${name}'"]`).classList.add('active');
-  if (name === 'entries') renderEntries(document.getElementById('search-input').value);
-  if (name === 'challenges') renderChallenges();
-  if (name === 'weekly') loadSection('weekly');
-  if (name === 'monthly') loadSection('monthly');
-}
-
-function beginPractice() {
-  document.getElementById('main-nav').scrollIntoView({ behavior: 'smooth' });
-  setTimeout(() => switchSection('today'), 400);
-}
-
-function switchTab(tab) {
-  activeTab = tab;
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById(`tab-btn-${tab}`).classList.add('active');
-  document.getElementById(`tab-${tab}`).classList.add('active');
-}
-
-// ── Tab indicators ─────────────────────────────────────────────────────────
-function updateTabIndicators() {
-  const today = dateKey();
-  ['morning','midday','evening'].forEach(p => {
-    const dot = document.getElementById(`dot-${p}`);
-    if (dot) dot.classList.toggle('visible', !!getData(`sj_${p}_${today}`));
-  });
-}
-
-// ── Virtue selection (morning) ─────────────────────────────────────────────
-function selectVirtue(v) {
-  selectedVirtue = v;
-  document.querySelectorAll('.virtue-card').forEach(c => {
-    c.classList.toggle('selected', c.dataset.virtue === v);
-  });
-}
-
-// ── Virtue ratings (evening) ──────────────────────────────────────────────
-function setVirtueRating(virtue, rating) {
-  virtueRatings[virtue] = rating;
-  renderVirtueDots();
-}
-
-function renderVirtueDots() {
-  ['wisdom','courage','justice','temperance'].forEach(v => {
-    const row = document.getElementById(`vdots-${v}`);
-    if (!row) return;
-    row.querySelectorAll('.vdot').forEach((dot, i) => {
-      dot.classList.toggle('filled', i < virtueRatings[v]);
-    });
-  });
-}
-
-// ── Panel save / load / clear ─────────────────────────────────────────────
-function savePanel(panel) {
-  const today = dateKey();
-  let data;
-
-  if (panel === 'morning') {
-    data = {
-      intention: document.getElementById('m-intention').value,
-      within_control: document.getElementById('m-within').value,
-      outside_control: document.getElementById('m-outside').value,
-      premeditatio: document.getElementById('m-premeditatio').value,
-      virtue: selectedVirtue,
-      savedAt: new Date().toISOString()
-    };
-  } else if (panel === 'midday') {
-    data = {
-      morning_review: document.getElementById('md-review').value,
-      emotional_awareness: document.getElementById('md-emotional').value,
-      control_check: document.getElementById('md-control').value,
-      afternoon_intention: document.getElementById('md-intention').value,
-      savedAt: new Date().toISOString()
-    };
-  } else if (panel === 'evening') {
-    data = {
-      went_well: document.getElementById('e-well').value,
-      improve: document.getElementById('e-improve').value,
-      virtue_act: document.getElementById('e-virtue-act').value,
-      gratitude: document.getElementById('e-gratitude').value,
-      lesson: document.getElementById('e-lesson').value,
-      virtue_ratings: { ...virtueRatings },
-      savedAt: new Date().toISOString()
-    };
-  }
-
-  setData(`sj_${panel}_${today}`, data);
-  document.getElementById(`${panel}-saved-ts`).innerHTML = 'Saved at ' + formatTimestamp(data.savedAt);
-  updateTabIndicators();
-  renderStreak();
-  showToast(`${panel.charAt(0).toUpperCase() + panel.slice(1)} entry saved`);
-}
-
-function loadPanel(panel) {
-  const today = dateKey();
-  const data = getData(`sj_${panel}_${today}`);
-
-  if (panel === 'morning') {
-    document.getElementById('m-intention').value = data?.intention || '';
-    document.getElementById('m-within').value = data?.within_control || '';
-    document.getElementById('m-outside').value = data?.outside_control || '';
-    document.getElementById('m-premeditatio').value = data?.premeditatio || '';
-    selectedVirtue = data?.virtue || null;
-    document.querySelectorAll('.virtue-card').forEach(c => {
-      c.classList.toggle('selected', c.dataset.virtue === selectedVirtue);
-    });
-    if (data?.savedAt) document.getElementById('morning-saved-ts').innerHTML = 'Saved at ' + formatTimestamp(data.savedAt);
-  } else if (panel === 'midday') {
-    document.getElementById('md-review').value = data?.morning_review || '';
-    document.getElementById('md-emotional').value = data?.emotional_awareness || '';
-    document.getElementById('md-control').value = data?.control_check || '';
-    document.getElementById('md-intention').value = data?.afternoon_intention || '';
-    if (data?.savedAt) document.getElementById('midday-saved-ts').innerHTML = 'Saved at ' + formatTimestamp(data.savedAt);
-  } else if (panel === 'evening') {
-    document.getElementById('e-well').value = data?.went_well || '';
-    document.getElementById('e-improve').value = data?.improve || '';
-    document.getElementById('e-virtue-act').value = data?.virtue_act || '';
-    document.getElementById('e-gratitude').value = data?.gratitude || '';
-    document.getElementById('e-lesson').value = data?.lesson || '';
-    if (data?.virtue_ratings) {
-      Object.assign(virtueRatings, data.virtue_ratings);
-      renderVirtueDots();
-    }
-    if (data?.savedAt) document.getElementById('evening-saved-ts').innerHTML = 'Saved at ' + formatTimestamp(data.savedAt);
-  }
-}
-
-function clearPanel(panel) {
-  if (!confirm(`Clear the ${panel} fields? Your saved entry is not affected.`)) return;
-  if (panel === 'morning') {
-    ['m-intention','m-within','m-outside','m-premeditatio'].forEach(id => { document.getElementById(id).value = ''; });
-    selectedVirtue = null;
-    document.querySelectorAll('.virtue-card').forEach(c => c.classList.remove('selected'));
-  } else if (panel === 'midday') {
-    ['md-review','md-emotional','md-control','md-intention'].forEach(id => { document.getElementById(id).value = ''; });
-  } else if (panel === 'evening') {
-    ['e-well','e-improve','e-virtue-act','e-gratitude','e-lesson'].forEach(id => { document.getElementById(id).value = ''; });
-    Object.keys(virtueRatings).forEach(k => { virtueRatings[k] = 0; });
-    renderVirtueDots();
-  }
-}
-
-// ── Weekly / Monthly ──────────────────────────────────────────────────────
-function saveSection(section) {
-  let data, key;
-  if (section === 'weekly') {
-    key = `sj_weekly_${getWeekKey()}`;
-    data = {
-      challenge: document.getElementById('w-challenge').value,
-      growth: document.getElementById('w-growth').value,
-      stoic_principle: document.getElementById('w-stoic').value,
-      focus_next_week: document.getElementById('w-focus').value,
-      savedAt: new Date().toISOString()
-    };
-  } else if (section === 'monthly') {
-    key = `sj_monthly_${getMonthKey()}`;
-    data = {
-      virtue_audit: document.getElementById('mo-virtue-audit').value,
-      distractions: document.getElementById('mo-distractions').value,
-      fear_inventory: document.getElementById('mo-fears').value,
-      letter_future_self: document.getElementById('mo-letter').value,
-      next_month_commitment: document.getElementById('mo-commitment').value,
-      savedAt: new Date().toISOString()
-    };
-  }
-  setData(key, data);
-  document.getElementById(`${section}-saved-ts`).innerHTML = 'Saved at ' + formatTimestamp(data.savedAt);
-  showToast(`${section.charAt(0).toUpperCase() + section.slice(1)} entry saved`);
-}
-
-function loadSection(section) {
-  let data, key;
-  if (section === 'weekly') {
-    key = `sj_weekly_${getWeekKey()}`;
-    data = getData(key);
-    document.getElementById('weekly-period-label').innerHTML = formatWeekLabel(getWeekKey());
-    document.getElementById('w-challenge').value = data?.challenge || '';
-    document.getElementById('w-growth').value = data?.growth || '';
-    document.getElementById('w-stoic').value = data?.stoic_principle || '';
-    document.getElementById('w-focus').value = data?.focus_next_week || '';
-    if (data?.savedAt) document.getElementById('weekly-saved-ts').innerHTML = 'Saved at ' + formatTimestamp(data.savedAt);
-  } else if (section === 'monthly') {
-    key = `sj_monthly_${getMonthKey()}`;
-    data = getData(key);
-    document.getElementById('monthly-period-label').textContent = formatMonthLabel(getMonthKey());
-    document.getElementById('mo-virtue-audit').value = data?.virtue_audit || '';
-    document.getElementById('mo-distractions').value = data?.distractions || '';
-    document.getElementById('mo-fears').value = data?.fear_inventory || '';
-    document.getElementById('mo-letter').value = data?.letter_future_self || '';
-    document.getElementById('mo-commitment').value = data?.next_month_commitment || '';
-    if (data?.savedAt) document.getElementById('monthly-saved-ts').innerHTML = 'Saved at ' + formatTimestamp(data.savedAt);
-  }
-}
-
-function clearSection(section) {
-  if (!confirm(`Clear the ${section} fields? Your saved entry is not affected.`)) return;
-  if (section === 'weekly') {
-    ['w-challenge','w-growth','w-stoic','w-focus'].forEach(id => { document.getElementById(id).value = ''; });
-  } else if (section === 'monthly') {
-    ['mo-virtue-audit','mo-distractions','mo-fears','mo-letter','mo-commitment'].forEach(id => { document.getElementById(id).value = ''; });
-  }
-}
-
-// ── Streak ────────────────────────────────────────────────────────────────
-function calcStreak() {
-  let streak = 0;
-  for (let i = 0; i < 365; i++) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const k = dateKey(d);
-    const has = localStorage.getItem(`sj_morning_${k}`) ||
-                localStorage.getItem(`sj_midday_${k}`) ||
-                localStorage.getItem(`sj_evening_${k}`);
-    if (has) streak++;
-    else if (i > 0) break;
-  }
-  return streak;
-}
-
-function renderStreak() {
-  document.getElementById('streak-num').textContent = calcStreak();
-  const dotsEl = document.getElementById('streak-dots');
-  dotsEl.innerHTML = '';
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const k = dateKey(d);
-    const filled = !!(localStorage.getItem(`sj_morning_${k}`) ||
-                      localStorage.getItem(`sj_midday_${k}`) ||
-                      localStorage.getItem(`sj_evening_${k}`));
-    const dot = document.createElement('div');
-    dot.className = 'streak-dot' + (filled ? ' filled' : '');
-    dotsEl.appendChild(dot);
-  }
-}
-
-// ── Challenges ────────────────────────────────────────────────────────────
-function completeChallenge(id) {
-  const all = getData('sj_challenges') || {};
-  if (!all[id]) all[id] = { completedDates: [] };
-  const today = dateKey();
-  if (!all[id].completedDates.includes(today)) {
-    all[id].completedDates.push(today);
-    setData('sj_challenges', all);
-    renderChallenges();
-    showToast('Challenge completed — well done.');
-  }
-}
-
-function renderChallenges() {
-  const all = getData('sj_challenges') || {};
-  const today = dateKey();
-  document.getElementById('challenges-container').innerHTML = CHALLENGES.map(c => {
-    const done = all[c.id]?.completedDates?.includes(today);
-    return `<div class="challenge-card">
-      <div class="challenge-numeral">${c.numeral}</div>
-      <div class="challenge-body">
-        <div class="challenge-name">${c.name}</div>
-        <div class="challenge-desc">${c.desc}</div>
-        <div class="challenge-context">${c.context}</div>
-        <button class="btn-challenge${done?' completed':''}" ${done?'disabled':''} onclick="completeChallenge('${c.id}')">
-          ${done ? '&#10003; Completed Today' : 'Begin Challenge'}
-        </button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ── Entries timeline ──────────────────────────────────────────────────────
-function escapeHtml(str) {
-  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function renderField(label, value) {
-  if (!value || (typeof value === 'string' && !value.trim())) return '';
-  return `<div class="entry-field">
-    <div class="entry-field-label">${label}</div>
-    <div class="entry-field-value">${escapeHtml(value)}</div>
-  </div>`;
-}
-
-function deletePanelEntry(panel, date) {
-  const name = panel.charAt(0).toUpperCase() + panel.slice(1);
-  if (!confirm(`Delete the ${name} entry from ${formatDateLong(date)}? This cannot be undone.`)) return;
-  deleteData(`sj_${panel}_${date}`);
-  renderEntries(document.getElementById('search-input').value);
-  updateTabIndicators();
-  renderStreak();
-  showToast('Entry deleted');
-  if (date === dateKey()) loadPanel(panel);
-}
-
-function deleteWeeklyEntry(week) {
-  if (!confirm('Delete this weekly entry? This cannot be undone.')) return;
-  deleteData(`sj_weekly_${week}`);
-  renderEntries(document.getElementById('search-input').value);
-  showToast('Entry deleted');
-  if (week === getWeekKey()) loadSection('weekly');
-}
-
-function deleteMonthlyEntry(month) {
-  if (!confirm('Delete this monthly entry? This cannot be undone.')) return;
-  deleteData(`sj_monthly_${month}`);
-  renderEntries(document.getElementById('search-input').value);
-  showToast('Entry deleted');
-  if (month === getMonthKey()) loadSection('monthly');
-}
-
-function renderEntries(filter = '') {
-  const f = filter.toLowerCase();
-  const items = [];
-
-  // Collect daily entries
-  const dates = new Set();
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
-    const m = k.match(/^sj_(morning|midday|evening)_(\d{4}-\d{2}-\d{2})$/);
-    if (m) dates.add(m[2]);
-  }
-  [...dates].sort().reverse().forEach(date => {
-    const morning = getData(`sj_morning_${date}`);
-    const midday = getData(`sj_midday_${date}`);
-    const evening = getData(`sj_evening_${date}`);
-    if (!f) { items.push({ type:'daily', date, morning, midday, evening, sortKey: date }); return; }
-    const text = [morning, midday, evening].filter(Boolean)
-      .map(d => Object.values(d).filter(v => typeof v === 'string').join(' ')).join(' ').toLowerCase();
-    if (text.includes(f)) items.push({ type:'daily', date, morning, midday, evening, sortKey: date });
-  });
-
-  // Collect weekly entries
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
-    const m = k.match(/^sj_weekly_(\d{4}-W\d{2})$/);
-    if (!m) continue;
-    const week = m[1];
-    const data = getData(k);
-    if (!data) continue;
-    if (f) {
-      const text = Object.values(data).filter(v => typeof v === 'string').join(' ').toLowerCase();
-      if (!text.includes(f)) continue;
-    }
-    const [yr, wn] = week.split('-W').map(Number);
-    const d = new Date(yr, 0, 1 + (wn - 1) * 7);
-    items.push({ type:'weekly', week, data, sortKey: dateKey(d) });
-  }
-
-  // Collect monthly entries
-  for (let i = 0; i < localStorage.length; i++) {
-    const k = localStorage.key(i);
-    const m = k.match(/^sj_monthly_(\d{4}-\d{2})$/);
-    if (!m) continue;
-    const month = m[1];
-    const data = getData(k);
-    if (!data) continue;
-    if (f) {
-      const text = Object.values(data).filter(v => typeof v === 'string').join(' ').toLowerCase();
-      if (!text.includes(f)) continue;
-    }
-    items.push({ type:'monthly', month, data, sortKey: `${month}-01` });
-  }
-
-  items.sort((a, b) => b.sortKey.localeCompare(a.sortKey));
-
-  const container = document.getElementById('entries-timeline');
-  const countLabel = document.getElementById('entries-count-label');
-  countLabel.textContent = `${items.length} entr${items.length !== 1 ? 'ies' : 'y'} found`;
-
-  if (items.length === 0) {
-    container.innerHTML = `<div class="entries-empty"><p>${f ? 'No entries match.' : 'No entries yet.'}</p><p>${f ? 'Try different terms.' : 'Begin your practice today.'}</p></div>`;
-    return;
-  }
-
-  container.innerHTML = items.map(item => {
-    if (item.type === 'daily') {
-      const panels = [];
-      if (item.morning) {
-        const d = item.date;
-        panels.push(`<div class="entry-panel">
-          <div class="entry-panel-head" onclick="this.closest('.entry-panel').classList.toggle('open')">
-            <span class="entry-panel-name">&#9728; Morning</span>
-            <span class="entry-panel-toggle">&#8964;</span>
-          </div>
-          <div class="entry-panel-body">
-            ${renderField('Intention', item.morning.intention)}
-            ${renderField('Within My Control', item.morning.within_control)}
-            ${renderField('Outside My Control', item.morning.outside_control)}
-            ${renderField('Premeditatio Malorum', item.morning.premeditatio)}
-            ${item.morning.virtue ? renderField('Guiding Virtue', item.morning.virtue.charAt(0).toUpperCase() + item.morning.virtue.slice(1)) : ''}
-            <div class="entry-panel-actions">
-              <button class="btn-danger" onclick="deletePanelEntry('morning','${d}')">Delete</button>
-            </div>
-          </div>
-        </div>`);
-      }
-      if (item.midday) {
-        const d = item.date;
-        panels.push(`<div class="entry-panel">
-          <div class="entry-panel-head" onclick="this.closest('.entry-panel').classList.toggle('open')">
-            <span class="entry-panel-name">&#9675; Midday</span>
-            <span class="entry-panel-toggle">&#8964;</span>
-          </div>
-          <div class="entry-panel-body">
-            ${renderField('Morning Review', item.midday.morning_review)}
-            ${renderField('Emotional Awareness', item.midday.emotional_awareness)}
-            ${renderField('Control Check', item.midday.control_check)}
-            ${renderField('Afternoon Intention', item.midday.afternoon_intention)}
-            <div class="entry-panel-actions">
-              <button class="btn-danger" onclick="deletePanelEntry('midday','${d}')">Delete</button>
-            </div>
-          </div>
-        </div>`);
-      }
-      if (item.evening) {
-        const d = item.date;
-        const vr = item.evening.virtue_ratings;
-        const vrText = vr ? `Wisdom ${vr.wisdom}/5 · Courage ${vr.courage}/5 · Justice ${vr.justice}/5 · Temperance ${vr.temperance}/5` : '';
-        panels.push(`<div class="entry-panel">
-          <div class="entry-panel-head" onclick="this.closest('.entry-panel').classList.toggle('open')">
-            <span class="entry-panel-name">&#9790; Evening</span>
-            <span class="entry-panel-toggle">&#8964;</span>
-          </div>
-          <div class="entry-panel-body">
-            ${renderField('What Went Well', item.evening.went_well)}
-            ${renderField('What I Would Improve', item.evening.improve)}
-            ${renderField('A Virtuous Act', item.evening.virtue_act)}
-            ${renderField('Gratitude', item.evening.gratitude)}
-            ${renderField('The Lesson', item.evening.lesson)}
-            ${vrText ? renderField('Virtue Ratings', vrText) : ''}
-            <div class="entry-panel-actions">
-              <button class="btn-danger" onclick="deletePanelEntry('evening','${d}')">Delete</button>
-            </div>
-          </div>
-        </div>`);
-      }
-      return `<div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-date">${formatDateLong(item.date)}</div>
-        <div class="timeline-entries">${panels.join('')}</div>
-      </div>`;
-
-    } else if (item.type === 'weekly') {
-      const w = item.week;
-      const d = item.data;
-      return `<div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-date">Weekly &mdash; ${formatWeekLabel(w)}</div>
-        <div class="timeline-entries"><div class="entry-panel">
-          <div class="entry-panel-head" onclick="this.closest('.entry-panel').classList.toggle('open')">
-            <span class="entry-panel-name">Weekly Reflection</span>
-            <span class="entry-panel-toggle">&#8964;</span>
-          </div>
-          <div class="entry-panel-body">
-            ${renderField("The Week's Challenge", d.challenge)}
-            ${renderField('Growth Observed', d.growth)}
-            ${renderField('Stoic Principle Applied', d.stoic_principle)}
-            ${renderField('Focus for Next Week', d.focus_next_week)}
-            <div class="entry-panel-actions">
-              <button class="btn-danger" onclick="deleteWeeklyEntry('${w}')">Delete</button>
-            </div>
-          </div>
-        </div></div>
-      </div>`;
-
-    } else {
-      const mo = item.month;
-      const d = item.data;
-      return `<div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-date">Monthly &mdash; ${formatMonthLabel(mo)}</div>
-        <div class="timeline-entries"><div class="entry-panel">
-          <div class="entry-panel-head" onclick="this.closest('.entry-panel').classList.toggle('open')">
-            <span class="entry-panel-name">Monthly Examination</span>
-            <span class="entry-panel-toggle">&#8964;</span>
-          </div>
-          <div class="entry-panel-body">
-            ${renderField('Virtue Audit', d.virtue_audit)}
-            ${renderField('What Distracted Me', d.distractions)}
-            ${renderField('Fear Inventory', d.fear_inventory)}
-            ${renderField('Letter from Future Self', d.letter_future_self)}
-            ${renderField("Next Month's Commitment", d.next_month_commitment)}
-            <div class="entry-panel-actions">
-              <button class="btn-danger" onclick="deleteMonthlyEntry('${mo}')">Delete</button>
-            </div>
-          </div>
-        </div></div>
-      </div>`;
-    }
-  }).join('');
-}
-
-// ── Keyboard shortcut ─────────────────────────────────────────────────────
-document.addEventListener('keydown', (e) => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-    e.preventDefault();
-    if (activeSection === 'today') savePanel(activeTab);
-    else if (activeSection === 'weekly') saveSection('weekly');
-    else if (activeSection === 'monthly') saveSection('monthly');
-  }
-});
-
-// ── Scroll shadow on nav ──────────────────────────────────────────────────
-const nav = document.getElementById('main-nav');
-const hero = document.getElementById('hero');
-const observer = new IntersectionObserver(
-  ([entry]) => nav.classList.toggle('scrolled', !entry.isIntersecting),
-  { threshold: 0 }
-);
-observer.observe(hero);
-
-// ── Definitions Panel ─────────────────────────────────────────────────────
-function toggleDefinitions() {
-  const panel = document.getElementById('def-panel');
-  const overlay = document.getElementById('def-overlay');
-  const isOpen = panel.classList.contains('open');
-  panel.classList.toggle('open', !isOpen);
-  overlay.classList.toggle('open', !isOpen);
-  document.body.style.overflow = isOpen ? '' : 'hidden';
-  if (!isOpen) {
-    setTimeout(() => document.getElementById('def-search').focus(), 350);
-  } else {
-    document.getElementById('def-search').value = '';
-    filterDefinitions('');
-  }
-}
-
-function filterDefinitions(query) {
-  const q = query.toLowerCase().trim();
-  document.querySelectorAll('#def-body .def-item').forEach(item => {
-    const terms = (item.dataset.terms || '') + ' ' + (item.querySelector('.def-term')?.textContent || '') + ' ' + (item.querySelector('.def-text')?.textContent || '');
-    item.classList.toggle('hidden', q !== '' && !terms.toLowerCase().includes(q));
-  });
-  document.querySelectorAll('#def-body .def-category').forEach(cat => {
-    const next = cat.nextElementSibling;
-    let hasVisible = false;
-    let el = next;
-    while (el && !el.classList.contains('def-category')) {
-      if (el.classList.contains('def-item') && !el.classList.contains('hidden')) hasVisible = true;
-      el = el.nextElementSibling;
-    }
-    cat.style.display = hasVisible ? '' : 'none';
-  });
-}
-
-// Close definitions on Escape key
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && document.getElementById('def-panel').classList.contains('open')) {
-    toggleDefinitions();
-  }
-});
-
-// ── Init ──────────────────────────────────────────────────────────────────
-(function init() {
-  const today = dateKey();
-  const d = new Date(today.split('-')[0], today.split('-')[1]-1, today.split('-')[2]);
-  document.getElementById('today-date-label').textContent =
-    d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
-
-  const q = getDailyQuote();
-  document.getElementById('morning-quote-text').textContent = q.quote;
-  document.getElementById('morning-quote-author').textContent = q.author;
-  document.getElementById('morning-quote-source').textContent = q.source;
-
-  loadPanel('morning');
-  loadPanel('midday');
-  loadPanel('evening');
-  renderStreak();
-  updateTabIndicators();
-})();
+  (function() {
+    initExtras();
+    initCore();
+    initMood();
+    initAI();
+    initCommunity();
+  })();
 </script>
 </body>
 </html>
