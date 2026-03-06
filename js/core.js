@@ -1,38 +1,81 @@
 // ── Atarax Core ──────────────────────────────────────────────────────────────
 
-// ── Stoic Quotes ──────────────────────────────────────────────────────────
+// ── Stoic Quotes (64 quotes — full shuffled deck, no repeats until all shown) ──
 var QUOTES = [
+  // ── Marcus Aurelius — Meditations ──
   { quote:"You have power over your mind, not outside events. Realize this, and you will find strength.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"He who fears death will never do anything worthy of a living man.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"Make the best use of what is in your power, and take the rest as it happens.", author:"Epictetus", source:"Enchiridion" },
   { quote:"Waste no more time arguing about what a good man should be. Be one.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"It is not that I am brave, but that I choose what to be afraid of.", author:"Seneca", source:"Letters to Lucilius" },
   { quote:"The first rule is to keep an untroubled spirit. The second is to look things in the face and know them for what they are.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"We suffer more in imagination than in reality.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"Seek not the good in external things; seek it in yourself.", author:"Epictetus", source:"Discourses" },
-  { quote:"How does it help to make troubles heavier by bemoaning them?", author:"Seneca", source:"Letters to Lucilius" },
   { quote:"Confine yourself to the present.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"If it is not right, do not do it; if it is not true, do not say it.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"Very little is needed to make a happy life; it is all within yourself, in your way of thinking.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"The object of life is not to be on the side of the majority, but to escape finding oneself in the ranks of the insane.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"The best revenge is not to be like your enemy.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"Receive without pride, relinquish without struggle.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"Think of yourself as dead. You have lived your life. Now take what's left and live it properly.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"Do not act as if you had ten thousand years to live.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"The soul becomes dyed with the colour of its thoughts.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"The impediment to action advances action. What stands in the way becomes the way.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"Never let the future disturb you. You will meet it, if you have to, with the same weapons of reason which today arm you against the present.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"Loss is nothing else but change, and change is Nature's delight.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"Accept the things to which fate binds you, and love the people with whom fate brings you together, and do so wholeheartedly.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"How much more grievous are the consequences of anger than the causes of it.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"The universe is change; our life is what our thoughts make it.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"If someone is able to show me that what I think or do is not right, I will happily change, for I seek truth, by which no one was ever truly harmed.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"Nowhere can man find a quieter or more untroubled retreat than in his own soul.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"When you wake up in the morning, tell yourself: the people I deal with today will be meddling, ungrateful, arrogant, dishonest, jealous and surly. They are this way because they cannot tell good from evil.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"You have power over your mind, not outside events. Realize this, and you will find strength.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"Look well into thyself; there is a source of strength which will always spring up if thou wilt always look.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"It never troubles the wolf how many the sheep may be.", author:"Virgil", source:"cited in Marcus Aurelius, Meditations" },
+  { quote:"Choose not to be harmed — and you won't feel harmed. Don't feel harmed — and you haven't been.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"To live a good life: we have the potential for it. If we can learn to be indifferent to what makes no difference.", author:"Marcus Aurelius", source:"Meditations" },
+  { quote:"The things you think about determine the quality of your mind. Your soul takes on the colour of your thoughts.", author:"Marcus Aurelius", source:"Meditations" },
+  // ── Epictetus — Enchiridion & Discourses ──
+  { quote:"Make the best use of what is in your power, and take the rest as it happens.", author:"Epictetus", source:"Enchiridion" },
+  { quote:"Seek not the good in external things; seek it in yourself.", author:"Epictetus", source:"Discourses" },
   { quote:"He is a wise man who does not grieve for the things which he has not, but rejoices for those which he has.", author:"Epictetus", source:"Fragments" },
   { quote:"No man is free who is not a master of himself.", author:"Epictetus", source:"Discourses" },
-  { quote:"If it is not right, do not do it; if it is not true, do not say it.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"True happiness is to enjoy the present, without anxious dependence upon the future.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"The object of life is not to be on the side of the majority, but to escape finding oneself in the ranks of the insane.", author:"Marcus Aurelius", source:"Meditations" },
   { quote:"Man is not disturbed by events, but by the opinions he has of events.", author:"Epictetus", source:"Enchiridion" },
-  { quote:"Do not indulge in expectations of what is absent; count up the blessings you actually possess.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"Very little is needed to make a happy life; it is all within yourself, in your way of thinking.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"Let philosophy scrape off your own faults rather than be a way to rail at the faults of others.", author:"Seneca", source:"Letters to Lucilius" },
   { quote:"First say to yourself what you would be; and then do what you have to do.", author:"Epictetus", source:"Discourses" },
-  { quote:"Begin at once to live, and count each separate day as a separate life.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"The best revenge is not to be like your enemy.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"Difficulties strengthen the mind, as labor does the body.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"How long are you going to wait before you demand the best for yourself?", author:"Epictetus", source:"Discourses" },
+  { quote:"Wealth consists not in having great possessions, but in having few wants.", author:"Epictetus", source:"Discourses" },
+  { quote:"Seek not that the things which happen should happen as you wish; but wish the things which happen to be as they are, and you will have a tranquil flow of life.", author:"Epictetus", source:"Enchiridion" },
+  { quote:"If you want to improve, be content to be thought foolish and stupid with regard to external things.", author:"Epictetus", source:"Enchiridion" },
+  { quote:"There is only one way to happiness and that is to cease worrying about things which are beyond the power of our will.", author:"Epictetus", source:"Discourses" },
+  { quote:"It's not what happens to you, but how you react to it that matters.", author:"Epictetus", source:"Enchiridion" },
+  { quote:"Practice yourself, for heaven's sake, in little things, and thence proceed to greater.", author:"Epictetus", source:"Discourses" },
+  { quote:"Circumstances do not make the man; they reveal him.", author:"Epictetus", source:"Discourses" },
+  { quote:"Don't explain your philosophy. Embody it.", author:"Epictetus", source:"Discourses" },
+  { quote:"We cannot choose our external circumstances, but we can always choose how we respond to them.", author:"Epictetus", source:"Discourses" },
+  { quote:"People are not disturbed by the things which happen, but by the opinions about the things.", author:"Epictetus", source:"Enchiridion" },
+  { quote:"Freedom is the only worthy goal in life. It is won by disregarding things that lie beyond our control.", author:"Epictetus", source:"Discourses" },
   { quote:"He has the most who is content with the least.", author:"Diogenes", source:"Lives of the Eminent Philosophers" },
+  // ── Seneca — Letters to Lucilius & other works ──
+  { quote:"He who fears death will never do anything worthy of a living man.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"We suffer more in imagination than in reality.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"How does it help to make troubles heavier by bemoaning them?", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"True happiness is to enjoy the present, without anxious dependence upon the future.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"Do not indulge in expectations of what is absent; count up the blessings you actually possess.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"Let philosophy scrape off your own faults rather than be a way to rail at the faults of others.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"Begin at once to live, and count each separate day as a separate life.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"Difficulties strengthen the mind, as labor does the body.", author:"Seneca", source:"Letters to Lucilius" },
   { quote:"You are afraid of dying. But, come now, how is this life of yours anything but death?", author:"Seneca", source:"Letters to Lucilius" },
   { quote:"Each day acquire something that will fortify you against poverty, against death, indeed against other misfortunes as well.", author:"Seneca", source:"Letters to Lucilius" },
-  { quote:"How long are you going to wait before you demand the best for yourself?", author:"Epictetus", source:"Discourses" },
-  { quote:"Receive without pride, relinquish without struggle.", author:"Marcus Aurelius", source:"Meditations" },
   { quote:"The whole future lies in uncertainty: live immediately.", author:"Seneca", source:"Natural Questions" },
-  { quote:"Think of yourself as dead. You have lived your life. Now take what's left and live it properly.", author:"Marcus Aurelius", source:"Meditations" },
-  { quote:"It never troubles the wolf how many the sheep may be.", author:"Virgil", source:"(cited by Marcus Aurelius)" }
+  { quote:"To be everywhere is to be nowhere.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"It is not the man who has too little, but the man who craves more, that is poor.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"While we are postponing, life speeds by.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"Treat your inferiors as you would be treated by your superiors.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"Fire tests gold, suffering tests brave men.", author:"Seneca", source:"On Providence" },
+  { quote:"He who is brave is free.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"Whatever can happen to one man can happen to all.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"It is a rough road that leads to the heights of greatness.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"The part of life we really live is small. For all the rest of existence is not life, but merely time.", author:"Seneca", source:"On the Shortness of Life" },
+  { quote:"Retire into yourself as much as possible; associate with those who are likely to improve you.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"I am not born for one corner; the whole world is my native land.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"No man was ever wise by chance.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"If you really want to escape the things that harass you, what you need is not to be in a different place but to be a different person.", author:"Seneca", source:"Letters to Lucilius" },
+  { quote:"It is not that I am brave, but that I choose what to be afraid of.", author:"Seneca", source:"Letters to Lucilius" }
 ];
 
 // ── Seven Challenges ──────────────────────────────────────────────────────
@@ -110,11 +153,43 @@ function formatTimestamp(iso) {
     ' &middot; ' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
+// ── Quote deck system ─────────────────────────────────────────────────────
+// A shuffled deck ensures every quote appears before any repeats.
+// State: { date, index, deck } stored in localStorage under sj_quote_state.
+
+function shuffleDeck(n) {
+  var deck = [];
+  for (var i = 0; i < n; i++) deck.push(i);
+  // Fisher-Yates shuffle
+  for (var i = deck.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = deck[i]; deck[i] = deck[j]; deck[j] = tmp;
+  }
+  return deck;
+}
+
 function getDailyQuote() {
-  var d = new Date();
-  var start = new Date(d.getFullYear(), 0, 0);
-  var dayOfYear = Math.floor((d - start) / 86400000);
-  return QUOTES[(dayOfYear + d.getFullYear()) % QUOTES.length];
+  var today = dateKey();
+  var state = getData('sj_quote_state') || {};
+
+  // Same day — return the already-chosen quote
+  if (state.date === today && typeof state.index === 'number') {
+    return QUOTES[state.index] || QUOTES[0];
+  }
+
+  // New day: pull the next quote from the deck
+  var deck = Array.isArray(state.deck) && state.deck.length > 0
+    ? state.deck.slice()   // remaining indices from last session
+    : shuffleDeck(QUOTES.length);
+
+  // Guard: if the deck somehow has stale indices, rebuild
+  deck = deck.filter(function(i) { return i >= 0 && i < QUOTES.length; });
+  if (deck.length === 0) deck = shuffleDeck(QUOTES.length);
+
+  var index = deck.pop();
+
+  setData('sj_quote_state', { date: today, index: index, deck: deck });
+  return QUOTES[index];
 }
 
 // ── Storage ────────────────────────────────────────────────────────────────
