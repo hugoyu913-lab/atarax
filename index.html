@@ -444,6 +444,106 @@
     /* ── Weekly / Monthly section cards ── */
     .section-cards { display: flex; flex-direction: column; gap: 16px; }
 
+    /* ── Definitions Panel ── */
+    .def-tab {
+      position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+      z-index: 200; background: var(--charcoal); color: var(--gold);
+      writing-mode: vertical-rl; text-orientation: mixed;
+      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 20px 12px; cursor: pointer; border: none;
+      border-left: 1px solid rgba(201,164,108,0.3);
+      transition: background 0.15s ease, padding 0.15s ease;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .def-tab:hover { background: #2d2417; }
+    .def-tab-icon {
+      writing-mode: horizontal-tb; font-size: 0.75rem; opacity: 0.7;
+    }
+
+    .def-overlay {
+      position: fixed; inset: 0; background: rgba(28,28,28,0.35);
+      z-index: 201; opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .def-overlay.open { opacity: 1; pointer-events: auto; }
+
+    .def-panel {
+      position: fixed; right: 0; top: 0; bottom: 0; width: 380px; max-width: 92vw;
+      z-index: 202; background: var(--parchment);
+      border-left: 1px solid var(--border);
+      transform: translateX(100%); transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .def-panel.open { transform: translateX(0); }
+
+    .def-panel-head {
+      background: var(--charcoal); padding: 28px 28px 24px;
+      flex-shrink: 0;
+    }
+    .def-panel-eyebrow {
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+    }
+    .def-panel-title {
+      font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 400;
+      font-style: italic; color: var(--parchment); margin-bottom: 4px;
+    }
+    .def-panel-subtitle {
+      font-size: 0.75rem; font-weight: 300; color: rgba(247,245,239,0.45);
+      letter-spacing: 0.03em;
+    }
+    .def-close {
+      position: absolute; top: 20px; right: 20px;
+      background: none; border: none; color: rgba(247,245,239,0.4);
+      font-size: 1.1rem; cursor: pointer; padding: 6px; line-height: 1;
+      transition: color 0.15s ease;
+    }
+    .def-close:hover { color: var(--gold); }
+
+    .def-search-wrap { padding: 16px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .def-search {
+      width: 100%; font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 300;
+      color: var(--charcoal); background: var(--surface); border: 1px solid var(--border);
+      padding: 9px 14px; outline: none; transition: border-color 0.2s ease;
+    }
+    .def-search:focus { border-color: var(--gold); }
+    .def-search::placeholder { color: #c0bab0; }
+
+    .def-body { flex: 1; overflow-y: auto; padding: 8px 0 24px; }
+    .def-body::-webkit-scrollbar { width: 4px; }
+    .def-body::-webkit-scrollbar-track { background: transparent; }
+    .def-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    .def-category {
+      padding: 18px 28px 4px;
+    }
+    .def-category-label {
+      font-size: 0.58rem; font-weight: 600; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 0;
+    }
+
+    .def-item {
+      padding: 14px 28px; border-bottom: 1px solid var(--border);
+      transition: background 0.12s ease;
+    }
+    .def-item:last-child { border-bottom: none; }
+    .def-item:hover { background: rgba(201,164,108,0.06); }
+    .def-term {
+      font-family: 'Playfair Display', serif; font-size: 0.98rem; font-weight: 400;
+      color: var(--charcoal); margin-bottom: 2px;
+      display: flex; align-items: baseline; gap: 8px;
+    }
+    .def-greek {
+      font-size: 0.65rem; font-weight: 400; color: var(--gold);
+      font-family: 'Inter', sans-serif; letter-spacing: 0.08em; font-style: normal;
+    }
+    .def-text {
+      font-size: 0.8rem; font-weight: 300; color: var(--text-soft);
+      line-height: 1.6;
+    }
+    .def-item.hidden { display: none; }
+
     /* ── Responsive ── */
     @media (max-width: 768px) {
       .nav-logo { display: none; }
@@ -864,6 +964,147 @@
 </main>
 
 <div id="toast"></div>
+
+<!-- ── Definitions Panel ── -->
+<button class="def-tab" onclick="toggleDefinitions()" aria-label="Open Stoic Glossary">
+  <span class="def-tab-icon">📖</span>
+  Glossary
+</button>
+<div class="def-overlay" id="def-overlay" onclick="toggleDefinitions()"></div>
+<aside class="def-panel" id="def-panel" role="complementary" aria-label="Stoic Glossary">
+  <div class="def-panel-head">
+    <button class="def-close" onclick="toggleDefinitions()" aria-label="Close glossary">&#x2715;</button>
+    <div class="def-panel-eyebrow">Reference</div>
+    <div class="def-panel-title">Stoic Glossary</div>
+    <div class="def-panel-subtitle">Plain-language definitions of terms used in this journal</div>
+  </div>
+  <div class="def-search-wrap">
+    <input class="def-search" id="def-search" type="text" placeholder="Search terms..." oninput="filterDefinitions(this.value)" />
+  </div>
+  <div class="def-body" id="def-body">
+
+    <div class="def-category"><div class="def-category-label">Philosophy &amp; Practice</div></div>
+
+    <div class="def-item" data-terms="stoicism stoic">
+      <div class="def-term">Stoicism</div>
+      <div class="def-text">A practical philosophy founded in ancient Greece, teaching that we cannot control what happens to us — only how we respond. True wellbeing comes from living virtuously, not from wealth, pleasure, or status.</div>
+    </div>
+
+    <div class="def-item" data-terms="virtue ethics virtue">
+      <div class="def-term">Virtue Ethics</div>
+      <div class="def-text">The idea that living well means developing good character — being wise, brave, fair, and self-controlled — rather than chasing pleasure or following rigid rules. For Stoics, virtue is the only true good.</div>
+    </div>
+
+    <div class="def-item" data-terms="dichotomy of control control">
+      <div class="def-term">Dichotomy of Control</div>
+      <div class="def-text">The core Stoic insight: some things are "up to us" (our thoughts, choices, and reactions) and some are not (everything else). Direct your energy only toward what you can control; release the rest.</div>
+    </div>
+
+    <div class="def-item" data-terms="logos reason nature">
+      <div class="def-term">Logos <span class="def-greek">λόγος</span></div>
+      <div class="def-text">The rational principle the Stoics believed governs the universe. Living "according to nature" means aligning your reason and actions with this universal order — not fighting reality, but flowing with it.</div>
+    </div>
+
+    <div class="def-item" data-terms="eudaimonia flourishing happiness">
+      <div class="def-term">Eudaimonia <span class="def-greek">εὐδαιμονία</span></div>
+      <div class="def-text">Often translated as "happiness," but closer to "flourishing" or living a genuinely good life. For Stoics, eudaimonia is achieved through virtue alone — not luck, circumstances, or possessions.</div>
+    </div>
+
+    <div class="def-item" data-terms="ataraxia tranquility peace equanimity">
+      <div class="def-term">Ataraxia <span class="def-greek">ἀταραξία</span></div>
+      <div class="def-text">A state of deep inner calm and freedom from mental disturbance. Not the absence of emotion, but a steady, untroubled mind that is not swept away by fear, craving, or anxiety.</div>
+    </div>
+
+    <div class="def-item" data-terms="apatheia passions emotions">
+      <div class="def-term">Apatheia <span class="def-greek">ἀπάθεια</span></div>
+      <div class="def-text">Not apathy, but freedom from destructive passions (excessive fear, greed, rage). Stoics still feel emotions — they simply don't let irrational impulses override clear judgment. Think: calm clarity, not coldness.</div>
+    </div>
+
+    <div class="def-category"><div class="def-category-label">Key Practices</div></div>
+
+    <div class="def-item" data-terms="premeditatio malorum premeditation adversity negative visualization">
+      <div class="def-term">Premeditatio Malorum <span class="def-greek">premeditation of evils</span></div>
+      <div class="def-text">The practice of imagining in advance what could go wrong. By mentally rehearsing setbacks, you remove their power to shock you and train yourself to respond calmly rather than react with panic.</div>
+    </div>
+
+    <div class="def-item" data-terms="memento mori death mortality remember">
+      <div class="def-term">Memento Mori <span class="def-greek">remember you will die</span></div>
+      <div class="def-text">A practice of regularly reflecting on death — not morbidly, but to clarify what matters. Remembering life is finite strips away trivialities and focuses attention on how you actually spend your days.</div>
+    </div>
+
+    <div class="def-item" data-terms="amor fati love fate">
+      <div class="def-term">Amor Fati <span class="def-greek">love of fate</span></div>
+      <div class="def-text">The practice of not merely accepting what happens, but embracing it wholeheartedly — including difficulty, failure, and loss. Turn every obstacle into fuel. Love your life exactly as it unfolds.</div>
+    </div>
+
+    <div class="def-item" data-terms="negative visualization">
+      <div class="def-term">Negative Visualization</div>
+      <div class="def-text">Deliberately imagining the loss of things you value — health, relationships, comfort — to cultivate genuine gratitude for what you already have. Closely related to Premeditatio Malorum.</div>
+    </div>
+
+    <div class="def-category"><div class="def-category-label">The Four Virtues</div></div>
+
+    <div class="def-item" data-terms="wisdom sophia phronesis prudence">
+      <div class="def-term">Wisdom <span class="def-greek">Sophia / Phronesis</span></div>
+      <div class="def-text">The ability to see things clearly and make good judgments. Wisdom is knowing what is truly good, what is harmful, and how to act well in complex situations. It is the master virtue from which the others flow.</div>
+    </div>
+
+    <div class="def-item" data-terms="courage andreia bravery fortitude">
+      <div class="def-term">Courage <span class="def-greek">Andreia</span></div>
+      <div class="def-text">Not the absence of fear, but the willingness to act rightly despite it. Stoic courage includes enduring hardship, speaking truth, and persisting in virtue even when it is difficult or unpopular.</div>
+    </div>
+
+    <div class="def-item" data-terms="justice dikaiosyne fairness community">
+      <div class="def-term">Justice <span class="def-greek">Dikaiosyne</span></div>
+      <div class="def-text">Treating others fairly, contributing to the common good, and fulfilling your duties to your community. For Stoics, we are all part of one human family — justice means acting accordingly.</div>
+    </div>
+
+    <div class="def-item" data-terms="temperance sophrosyne moderation self-control">
+      <div class="def-term">Temperance <span class="def-greek">Sophrosyne</span></div>
+      <div class="def-text">Moderation, self-discipline, and balance. Neither extreme indulgence nor harsh deprivation — but choosing the right amount, at the right time, for the right reasons. Governing your appetites rather than being governed by them.</div>
+    </div>
+
+    <div class="def-category"><div class="def-category-label">The Stoic Teachers</div></div>
+
+    <div class="def-item" data-terms="marcus aurelius emperor meditations">
+      <div class="def-term">Marcus Aurelius <span class="def-greek">121–180 AD</span></div>
+      <div class="def-text">Roman Emperor and Stoic philosopher. His private notebook — the <em>Meditations</em> — was never meant to be published. It records his daily effort to live by Stoic principles despite immense power and responsibility.</div>
+    </div>
+
+    <div class="def-item" data-terms="epictetus slave discourses enchiridion">
+      <div class="def-term">Epictetus <span class="def-greek">c. 50–135 AD</span></div>
+      <div class="def-text">Born a slave, he became one of Stoicism's greatest teachers. His core message: external circumstances don't define you — your choices do. His <em>Discourses</em> and <em>Enchiridion</em> remain profoundly practical.</div>
+    </div>
+
+    <div class="def-item" data-terms="seneca letters lucilius tragedies rome">
+      <div class="def-term">Seneca <span class="def-greek">c. 4 BC–65 AD</span></div>
+      <div class="def-text">Roman statesman, playwright, and philosopher. His <em>Letters to Lucilius</em> are personal, warm, and accessible — a series of 124 letters exploring how to live well, face death, and spend time wisely.</div>
+    </div>
+
+    <div class="def-category"><div class="def-category-label">Other Terms</div></div>
+
+    <div class="def-item" data-terms="hegemonikon ruling faculty mind reason">
+      <div class="def-term">Hegemonikon <span class="def-greek">ἡγεμονικόν</span></div>
+      <div class="def-text">The "ruling faculty" — the rational, decision-making center of the mind. Stoics believed this is where your character lives and where all moral choices are made. Guarding it is your primary duty.</div>
+    </div>
+
+    <div class="def-item" data-terms="sage sophos ideal wise person">
+      <div class="def-term">The Sage <span class="def-greek">Sophos</span></div>
+      <div class="def-text">The Stoic ideal of a perfectly wise and virtuous person. Stoics acknowledged no one fully achieves this — but it serves as a north star. The goal is to make progress toward it each day, not to claim you've arrived.</div>
+    </div>
+
+    <div class="def-item" data-terms="preferred indifferents externals health wealth reputation">
+      <div class="def-term">Preferred Indifferents</div>
+      <div class="def-text">Things like health, wealth, and good reputation are "indifferent" — they don't make you good or bad. But they are still "preferred" because, all else equal, they are better to have than not. The key: don't let them become your reason for living.</div>
+    </div>
+
+    <div class="def-item" data-terms="contemplation morning evening practice">
+      <div class="def-term">Morning &amp; Evening Practice</div>
+      <div class="def-text">Ancient Stoics began each day by setting intentions and anticipating challenges, and ended each day by reviewing their conduct honestly. This structure of reflection — used throughout this journal — was central to their daily life.</div>
+    </div>
+
+  </div>
+</aside>
 
 <script>
 // ── Stoic quotes ──────────────────────────────────────────────────────────
@@ -1503,6 +1744,47 @@ const observer = new IntersectionObserver(
   { threshold: 0 }
 );
 observer.observe(hero);
+
+// ── Definitions Panel ─────────────────────────────────────────────────────
+function toggleDefinitions() {
+  const panel = document.getElementById('def-panel');
+  const overlay = document.getElementById('def-overlay');
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  overlay.classList.toggle('open', !isOpen);
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+  if (!isOpen) {
+    setTimeout(() => document.getElementById('def-search').focus(), 350);
+  } else {
+    document.getElementById('def-search').value = '';
+    filterDefinitions('');
+  }
+}
+
+function filterDefinitions(query) {
+  const q = query.toLowerCase().trim();
+  document.querySelectorAll('#def-body .def-item').forEach(item => {
+    const terms = (item.dataset.terms || '') + ' ' + (item.querySelector('.def-term')?.textContent || '') + ' ' + (item.querySelector('.def-text')?.textContent || '');
+    item.classList.toggle('hidden', q !== '' && !terms.toLowerCase().includes(q));
+  });
+  document.querySelectorAll('#def-body .def-category').forEach(cat => {
+    const next = cat.nextElementSibling;
+    let hasVisible = false;
+    let el = next;
+    while (el && !el.classList.contains('def-category')) {
+      if (el.classList.contains('def-item') && !el.classList.contains('hidden')) hasVisible = true;
+      el = el.nextElementSibling;
+    }
+    cat.style.display = hasVisible ? '' : 'none';
+  });
+}
+
+// Close definitions on Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('def-panel').classList.contains('open')) {
+    toggleDefinitions();
+  }
+});
 
 // ── Init ──────────────────────────────────────────────────────────────────
 (function init() {
