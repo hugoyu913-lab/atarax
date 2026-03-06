@@ -23,7 +23,7 @@ function shareReflection() {
   var client = _getAuthClient();
   if (!client) { showToast('Unable to connect to the server'); return; }
 
-  var payload = { user_id: userId, text: text };
+  var payload = { user_id: userId, reflection: text };
 
   client
     .from('community_reflections')
@@ -93,7 +93,7 @@ function renderCommunity() {
 
   client
     .from('community_reflections')
-    .select('id, user_id, text, created_at')
+    .select('id, user_id, reflection, created_at')
     .order('created_at', { ascending: false })
     .then(function(result) {
       if (result.error) {
@@ -121,7 +121,7 @@ function renderCommunity() {
         return '<div class="community-post">' +
           '<div class="community-avatar">' + getInitials(index) + '</div>' +
           '<div class="community-post-body">' +
-            '<p class="community-post-text">"' + escapeHtml(post.text) + '"</p>' +
+            '<p class="community-post-text">"' + escapeHtml(post.reflection) + '"</p>' +
             '<div class="community-post-meta">' +
               '<span>' + formatCommunityDate(post.created_at) + '</span>' +
               deleteBtn +
