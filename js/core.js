@@ -469,9 +469,9 @@ function calcStreak() {
     var d = new Date();
     d.setDate(d.getDate() - i);
     var k = dateKey(d);
-    var has = localStorage.getItem('sj_morning_' + k) ||
-              localStorage.getItem('sj_midday_' + k) ||
-              localStorage.getItem('sj_evening_' + k);
+    var has = getData('sj_morning_' + k) ||
+              getData('sj_midday_' + k) ||
+              getData('sj_evening_' + k);
     if (has) { streak++; }
     else if (i > 0) { break; }
   }
@@ -488,13 +488,15 @@ function renderStreak() {
     var d = new Date();
     d.setDate(d.getDate() - i);
     var k = dateKey(d);
-    var filled = !!(localStorage.getItem('sj_morning_' + k) ||
-                    localStorage.getItem('sj_midday_' + k) ||
-                    localStorage.getItem('sj_evening_' + k));
+    var filled = !!(getData('sj_morning_' + k) ||
+                    getData('sj_midday_' + k) ||
+                    getData('sj_evening_' + k));
     var dot = document.createElement('div');
     dot.className = 'streak-dot' + (filled ? ' filled' : '');
     dotsEl.appendChild(dot);
   }
+  // Sync streak count to Supabase streak_data table
+  if (typeof _updateStreakData === 'function') _updateStreakData();
 }
 
 // ── Challenges ────────────────────────────────────────────────────────────
@@ -583,13 +585,22 @@ function renderEntries(opts) {
   var moodFilter = opts.mood || '';
   var items = [];
 
+  // Use the in-memory cache key list when available (Supabase mode),
+  // falling back to iterating localStorage directly.
+  var _allKeys = (typeof sjCacheKeys === 'function')
+    ? sjCacheKeys()
+    : (function () {
+        var ks = [];
+        for (var _i = 0; _i < localStorage.length; _i++) ks.push(localStorage.key(_i));
+        return ks;
+      }());
+
   // Daily entries
   var dates = new Set();
-  for (var i = 0; i < localStorage.length; i++) {
-    var k = localStorage.key(i);
+  _allKeys.forEach(function (k) {
     var m = k && k.match(/^sj_(morning|midday|evening)_(\d{4}-\d{2}-\d{2})$/);
     if (m) dates.add(m[2]);
-  }
+  });
   dates.forEach(function(date) {
     if (dateFrom && date < dateFrom) return;
     if (dateTo && date > dateTo) return;
@@ -610,44 +621,42 @@ function renderEntries(opts) {
   });
 
   // Weekly entries
-  for (var i = 0; i < localStorage.length; i++) {
-    var k = localStorage.key(i);
+  _allKeys.forEach(function (k) {
     var m = k && k.match(/^sj_weekly_(\d{4}-W\d{2})$/);
-    if (!m) continue;
+    if (!m) return;
     var week = m[1];
     var data = getData(k);
-    if (!data) continue;
-    if (moodFilter) continue; // mood filter skips weekly
+    if (!data) return;
+    if (moodFilter) return; // mood filter skips weekly
     if (filter) {
       var text = Object.values(data).filter(function(v) { return typeof v === 'string'; }).join(' ').toLowerCase();
-      if (!text.includes(filter)) continue;
+      if (!text.includes(filter)) return;
     }
     var parts = week.split('-W').map(Number);
     var d = new Date(parts[0], 0, 1 + (parts[1] - 1) * 7);
     var sk = dateKey(d);
-    if (dateFrom && sk < dateFrom) continue;
-    if (dateTo && sk > dateTo) continue;
+    if (dateFrom && sk < dateFrom) return;
+    if (dateTo && sk > dateTo) return;
     items.push({ type:'weekly', week:week, data:data, sortKey:sk });
-  }
+  });
 
   // Monthly entries
-  for (var i = 0; i < localStorage.length; i++) {
-    var k = localStorage.key(i);
+  _allKeys.forEach(function (k) {
     var m = k && k.match(/^sj_monthly_(\d{4}-\d{2})$/);
-    if (!m) continue;
+    if (!m) return;
     var month = m[1];
     var data = getData(k);
-    if (!data) continue;
-    if (moodFilter) continue;
+    if (!data) return;
+    if (moodFilter) return;
     if (filter) {
       var text = Object.values(data).filter(function(v) { return typeof v === 'string'; }).join(' ').toLowerCase();
-      if (!text.includes(filter)) continue;
+      if (!text.includes(filter)) return;
     }
     var sk = month + '-01';
-    if (dateFrom && sk < dateFrom) continue;
-    if (dateTo && sk > dateTo) continue;
+    if (dateFrom && sk < dateFrom) return;
+    if (dateTo && sk > dateTo) return;
     items.push({ type:'monthly', month:month, data:data, sortKey:sk });
-  }
+  });
 
   items.sort(function(a, b) { return b.sortKey.localeCompare(a.sortKey); });
 
