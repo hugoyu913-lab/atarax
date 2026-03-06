@@ -1,9 +1,12 @@
 // ── Community Reflections Board ───────────────────────────────────────────
 //
-// Posts are stored in the community_reflections Supabase table and visible
-// to all authenticated users in real time.  No email or username is ever
-// exposed — the avatar initial is derived deterministically from the user_id.
-// Users can only delete their own posts (enforced by both RLS and the client).
+// All reads and writes go directly to Supabase — no localStorage at any point.
+// Uses the Supabase client from auth.js (_getAuthClient).
+//
+// Every post INSERT includes the current user's ID.
+// The feed SELECT is ordered by created_at DESC so all users share the same
+// global feed.  Users can only delete their own posts (enforced by RLS and
+// the client-side .eq('user_id', userId) filter).
 // ─────────────────────────────────────────────────────────────────────────
 
 var COMMUNITY_SEED = [
@@ -16,8 +19,15 @@ var COMMUNITY_SEED = [
   { id:'seed_7', text:'Begin at once to live, and count each separate day as a separate life. Seneca knew something we keep forgetting.', created_at:null, seed:true }
 ];
 
-var _posts            = null;   // null = not yet loaded; [] = loaded, empty
+var _posts            = null;   // null = not yet loaded; [] = loaded but empty
 var _communityChannel = null;   // Supabase Realtime channel
+
+// ── Supabase client ────────────────────────────────────────────────────────
+// Calls _getAuthClient() from auth.js directly — no db.js wrapper needed.
+
+function _supabase() {
+  return (typeof _getAuthClient === 'function') ? _getAuthClient() : null;
+}
 
 // ── Avatar initial ─────────────────────────────────────────────────────────
 // Derives a consistent, anonymous single letter from a user UUID.
@@ -33,13 +43,12 @@ function _avatarLetter(userId) {
 }
 
 // ── Timestamp formatter ────────────────────────────────────────────────────
-// Returns relative time for recent posts; absolute date + time for older ones.
 
 function _formatTime(iso) {
   if (!iso) return '';
   try {
-    var d   = new Date(iso);
-    var now = new Date();
+    var d       = new Date(iso);
+    var now     = new Date();
     var diffMin = Math.round((now - d) / 60000);
     if (diffMin < 1)  return 'just now';
     if (diffMin < 60) return diffMin + 'm ago';
@@ -68,12 +77,14 @@ function shareReflection() {
   var input = document.getElementById('community-input');
   if (!input) return;
   var text = input.value.trim();
-  if (!text)           { showToast('Please write a reflection first'); return; }
+  if (!text)             { showToast('Please write a reflection first'); return; }
   if (text.length > 280) { showToast('Keep your reflection under 280 characters'); return; }
 
-  var db     = _getDbClient();
-  var userId = getCurrentUserId();
-  if (!db || !userId) { showToast('Please sign in to share'); return; }
+  var db     = _supabase();
+  var userId = (typeof getCurrentUserId === 'function') ? getCurrentUserId() : null;
+
+  if (!db)     { showToast('Supabase is not available — please refresh'); return; }
+  if (!userId) { showToast('Please sign in to share'); return; }
 
   var btn = document.querySelector('#section-community .btn-primary');
   if (btn) { btn.disabled = true; btn.textContent = 'Sharing\u2026'; }
@@ -82,15 +93,19 @@ function shareReflection() {
     .insert({ user_id: userId, text: text })
     .then(function (r) {
       if (btn) { btn.disabled = false; btn.textContent = 'Share Reflection'; }
-      if (r.error) { showToast('Could not share — please try again'); return; }
+      if (r.error) {
+        console.error('[Community] insert error:', r.error.message, r.error);
+        showToast('Could not share — please try again');
+        return;
+      }
       input.value = '';
       updateCharCount();
       showToast('Reflection shared');
-      // Realtime subscription will add it to the feed automatically.
-      // If realtime is unavailable, reload the feed manually.
+      // Realtime will add it; fall back to manual reload if not subscribed.
       if (!_communityChannel) _loadCommunityPosts();
     })
-    .catch(function () {
+    .catch(function (e) {
+      console.error('[Community] insert exception:', e);
       if (btn) { btn.disabled = false; btn.textContent = 'Share Reflection'; }
       showToast('Could not share — please try again');
     });
@@ -99,16 +114,20 @@ function shareReflection() {
 // ── Delete ─────────────────────────────────────────────────────────────────
 
 function deleteCommunityPost(id) {
-  var db     = _getDbClient();
-  var userId = getCurrentUserId();
+  var db     = _supabase();
+  var userId = (typeof getCurrentUserId === 'function') ? getCurrentUserId() : null;
   if (!db || !userId) return;
 
   db.from('community_reflections')
     .delete()
     .eq('id', id)
-    .eq('user_id', userId) // Belt-and-braces; RLS also enforces this
+    .eq('user_id', userId)   // Belt-and-braces; RLS also enforces this
     .then(function (r) {
-      if (r.error) { showToast('Could not remove reflection'); return; }
+      if (r.error) {
+        console.error('[Community] delete error:', r.error.message);
+        showToast('Could not remove reflection');
+        return;
+      }
       showToast('Reflection removed');
       // Realtime will update the feed; fall back to manual removal if needed.
       if (!_communityChannel) {
@@ -116,7 +135,10 @@ function deleteCommunityPost(id) {
         renderCommunity();
       }
     })
-    .catch(function () { showToast('Could not remove reflection'); });
+    .catch(function (e) {
+      console.error('[Community] delete exception:', e);
+      showToast('Could not remove reflection');
+    });
 }
 
 // ── Render ─────────────────────────────────────────────────────────────────
@@ -135,9 +157,9 @@ function renderCommunity() {
     return;
   }
 
-  var currentUserId = getCurrentUserId();
+  var currentUserId = (typeof getCurrentUserId === 'function') ? getCurrentUserId() : null;
 
-  // Use seed posts as examples when the board is empty
+  // Show seed posts as examples only when the board is genuinely empty
   var displayPosts = _posts.length > 0 ? _posts : COMMUNITY_SEED;
   var isSeed       = _posts.length === 0;
 
@@ -172,22 +194,27 @@ function renderCommunity() {
   }).join('');
 }
 
-// ── Data loading ───────────────────────────────────────────────────────────
+// ── Load ───────────────────────────────────────────────────────────────────
+// SELECT from community_reflections ordered by created_at DESC.
+// No localStorage fallback — if Supabase fails the error is logged and an
+// empty board (showing seed posts) is displayed.
 
 function _loadCommunityPosts() {
-  var db = _getDbClient();
+  var db = _supabase();
   if (!db) {
+    console.error('[Community] Supabase client unavailable — cannot load posts');
     _posts = [];
     renderCommunity();
     return;
   }
+
   db.from('community_reflections')
     .select('id, user_id, text, created_at')
     .order('created_at', { ascending: false })
     .limit(200)
     .then(function (r) {
       if (r.error) {
-        console.warn('[Atarax] load community error:', r.error.message);
+        console.error('[Community] SELECT error:', r.error.message, r.error);
         _posts = [];
       } else {
         _posts = r.data || [];
@@ -195,7 +222,7 @@ function _loadCommunityPosts() {
       renderCommunity();
     })
     .catch(function (e) {
-      console.warn('[Atarax] load community exception:', e.message);
+      console.error('[Community] SELECT exception:', e);
       _posts = [];
       renderCommunity();
     });
@@ -204,7 +231,7 @@ function _loadCommunityPosts() {
 // ── Realtime subscription ──────────────────────────────────────────────────
 
 function _subscribeToCommunity() {
-  var db = _getDbClient();
+  var db = _supabase();
   if (!db) return;
 
   _communityChannel = db
@@ -213,7 +240,6 @@ function _subscribeToCommunity() {
       { event: 'INSERT', schema: 'public', table: 'community_reflections' },
       function (payload) {
         if (!_posts) _posts = [];
-        // Guard against duplicate events (our own inserts arrive here too)
         var alreadyPresent = _posts.some(function (p) { return p.id === payload.new.id; });
         if (alreadyPresent) return;
         _posts.unshift(payload.new);
