@@ -132,6 +132,35 @@ function renderCommunity() {
     });
 }
 
+var _communityChannel = null;
+
 function initCommunity() {
-  // nothing needed on load; rendered when section is visited
+  var client = _getAuthClient();
+  if (!client) return;
+
+  // Tear down any existing subscription before creating a new one
+  if (_communityChannel) {
+    client.removeChannel(_communityChannel);
+    _communityChannel = null;
+  }
+
+  // Listen for INSERT and DELETE events from any user so the feed updates
+  // in real time without a manual refresh.
+  _communityChannel = client
+    .channel('community_reflections_feed')
+    .on(
+      'postgres_changes',
+      { event: 'INSERT', schema: 'public', table: 'community_reflections' },
+      function() { renderCommunity(); }
+    )
+    .on(
+      'postgres_changes',
+      { event: 'DELETE', schema: 'public', table: 'community_reflections' },
+      function() { renderCommunity(); }
+    )
+    .subscribe(function(status) {
+      if (status === 'CHANNEL_ERROR') {
+        console.warn('[Community] Realtime subscription failed — feed will not update automatically.');
+      }
+    });
 }
